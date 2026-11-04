@@ -1,17 +1,14 @@
 # SUIVI – état actuel
 
-*Mis à jour le 2026-11-04.*
+*Mis à jour le 2026-11-04 (fin de journée).*
 
 ## Où en est-on ?
 
-**Phase 2 terminée : les 12 parcours sont développés et vérifiés.** Le pilote a été validé par l'animateur (point d'arrêt n°1), avec deux retours sur les touches I et K, corrigés.
+**Les 12 parcours sont prêts, avec le panneau « Coulisses » et le style ludique. La relecture par un agent séparé est faite et ses retours sont intégrés.**
 
-- Dernière tâche terminée : relecture des captures des 12 parcours et correction des défauts vus à l'écran.
-- Prochaine action : l'animateur joue les 12 parcours sur son poste, puis tranche les décisions ci-dessous.
-- Ensuite, d'après la spécification :
-  - phase 3, le film du parcours 1 (chantier parallèle, sur le poste de l'animateur) ;
-  - phase 4, la relecture par un agent séparé, puis **⛔ le point d'arrêt n°2** : répétition à blanc sur le vrai vidéoprojecteur, chronomètre en main ;
-  - plus tard, le style plus ludique de la chronologie, du débrief et des réflexes (retour de l'animateur, « à terme »).
+- Dernière tâche terminée : intégration des retours de la relecture, puis nouvelle vérification (94 écrans, 97 chemins, aucun problème) et relecture des captures.
+- Prochaine action : **⛔ point d'arrêt n°2** de la spécification, une répétition à blanc des 12 parcours sur le vrai vidéoprojecteur, chronomètre en main.
+- Reporté : le film du parcours 1 (facultatif, « on verra après »).
 
 ## Comment tester
 
@@ -23,6 +20,7 @@
    - R : dernier vote ;
    - I : afficher ou masquer tous les indices ;
    - K : masquer ou réafficher les mots-clés (un message s'affiche s'il n'y en a pas sur l'écran) ;
+   - C : ouvrir ou fermer le panneau « Coulisses » (aussi par l'onglet discret à droite). Il reste ouvert d'un écran à l'autre ; trois onglets : « Cet écran », « Le scénario », « Le mode opératoire » ;
    - M : menu.
 4. Film du parcours 1 : déposer les 6 vidéos dans `simulateur/videos/` (voir `LISEZMOI.txt`), puis passer `filmParcours1: true` dans `config/collectivite.js`. Sans les vidéos, le simulateur affiche la description de chaque séquence.
 5. Contrôle automatique : `node outils/verifier.js` (94 écrans, 97 chemins, captures dans `captures/`).
@@ -48,8 +46,16 @@
 8. **Images** : `signature-mail.png` n'est pas utilisée ; la signature des mails internes affiche le logo, sans quoi le visuel générique serait peu lisible. Les « conseillers » de la visio utilisent `conseiller-1.jpg` et `conseiller-2.jpg`, absents de la liste de la spécification : sans ces fichiers, une silhouette générique s'affiche.
 9. **Parcours 5** : l'expéditeur du faux partage utilise `{{DOMAINE_PIEGE}}`, comme le prévoit le tableau des variables, sans indice ajouté dessus.
 
+**Nouvelles décisions (coulisses et relecture)** :
+
+10. **Parcours 1, code de l'Assistance rapide** : la spécification fait dire « donnez-moi le code » et montre Nadia qui « lit un code ». Dans le vrai outil, c'est l'attaquant qui dicte le code, et la victime le tape (rapport de Microsoft, mai 2024). Le simulateur suit la réalité : « tapez le code que je vais vous dicter », vote « On tape le code dicté », mot-clé « CODE SAISI ». **À reporter dans le script du film.**
+11. **Parcours 6, chiffre de l'étude** : la spécification dit « environ la moitié ». L'étude (Tischer et al., 2016) donne 45 % (135 clés sur 297 avec des fichiers ouverts). Le texte affiche le chiffre exact.
+12. **Panneau Coulisses, écrans de vote** : il ne montre que la question de relance, jamais ce que révèle chaque choix. Le verdict « Attaque » ou « Légitime » n'apparaît qu'après le premier vote, pour ne pas souffler la réponse si le panneau est ouvert devant la salle.
+13. **Parcours 7, « On le signale »** : ce choix compte comme un bon réflexe (« prudent ») dans le score du débrief, par cohérence avec le réflexe n° 5, « Signaler sans honte ».
+14. **Parcours 12, expéditeur** : on garde `impots.gouv.fr`, comme le prévoit la spécification. Les vrais mails peuvent aussi venir de `dgfip.finances.gouv.fr`, qui est également officiel.
+15. **Parcours 8 et 9, compléments** : « on fait opposition, on conteste, on porte plainte : c'est à la banque de prouver une négligence grave » (P8). La conséquence du P9 parle d'un petit paiement en général, et plus seulement du colis.
+
 ## Blocages
 
 - Aucun pour le développement.
-- Film (Lemo-Opuscar) : pas commencé, à faire sur le poste de l'animateur.
-- Plein écran : à essayer sur un vrai poste (impossible à tester ici).
+- Aucun. Film reporté (facultatif). Plein écran validé par l'animateur.

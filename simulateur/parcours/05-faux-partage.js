@@ -51,7 +51,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
-      coulisses: 'Derrière cette page, le serveur de l\'attaquant affiche en direct la vraie page de connexion Microsoft, qu\'il relaie. C\'est pour ça qu\'elle est si réaliste : ce sont les vrais écrans, parfois avec l\'habillage de la collectivité. Seule l\'adresse dans la barre trahit le relais.',
+      coulisses: 'Derrière cette page, le serveur de l\'attaquant affiche en direct la vraie page de connexion Microsoft, qu\'il relaie. C\'est pour ça qu\'elle est si réaliste : ce sont les vrais écrans, parfois avec l\'habillage de la collectivité. Seule l\'adresse dans la barre trahit le relais (on y arrive après une redirection depuis le lien du mail).',
       etape: 'É2',
       composant: 'navigateur',
       donnees: {
@@ -72,7 +72,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
-      coulisses: 'Relance : « Si on vous partage vraiment un document, où le retrouvez-vous sans cliquer sur ce lien ? » Se connecter montre le vol du code et de la session. Ouvrir OneDrive soi-même montre qu\'aucun document n\'a été partagé.',
+      coulisses: 'Relance : « Si on vous partage vraiment un document, où le retrouvez-vous sans cliquer sur ce lien ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -108,7 +108,7 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
-      coulisses: 'L\'attaquant crée une règle de transfert discrète : il continue de lire les mails, même si l\'agent change de mot de passe. Puis il renvoie le piège depuis le vrai compte, car les contacts font confiance à un expéditeur connu. Il faut changer le mot de passe, fermer les sessions et supprimer la règle.',
+      coulisses: 'L\'attaquant crée une règle de transfert discrète, nommée « . » pour passer inaperçue dans la liste : il continue de lire les mails, même si l\'agent change de mot de passe. Puis il renvoie le piège depuis le vrai compte, car les contacts font confiance à un expéditeur connu. Il faut changer le mot de passe, fermer les sessions et supprimer la règle.',
       etape: 'É4',
       composant: 'mail',
       donnees: {

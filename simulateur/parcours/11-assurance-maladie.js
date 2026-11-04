@@ -29,7 +29,7 @@ SIMU.enregistrerParcours({
         ]
       },
       indices: {
-        'pas-de-lien': { type: 'rassurant', etiquette: 'Pas de lien cliquable vers une page de saisie' },
+        'pas-de-lien': { type: 'rassurant', etiquette: 'Aucun lien de connexion : seulement le nom du site officiel, à ouvrir soi-même' },
         calme:         { type: 'rassurant', etiquette: 'Aucune urgence, aucun montant, aucune donnée bancaire demandée' },
         'soi-meme':    { type: 'rassurant', etiquette: 'Invitation à passer soi-même par l\'application officielle' }
       },
@@ -37,7 +37,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
-      coulisses: 'Relance : « Comment vérifier sans toucher au message ? » « On supprime » montre ce qu\'on risque de manquer ; « on ouvre l\'application soi-même » montre le document, et la suite reste visible.',
+      coulisses: 'Relance : « Comment vérifier sans toucher au message ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -82,8 +82,8 @@ SIMU.enregistrerParcours({
       donnees: {
         titre: 'Si on l\'avait supprimé…',
         etapes: [
-          { quand: 'Sur le moment', titre: 'Rien de grave', texte: 'Supprimer un message n\'expose à rien.' },
-          { quand: 'Plus tard', titre: 'Un document oublié', texte: 'L\'attestation reste non consultée : une démarche peut passer inaperçue.', alerte: true }
+          { quand: 'Sur le moment', titre: 'Rien de grave', texte: 'Supprimer un message n\'expose à rien.' , icone: '😌' },
+          { quand: 'Plus tard', titre: 'Un document oublié', texte: 'L\'attestation reste non consultée : une démarche peut passer inaperçue.', icone: '📭', attention: true }
         ]
       },
       suivant: 'debrief'

@@ -59,7 +59,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
-      coulisses: 'Relance : « Que pourriez-vous demander que seul votre enfant sait ? » « On fait le virement » montre l\'appel du soir ; « on appelle » montre que l\'ancien numéro marche, et la suite reste visible.',
+      coulisses: 'Relance : « Que pourriez-vous demander que seul votre enfant sait ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [

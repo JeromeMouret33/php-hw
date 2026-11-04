@@ -52,7 +52,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
-      coulisses: 'Relance : « Que nous demande ce mail ? » Rien, sinon d\'aller voir. « On supprime » montre ce qu\'on risque de manquer ; « légitime » confirme, puis la comparaison avec le faux SMS du parcours 8 reste accessible.',
+      coulisses: 'Relance : « Que nous demande ce mail ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'Légitime ou malveillant ?',
       options: [
@@ -79,8 +79,8 @@ SIMU.enregistrerParcours({
       donnees: {
         titre: 'Si on l\'avait supprimé…',
         etapes: [
-          { quand: 'Sur le moment', titre: 'Rien de grave', texte: 'L\'avis reste disponible dans l\'espace particulier sur impots.gouv.fr.' },
-          { quand: 'Plus tard', titre: 'Mais un rendez-vous manqué', texte: 'Sans l\'avoir lu, on peut passer à côté d\'une échéance de paiement.', alerte: true }
+          { quand: 'Sur le moment', titre: 'Rien de grave', texte: 'L\'avis reste disponible dans l\'espace particulier sur impots.gouv.fr.' , icone: '😌' },
+          { quand: 'Plus tard', titre: 'Mais un rendez-vous manqué', texte: 'Sans l\'avoir lu, on peut passer à côté d\'une échéance de paiement.', icone: '⏰', attention: true }
         ]
       },
       suivant: 'e2'

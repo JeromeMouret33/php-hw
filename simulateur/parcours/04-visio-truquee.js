@@ -75,7 +75,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
-      coulisses: 'Relance : « Quelle question seul le vrai maire saurait-il dire ? » Lancer le virement montre la révélation. Poser une question de contrôle, puis rappeler sur un numéro connu, fait tomber l\'imitation, même très réussie.',
+      coulisses: 'Relance : « Quelle question seul le vrai maire saurait-il trancher ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -104,7 +104,7 @@ SIMU.enregistrerParcours({
           { nom: 'Conseiller juridique', image: 'conseiller-1.jpg', etat: 'degrade' },
           { nom: 'Conseiller financier', image: 'conseiller-2.jpg', etat: 'degrade' }
         ],
-        chat: [{ de: 'Conseiller financier', texte: 'RIB : LT77 3250 0000 9921 4410' }]
+        chat: [{ de: 'Conseiller financier', texte: 'RIB : LT77 9990 0000 9921 4410' }]
       },
       motsCles: ['IMITATION PAR IA'],
       suivant: 'debrief'

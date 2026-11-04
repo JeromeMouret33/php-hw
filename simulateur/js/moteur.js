@@ -44,6 +44,7 @@
  *   {{VARIABLE}}        -> valeur de config/collectivite.js (rouge si absente)
  *   {{img:fichier.png}} -> image du dossier images/, visuel générique si absente
  *   [[id|texte]]        -> indice cliquable, défini dans « indices » de l'écran
+ *   <span class="cle">…</span> -> élément essentiel, que les étiquettes d'indices évitent de recouvrir
  */
 (function () {
   'use strict';
@@ -353,7 +354,9 @@
         <div class="cl-fiches">
           <span class="cl-fiche">🎯 ${texte(p.cible || '')}</span>
           <span class="cl-fiche">⏱️ ${echapper(p.duree || '')}</span>
-          <span class="cl-fiche ${p.nature === 'legitime' ? 'ok' : 'ko'}">${p.nature === 'legitime' ? '✅ Message légitime' : '🎣 Attaque'}</span>
+          ${e.type === 'debrief' || etat.historique.some(id => p.ecrans[id] && p.ecrans[id].type === 'vote')
+            ? `<span class="cl-fiche ${p.nature === 'legitime' ? 'ok' : 'ko'}">${p.nature === 'legitime' ? '✅ Message légitime' : '🎣 Attaque'}</span>`
+            : '<span class="cl-fiche">❓ Verdict après le vote</span>'}
         </div>
         ${p.source ? `<p class="cl-source">📚 ${texte(p.source)}</p>` : ''}`;
     } else if (etat.ongletCoulisses === 'mode') {
@@ -460,7 +463,9 @@
     const w = et.offsetWidth, h = et.offsetHeight, marge = 12;
     const HAUT = 52 + 8, BAS = HAUTEUR - 56 - 8;
     const etiquettes = [...coucheEtiquettes.children].filter(o => o !== et).map(rectScene);
-    const indices = [...zoneEcran.querySelectorAll('[data-indice]')].filter(o => o !== el && !o.contains(el) && !el.contains(o)).map(rectScene);
+    // à ne pas masquer : les autres indices, et les éléments clés (liens, boutons, barre d'état au survol)
+    const indices = [...zoneEcran.querySelectorAll('[data-indice], .cle, .lien, .btn-mail, .barre-etat, .inv-btn, .site-btn')]
+      .filter(o => o !== el && !o.contains(el) && !el.contains(o)).map(rectScene);
     const candidats = [
       { x: r.x, y: r.y + r.h + marge },
       { x: r.x, y: r.y - h - marge },
@@ -594,9 +599,11 @@
     const etoiles = total ? '★'.repeat(trouves.length) + '☆'.repeat(manques.length) : '';
     const votes = Object.keys(etat.votes).map(id => ({ v: etat.votes[id], e: p.ecrans[id] }))
       .filter(x => x.e && x.e.type === 'vote' && x.v.choix != null);
-    const bonsVotes = votes.filter(x => x.e.options[x.v.choix].bon).length;
-    const verdict = !total ? '' : trouves.length === total ? '🏆 Rien ne vous a échappé !'
-      : trouves.length * 2 >= total ? '👏 Bien joué, presque tout repéré' : '🔎 L\'attaquant a été discret…';
+    // « prudent » : un choix défendable (ex. signaler un message légitime), compté comme un bon réflexe
+    const bonsVotes = votes.filter(x => x.e.options[x.v.choix].bon || x.e.options[x.v.choix].prudent).length;
+    const verdict = !total ? '' : legitime
+      ? (trouves.length === total ? '🏆 Tous les signes rassurants repérés' : trouves.length * 2 >= total ? '👏 Presque tous les signes repérés' : '🔎 Des signes rassurants vous ont échappé')
+      : (trouves.length === total ? '🏆 Rien ne vous a échappé !' : trouves.length * 2 >= total ? '👏 Bien joué, presque tout repéré' : '🔎 L\'attaquant a été discret…');
     return `<div class="ecran-debrief">
       <div class="db-haut">
         <h1>🎯 Débrief · ${echapper(brut(p.titre))}</h1>
@@ -610,10 +617,10 @@
           <div class="db-icone">🔍</div>
           <div>
             <h2>${legitime ? 'Les signes rassurants' : 'Les indices'}${verdict ? ` <small>${verdict}</small>` : ''}</h2>
-            <ul class="debrief-indices">
+            ${total ? `<ul class="debrief-indices">
               ${liste(trouves, 'trouve', '✓')}
               ${liste(manques, 'manque', '?')}
-            </ul>
+            </ul>` : '<p>Pas de chasse aux indices sur ce chemin : demandez à la salle ce qui aurait dû l\'alerter.</p>'}
           </div>
         </section>
         <div class="debrief-droite">

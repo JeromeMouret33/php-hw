@@ -37,7 +37,7 @@ SIMU.enregistrerParcours({
     },
 
     voteA: {
-      coulisses: 'Relance : « Attendez-vous un colis ? Et si oui, par quel transporteur ? » Le vote est enregistré, on passe à la variante suivante ; la conséquence se joue à la fin, après les trois variantes.',
+      coulisses: 'Relance : « Attendez-vous un colis ? Et si oui, de quel transporteur ? » Le vote est noté ; on enchaîne sur la variante suivante.',
       type: 'vote',
       question: 'Le colis : on paie les 1,99 € ?',
       options: [
@@ -67,7 +67,7 @@ SIMU.enregistrerParcours({
     },
 
     voteB: {
-      coulisses: 'Relance : « Avez-vous reçu un avis de contravention papier ou dans un espace officiel ? » Vote enregistré, on enchaîne sur la variante du QR code ; tout se révèle à la fin.',
+      coulisses: 'Relance : « Avez-vous reçu un avis de contravention papier ou dans un espace officiel ? » Le vote est noté ; on enchaîne sur la dernière variante.',
       type: 'vote',
       question: 'L\'amende : on paie ?',
       options: [
@@ -97,7 +97,7 @@ SIMU.enregistrerParcours({
     },
 
     voteC: {
-      coulisses: 'Relance : « Comment paie-t-on d\'habitude son stationnement à {{COLLECTIVITE_COURT}} ? » « On paie » montre ce que devient la carte ; « on ne paie pas » mène au bon geste, et la conséquence reste visible.',
+      coulisses: 'Relance : « Comment paie-t-on d\'habitude son stationnement à {{COLLECTIVITE_COURT}} ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'Le stationnement : on paie par ce QR code ?',
       options: [
@@ -114,7 +114,7 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
-      coulisses: 'La carte a été copiée au moment du paiement de 1,99 €. Les débits arrivent ensuite, souvent à l\'étranger, en plusieurs fois. Le réflexe : faire opposition auprès de sa banque et signaler le SMS au <b>33700</b>.',
+      coulisses: 'La carte a été copiée lors d\'un de ces petits paiements : 1,99 € de colis, 35 € d\'amende ou un stationnement. Les débits arrivent ensuite, souvent à l\'étranger, en plusieurs fois. Le réflexe : faire opposition auprès de sa banque et signaler le SMS au <b>33700</b>.',
       etape: 'É4',
       composant: 'smartphone',
       donnees: {
@@ -124,12 +124,12 @@ SIMU.enregistrerParcours({
           titre: 'Mes comptes',
           couleur: '#24527a',
           contenu:
-            '<div class="app-carte"><small>Lundi</small><b>Paiement · 1,99 €</b></div>' +
+            '<div class="app-carte"><small>Lundi</small><b>Petit paiement (colis, amende ou stationnement)</b></div>' +
             '<div class="app-carte app-alerte"><small>Mardi</small><b>Paiement à l\'étranger · 249,00 €</b></div>' +
             '<div class="app-carte app-alerte"><small>Mercredi</small><b>Paiement à l\'étranger · 389,90 €</b></div>' +
             '<div class="app-carte app-alerte"><small>Jeudi</small><b>Paiement à l\'étranger · 412,50 €</b></div>'
         },
-        contexte: '<p>1,99 € payés…</p><p>… puis des <b>centaines d\'euros</b> débités les jours suivants.</p>'
+        contexte: '<p>Un petit montant payé…</p><p>… puis des <b>centaines d\'euros</b> débités les jours suivants.</p>'
       },
       motsCles: ['CARTE COPIÉE'],
       suivant: 'debrief'

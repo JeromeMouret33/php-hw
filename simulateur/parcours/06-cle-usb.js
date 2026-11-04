@@ -35,7 +35,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
-      coulisses: 'Relance : « Comment savoir ce qu\'il y a sur cette clé sans la brancher ? » On ne peut pas : d\'où la remise au {{DSI_NOM}}. Brancher montre les deux pièges : le faux fichier et le clavier fantôme.',
+      coulisses: 'Relance : « Comment savoir ce qu\'il y a sur cette clé sans la brancher ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on de cette clé ?',
       options: [
@@ -70,7 +70,7 @@ SIMU.enregistrerParcours({
             '> accès au réseau de {{COLLECTIVITE_COURT}} : OUVERT'
           ]
         },
-        contexte: '<p>« Primes_2026.xlsx » n\'est pas un tableur : c\'est un <b>programme</b>.</p><p>Ou bien la clé se fait passer pour un <b>clavier</b>, et tape des commandes en trois secondes.</p>'
+        contexte: '<p>Son vrai nom est « Primes_2026.xlsx<b>.exe</b> » : Windows cache la fin. Regardez la colonne Type : <b>Application</b>.</p><p>Ou bien la clé se fait passer pour un <b>clavier</b>, et tape des commandes en trois secondes.</p>'
       },
       motsCles: ['CLAVIER FANTÔME', 'PORTE OUVERTE'],
       suivant: 'debrief'

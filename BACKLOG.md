@@ -93,7 +93,7 @@ Critères d'acceptation communs, vérifiés le 2026-11-04 par `outils/verifier.j
 
 - [x] Captures automatiques de chaque écran des 12 parcours en 1920×1080, relues visuellement (premier passage ; à refaire après chaque modification d'écran)
 - [x] Script qui parcourt les 12 parcours, toutes branches comprises, sans impasse, bouton mort ni variable non remplacée (94 écrans, 97 chemins, mode film compris, touches I et K)
-- [~] Relecture par un agent séparé, avec un regard d'animateur : lisibilité au fond de la salle, rythme, cohérence des indices *Note : lancée le 2026-11-04, retours à intégrer*
+- [x] Relecture par un agent séparé, avec un regard d'animateur : lisibilité au fond de la salle, rythme, cohérence des indices – 22 remarques le 2026-11-04 : 19 appliquées, 1 déjà corrigée, 1 sans objet (domaine des impôts), 1 écartée par l'animateur (numéros fictifs) ; détail dans HISTORIQUE.md
 - [ ] ⛔ Point d'arrêt n°2 : répétition à blanc des 12 parcours sur le vidéoprojecteur réel, chronomètre en main
 
 ## Hors développement – à faire par l'animateur

@@ -58,7 +58,7 @@ SIMU.enregistrerParcours({
     },
 
     vote1: {
-      coulisses: 'Relance : « Pourquoi les impôts auraient-ils besoin de votre carte pour vous rembourser ? » « On remplit » montre la suite de l\'arnaque ; « on ferme » montre l\'espace impots.gouv.fr vide, et la suite reste visible.',
+      coulisses: 'Relance : « Pourquoi les impôts auraient-ils besoin de votre carte pour vous rembourser ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -79,8 +79,8 @@ SIMU.enregistrerParcours({
       etape: 'É3',
       composant: 'appel',
       donnees: {
-        appelant: '{{BANQUE_PERSO}}',
-        numero: '[[numero|Service client (numéro enregistré)]]',
+        appelant: '{{BANQUE_PERSO}} – Service client',
+        numero: '[[numero|01 99 00 12 34]]',
         duree: '01:26',
         contexte: '10 minutes plus tard, l\'écran affiche le vrai numéro de votre banque.',
         repliques: [
@@ -96,7 +96,7 @@ SIMU.enregistrerParcours({
     },
 
     vote2: {
-      coulisses: 'Relance : « Le numéro affiché, est-ce une preuve ? » Non. « On valide » montre les paiements partis ; « on raccroche » montre le réflexe : rappeler soi-même le numéro au dos de la carte, jamais celui donné par l\'appelant.',
+      coulisses: 'Relance : « Le numéro affiché, est-ce une preuve ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -113,7 +113,7 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
-      coulisses: 'Chaque paiement porte la mention « validé par vous » : techniquement, c\'est vrai. La banque peut donc estimer que la victime a commis une négligence et contester le remboursement. L\'escroc, lui, a déjà disparu.',
+      coulisses: 'Chaque paiement porte la mention « validé par vous » : techniquement, c\'est vrai. La banque peut donc invoquer une négligence et contester le remboursement. Pourtant, on fait opposition, on conteste et on porte plainte : c\'est à la banque de prouver une négligence grave.',
       etape: 'É4',
       composant: 'smartphone',
       donnees: {
@@ -141,7 +141,7 @@ SIMU.enregistrerParcours({
 
   debrief: {
     attaquant: 'Le site sert à récolter les données ; l\'appel sert à faire valider les paiements.',
-    impact: 'Quand la victime a validé les paiements elle-même, la banque peut contester le remboursement.',
+    impact: 'Quand la victime a validé les paiements elle-même, la banque peut contester le remboursement. Il faut quand même faire opposition, contester auprès de sa banque et porter plainte : c\'est à la banque de prouver une négligence grave.',
     reflexe: 'Passer soi-même par impots.gouv.fr ; raccrocher et rappeler sa banque sur le numéro connu.'
   }
 });

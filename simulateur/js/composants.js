@@ -133,7 +133,7 @@
     const { texte } = o;
     const etapes = (d.etapes || []).map((e, i) => `
       ${i ? `<li class="chrono-fleche" style="--retard:${i * 0.9}s">➜</li>` : ''}
-      <li class="chrono-carte${e.alerte ? ' alerte' : ''}" style="--retard:${i * 0.9 + 0.2}s">
+      <li class="chrono-carte${e.alerte ? ' alerte' : e.attention ? ' attention' : ''}" style="--retard:${i * 0.9 + 0.2}s">
         <span class="chrono-quand">${texte(e.quand)}</span>
         <span class="chrono-icone">${e.icone || (e.alerte ? '🚨' : ICONES_CHRONO[i % ICONES_CHRONO.length])}</span>
         ${e.titre ? `<h3>${texte(e.titre)}</h3>` : ''}<p>${texte(e.texte)}</p>

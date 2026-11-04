@@ -56,7 +56,7 @@ SIMU.enregistrerParcours({
             '<div class="rib-titre">RELEVÉ D\'IDENTITÉ BANCAIRE</div>' +
             '<div class="rib-ligne"><span>Titulaire</span><b>{{FOURNISSEUR}}</b></div>' +
             '[[iban|<div class="rib-ligne"><span>Banque</span><b>Nordbank Digital – Vilnius (Lituanie)</b></div>' +
-            '<div class="rib-ligne"><span>IBAN</span><b class="mono">LT58 3250 0000 4417 2093</b></div>]]' +
+            '<div class="rib-ligne"><span>IBAN</span><b class="mono">LT58 9990 0000 4417 2093</b></div>]]' +
             '<div class="rib-ligne"><span>BIC</span><b class="mono">NRDBLT2XXXX</b></div>' +
             '<div class="rib-note">Merci d\'utiliser exclusivement ces coordonnées pour tout règlement à venir.</div>' +
             '</div>'
@@ -74,7 +74,7 @@ SIMU.enregistrerParcours({
 
     // ---------------------------------------------------------------- Vote 1
     vote1: {
-      coulisses: 'Relance : « Qu\'est-ce qui, dans ce mail, prouve qu\'il vient vraiment du fournisseur ? » Mettre à jour montre le virement perdu et le double paiement. Vérifier ouvre une seconde question, la plus piégeuse : quel numéro appeler ?',
+      coulisses: 'Relance : « Qu\'est-ce qui, dans ce mail, prouve qu\'il vient vraiment du fournisseur ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on de ce mail ?',
       options: [
@@ -86,7 +86,7 @@ SIMU.enregistrerParcours({
 
     // ---------------------------------------------------------------- Vote 2
     vote2: {
-      coulisses: 'Question à poser : « Qui a écrit ce numéro de téléphone ? » Le numéro du mail est fourni par l\'escroc : un complice décroche. Le numéro du dossier était connu avant le mail : c\'est le seul qui joint le vrai fournisseur.',
+      coulisses: 'Question à poser : « Qui a écrit ce numéro de téléphone ? » Laissez la salle débattre avant de voter.',
       type: 'vote',
       question: 'On vérifie. Quel numéro appelle-t-on ?',
       options: [

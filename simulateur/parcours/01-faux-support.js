@@ -30,7 +30,7 @@ SIMU.enregistrerParcours({
         application: 'Messagerie – {{COLLECTIVITE_COURT}}',
         utilisateur: 'Service urbanisme',
         compteur: '200 non lus',
-        vide: '200 nouveaux messages en 10 minutes…',
+        vide: '<div class="compteur-geant">200</div>nouveaux messages en 10 minutes…',
         liste: [
           { de: 'Bons plans Jardin', objet: 'Votre lettre d\'information', apercu: '-40 % sur toute la gamme…', heure: '09:39', nonLu: true },
           { de: 'Actu Voyages', objet: 'Bienvenue dans notre newsletter', apercu: 'Confirmez votre inscription…', heure: '09:39', nonLu: true },
@@ -89,7 +89,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
-      coulisses: 'Si la salle hésite : « Qui a appelé qui ? Et qui a ouvert un ticket ? » Taper le code montre la prise de contrôle puis la rançon. Raccrocher et rappeler le {{NUMERO_SUPPORT}} montre que le vrai support n\'a jamais appelé.',
+      coulisses: 'Si la salle hésite : « Qui a appelé qui ? Et qui a ouvert un ticket ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -180,7 +180,7 @@ SIMU.enregistrerParcours({
       suivant: 'voteFilm'
     },
     voteFilm: {
-      coulisses: 'Si la salle hésite : « Qui a appelé qui ? Et qui a ouvert un ticket ? » Taper le code montre la prise de contrôle puis la rançon. Raccrocher et rappeler le {{NUMERO_SUPPORT}} montre que le vrai support n\'a jamais appelé.',
+      coulisses: 'Si la salle hésite : « Qui a appelé qui ? Et qui a ouvert un ticket ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'On lui dicte un code pour l\'Assistance rapide. Que fait Nadia ?',
       options: [
@@ -201,7 +201,7 @@ SIMU.enregistrerParcours({
       composant: 'video',
       donnees: { sequence: 3, fichier: 'videos/parcours1-seq3.mp4', question: 'Que fallait-il faire à ce moment ?',
         description: 'Nadia ouvre l\'outil d\'assistance à distance et tape le code à 6 chiffres que lui dicte l\'appelant.' },
-      motsCles: ['CODE DONNÉ', 'PORTE OUVERTE'],
+      motsCles: ['CODE SAISI', 'PORTE OUVERTE'],
       suivant: 'f4'
     },
     f4: {
@@ -241,7 +241,7 @@ SIMU.enregistrerParcours({
   debrief: {
     attaquant: 'En quelques minutes, l\'attaquant obtient l\'accès au réseau, vole des données personnelles d\'usagers, puis chiffre les serveurs.',
     impact: 'Les services (état civil, paie, urbanisme) peuvent s\'arrêter plusieurs semaines.',
-    message: 'Le support ne vous appelle jamais pour prendre la main. Raccrochez, rappelez le {{NUMERO_SUPPORT}}.',
+    message: 'Un code tapé, et l\'attaquant a les mêmes droits que vous sur le réseau.',
     reflexe: 'Raccrocher, rappeler le support sur le numéro connu {{NUMERO_SUPPORT}}, ne jamais installer ni ouvrir un outil de prise en main à la demande d\'un appelant.'
   }
 });

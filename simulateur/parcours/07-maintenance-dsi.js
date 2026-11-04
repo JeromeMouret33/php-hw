@@ -51,12 +51,12 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
-      coulisses: 'Relance : « Qu\'est-ce que ce mail nous demande de faire ? » Réponse : rien. « Supprimer » montre ce qu\'on perd ; « signaler » est prudent mais inutile ici ; « garder » mène à la confirmation sur l\'intranet.',
+      coulisses: 'Relance : « Qu\'est-ce que ce mail nous demande de faire ? » Les trois choix se défendent : laissez la salle argumenter.',
       type: 'vote',
       question: 'Que fait-on de ce mail ?',
       options: [
         { libelle: 'On le supprime', suivant: 'perte', bon: false },
-        { libelle: 'On le signale', suivant: 'signale', bon: false },
+        { libelle: 'On le signale', suivant: 'signale', bon: false, prudent: true },
         { libelle: 'On le garde', suivant: 'e2', bon: true }
       ],
       suiteQuandMeme: 'perte',
@@ -102,8 +102,8 @@ SIMU.enregistrerParcours({
       donnees: {
         titre: 'Si on l\'avait supprimé…',
         etapes: [
-          { quand: 'Samedi, 8 h 05', titre: 'Plus de messagerie', texte: 'Sans l\'information, vous croyez à une panne… ou à une attaque.' },
-          { quand: 'Samedi, 8 h 15', titre: 'Inquiétude pour rien', texte: 'Vous appelez le support pour une coupure annoncée depuis lundi.', alerte: true }
+          { quand: 'Samedi, 8 h 05', titre: 'Plus de messagerie', texte: 'Sans l\'information, vous croyez à une panne… ou à une attaque.' , icone: '📭' },
+          { quand: 'Samedi, 8 h 15', titre: 'Inquiétude pour rien', texte: 'Vous appelez le support pour une coupure annoncée depuis lundi.', icone: '⏰', attention: true }
         ]
       },
       suivant: 'debrief'

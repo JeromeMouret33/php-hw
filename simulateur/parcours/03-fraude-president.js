@@ -50,9 +50,8 @@ SIMU.enregistrerParcours({
         avatar: 'photo-dgs.jpg',
         heure: '10:14',
         messages: [
-          { de: 'eux', texte: 'Je suis en réunion à la préfecture, je ne peux pas parler. J\'ai besoin d\'un service discret.', heure: '10:11' },
           { de: 'moi', texte: 'Oui bien sûr, de quoi avez-vous besoin ?', heure: '10:12' },
-          { de: 'eux', texte: 'Il faut régler en urgence un acompte de 24 800 € à un cabinet pour une opération confidentielle. Je t\'envoie le RIB. [[secret|N\'en parle à personne, pas même aux finances.]]', heure: '10:13' },
+          { de: 'eux', texte: '<span class="cle">Il faut régler en urgence un acompte de 24 800 € à un cabinet</span> pour une opération confidentielle. Je t\'envoie le RIB. [[secret|N\'en parle à personne, pas même aux finances.]]', heure: '10:13' },
           { de: 'eux', texte: '[[flatterie|Je compte sur toi, tu es la seule personne de confiance.]]', heure: '10:13' }
         ],
         contexte: '<p>Variante fréquente : acheter des <b>cartes cadeaux</b> « pour les agents méritants ».</p>'
@@ -65,7 +64,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
-      coulisses: 'Relance : « Si c\'était vraiment le DGS, qu\'est-ce que ça coûterait de l\'appeler ? » S\'exécuter déclenche l\'appel d\'un faux avocat. Rappeler {{DGS_PRENOM}} {{DGS_NOM}} sur son numéro habituel montre qu\'il n\'a rien demandé.',
+      coulisses: 'Relance : « Si c\'était vraiment le DGS, qu\'est-ce que ça coûterait de l\'appeler ? » Quel que soit le vote, la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -86,7 +85,7 @@ SIMU.enregistrerParcours({
         contexte: 'Vous appelez le DGS sur son <b>numéro connu</b>.',
         repliques: [
           { qui: 'agent', texte: 'Vous m\'avez demandé un acompte de 24 800 € sur WhatsApp ?' },
-          { qui: 'appelant', texte: 'Pas du tout, je suis dans mon bureau ! C\'est une arnaque : ne paie rien et préviens les finances.' }
+          { qui: 'appelant', texte: 'Pas du tout, je suis dans mon bureau ! C\'est une arnaque : ne payez rien et prévenez les finances.' }
         ]
       },
       suivant: 'bienvu'

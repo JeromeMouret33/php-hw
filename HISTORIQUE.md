@@ -2,6 +2,60 @@
 
 Journal daté, en ordre antichronologique.
 
+## 2026-11-04 (fin de journée) – Coulisses, style ludique, sources, relecture
+
+**Demandes de l'animateur** :
+- film facultatif, reporté ;
+- plein écran validé ;
+- numéros fictifs laissés tels quels ;
+- points à sourcer : à faire par Claude ;
+- relecture par un agent séparé ;
+- nouveau panneau dépliable « Coulisses » (scénario, mode opératoire, ce qui se passe), activable à volonté ;
+- style plus ludique pour la chronologie, le débrief et les réflexes.
+
+**Fait**
+- **Panneau « Coulisses »** (`moteur.js`) :
+  - onglet discret à droite et touche C ;
+  - le panneau reste ouvert d'un écran à l'autre ;
+  - onglets « Cet écran », « Le scénario » (avec cible, durée et source), « Le mode opératoire ».
+- **Commentaires rédigés pour les 12 parcours**, par deux agents en parallèle (1 à 6, 7 à 12), puis relus. Le parcours 5 explique le vol du code de double authentification : une fausse page qui relaie en temps réel, puis le cookie de session.
+- **Style ludique** :
+  - chronologie en cartes de bande dessinée qui apparaissent l'une après l'autre ;
+  - débrief avec score en étoiles, bilan des votes, cartes illustrées et médaille du réflexe ;
+  - conclusion en cartes à collectionner, avec un tampon final.
+- **Sources** :
+  - Arup : CNN et SCMP, mai 2024 ;
+  - étude sur les clés USB : Tischer et al., IEEE S&P 2016 ;
+  - SMS d'amende : ANTAI et Cybermalveillance.gouv.fr ;
+  - Assistance rapide : Microsoft Threat Intelligence, mai 2024.
+  - Les textes concernés ont été corrigés : chiffres Arup précisés, 45 % pour les clés USB, sens du code de l'Assistance rapide.
+- **Relecture par un agent séparé** : 22 remarques. Appliquées :
+  - tutoiement du vrai DGS ;
+  - mot-clé « CODE SAISI » ;
+  - débrief sans indices en mode film ;
+  - verdicts propres aux parcours légitimes ;
+  - « signaler » compté comme prudent ;
+  - coulisses des votes sans la réponse, verdict masqué avant le vote ;
+  - étiquettes qui évitent liens, boutons et éléments clés (nouvelle classe `cle`) ;
+  - conséquence du P9 cohérente avec le chemin joué ;
+  - mots-clés qui masquaient la copie de fichiers (P1) ;
+  - textes agrandis (dont « Validé par vous ») ;
+  - « Primes_2026.xlsx.exe » ;
+  - étiquette ameli.fr ;
+  - nuance juridique du P8 ;
+  - compteur géant de l'inondation (P1) ;
+  - pertes bénignes en orange plutôt qu'en sirène rouge ;
+  - numéro de la banque affiché (P8) ;
+  - IBAN sans code bancaire réel ;
+  - redirection et règle « . » expliquées (P5) ;
+  - bandeau de la visio placé sur le maire ;
+  - poignée des coulisses plus discrète ;
+  - « À retenir » du P1 réécrit.
+- **Écartées** : numéros fictifs (choix de l'animateur), domaine des impôts (les deux domaines sont officiels, on garde la spécification), doubles parenthèses du réflexe 5 (déjà corrigées).
+- **Vérificateur** : contrôle de la présence des coulisses, de la touche C et des captures du panneau ouvert, avec une attente pour les animations.
+
+**Résultat** : `node outils/verifier.js` → 94 écrans, 97 chemins, aucun problème ; captures relues.
+
 ## 2026-11-04 – Phase 2 : les 11 autres parcours
 
 **Retour de l'animateur sur le pilote** : validé (« c'est top » pour le mail, bien pour le vote, le débrief et les réflexes). Corrections demandées :
