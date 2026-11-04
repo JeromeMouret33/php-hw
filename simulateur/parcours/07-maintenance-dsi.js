@@ -16,6 +16,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
+      coulisses: 'Le vrai mail ne demande rien : il informe. C\'est la différence clé avec une imitation, qui ajouterait toujours un geste à faire (cliquer, se reconnecter). La référence {{OUTIL_TICKET}} et l\'intranet permettent de vérifier soi-même, sans passer par le message.',
       etape: 'É1',
       composant: 'mail',
       donnees: {
@@ -50,6 +51,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
+      coulisses: 'Relance : « Qu\'est-ce que ce mail nous demande de faire ? » Réponse : rien. « Supprimer » montre ce qu\'on perd ; « signaler » est prudent mais inutile ici ; « garder » mène à la confirmation sur l\'intranet.',
       type: 'vote',
       question: 'Que fait-on de ce mail ?',
       options: [
@@ -62,6 +64,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      coulisses: 'On vérifie <b>par un autre chemin</b> : l\'intranet, ouvert soi-même, et non un lien du mail. Si l\'information y figure, le message est confirmé. C\'est le même réflexe que pour un message douteux.',
       etape: 'É2',
       composant: 'navigateur',
       donnees: {
@@ -93,6 +96,7 @@ SIMU.enregistrerParcours({
     },
 
     perte: {
+      coulisses: 'Supprimer par réflexe a un coût : la coupure surprend, on croit à une panne ou à une attaque, et le support est sollicité pour rien. Trop de méfiance fatigue aussi les équipes.',
       etape: 'Et si…',
       composant: 'chronologie',
       donnees: {
@@ -104,6 +108,11 @@ SIMU.enregistrerParcours({
       },
       suivant: 'debrief'
     }
+  },
+
+  coulisses: {
+    scenario: 'Aucun attaquant ici : le {{DSI_NOM}} prévient simplement tous les agents d\'une coupure prévue. Son seul but : que personne ne s\'inquiète samedi matin, et que personne n\'appelle le support pour rien.',
+    modeOperatoire: 'Les faux mails « informatiques » sont un grand classique : « votre boîte est pleine », « maintenance en cours, reconnectez-vous ». L\'imitation contiendrait un <b>lien de connexion</b>, une demande de mot de passe, une urgence (« sous 24 h ou votre compte sera supprimé ») et souvent une adresse d\'expéditeur extérieure à {{DOMAINE_MAIL}}. Ici, rien de tout ça.'
   },
 
   debrief: {

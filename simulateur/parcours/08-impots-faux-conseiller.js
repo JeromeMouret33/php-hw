@@ -17,6 +17,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
+      coulisses: 'Ce SMS part en masse, vers des numéros pris au hasard ou issus de fuites de données. Le lien raccourci cache la vraie adresse. Le montant précis et le délai de 48 h poussent à cliquer sans réfléchir.',
       etape: 'É1',
       composant: 'smartphone',
       donnees: {
@@ -35,6 +36,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      coulisses: 'Le site copie l\'habillage des impôts, mais son adresse n\'est pas impots.gouv.fr. Tout ce qui est tapé part en direct chez l\'escroc : nom, prénom, numéro de carte, date, cryptogramme. Rappel : un vrai remboursement est versé sur le <b>compte bancaire déjà connu</b> de l\'administration.',
       etape: 'É2',
       composant: 'navigateur',
       donnees: {
@@ -56,6 +58,7 @@ SIMU.enregistrerParcours({
     },
 
     vote1: {
+      coulisses: 'Relance : « Pourquoi les impôts auraient-ils besoin de votre carte pour vous rembourser ? » « On remplit » montre la suite de l\'arnaque ; « on ferme » montre l\'espace impots.gouv.fr vide, et la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -72,6 +75,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
+      coulisses: 'L\'escroc a saisi la carte sur un site marchand ; la banque envoie une demande de validation. Il appelle, avec le <b>vrai numéro de la banque affiché</b> : ce numéro peut être usurpé. Il cite les infos du faux site, donc il paraît crédible. « Valider pour annuler » est un mensonge : valider, c\'est payer.',
       etape: 'É3',
       composant: 'appel',
       donnees: {
@@ -92,6 +96,7 @@ SIMU.enregistrerParcours({
     },
 
     vote2: {
+      coulisses: 'Relance : « Le numéro affiché, est-ce une preuve ? » Non. « On valide » montre les paiements partis ; « on raccroche » montre le réflexe : rappeler soi-même le numéro au dos de la carte, jamais celui donné par l\'appelant.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -108,6 +113,7 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
+      coulisses: 'Chaque paiement porte la mention « validé par vous » : techniquement, c\'est vrai. La banque peut donc estimer que la victime a commis une négligence et contester le remboursement. L\'escroc, lui, a déjà disparu.',
       etape: 'É4',
       composant: 'smartphone',
       donnees: {
@@ -126,6 +132,11 @@ SIMU.enregistrerParcours({
       motsCles: ['VALIDÉ PAR VOUS', 'REMBOURSEMENT REFUSÉ ?'],
       suivant: 'debrief'
     }
+  },
+
+  coulisses: {
+    scenario: 'Un particulier reçoit un faux SMS des impôts, puis un faux appel de sa banque. L\'escroc veut lui faire <b>valider lui-même</b> des paiements avec sa carte.',
+    modeOperatoire: 'Étape 1 : le faux site récolte l\'identité et les données de carte. Étape 2, quelques minutes plus tard : l\'escroc tente des paiements avec cette carte, et la banque demande une validation dans l\'application. Il appelle alors la victime en se faisant passer pour le service fraude, en affichant le numéro de la banque grâce à l\'<b>usurpation du numéro</b> (« spoofing »). Il connaît déjà son nom et ses données : la victime le croit et valide.'
   },
 
   debrief: {

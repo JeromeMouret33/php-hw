@@ -19,6 +19,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
+      coulisses: 'L\'adresse est extérieure, mais l\'attaquant y affiche le nom du maire : c\'est ce que l\'œil lit en premier. Le prétexte « acquisition foncière confidentielle » justifie le secret et un gros montant. La réunion est fixée le jour même, pour laisser peu de temps à la réflexion.',
       etape: 'É1',
       composant: 'mail',
       donnees: {
@@ -46,6 +47,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      coulisses: 'L\'imitation est fragile en direct : elle supporte mal les gestes imprévus et les questions inattendues. D\'où un maire qui parle peu, une demande écrite dans la conversation et une coupure réseau invoquée au bon moment. Les « conseillers » meublent l\'écran pour rendre la réunion crédible.',
       etape: 'É2',
       composant: 'visio',
       donnees: {
@@ -73,6 +75,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
+      coulisses: 'Relance : « Quelle question seul le vrai maire saurait-il dire ? » Lancer le virement montre la révélation. Poser une question de contrôle, puis rappeler sur un numéro connu, fait tomber l\'imitation, même très réussie.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -89,6 +92,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
+      coulisses: 'Ici, la dégradation est mise en scène pour que la salle voie le trucage. Dans la réalité, rien ne se dégrade à l\'écran : la victime découvre l\'escroquerie après coup, en parlant au vrai maire. Seule la procédure (rappel, double validation) protège.',
       etape: 'É3',
       composant: 'visio',
       donnees: {
@@ -105,6 +109,11 @@ SIMU.enregistrerParcours({
       motsCles: ['IMITATION PAR IA'],
       suivant: 'debrief'
     }
+  },
+
+  coulisses: {
+    scenario: 'Un agent des finances est invité à une visio « confidentielle » avec le maire et le DGS. Pendant la réunion, on lui demande de virer un acompte important. Les visages et les voix sont imités.',
+    modeOperatoire: 'L\'attaquant utilise des outils d\'IA qui imitent un visage et une voix à partir de vidéos publiques (conseil municipal diffusé en ligne, interviews). Il peut s\'agir de séquences préparées à l\'avance ou d\'imitations en direct, encore imparfaites : d\'où les excuses de « mauvais réseau ». C\'est le scénario du cas Arup à Hong Kong en 2024, où les autres participants de la visio étaient des imitations.'
   },
 
   debrief: {

@@ -163,12 +163,14 @@
     revele: {},         // "ecran.indice" -> true
     visites: [],        // ids d'écrans visités, dans l'ordre
     motsClesVisibles: true,
+    coulisses: false,        // panneau « Coulisses » ouvert ou non (reste ouvert d'un écran à l'autre)
+    ongletCoulisses: 'ecran', // 'ecran' | 'scenario' | 'mode'
     minuteries: []
   };
   SIMU.etat = etat;
 
   const $ = sel => document.querySelector(sel);
-  let scene, zoneEcran, coucheEtiquettes, coucheMotsCles, bandeau, commandes;
+  let scene, zoneEcran, coucheEtiquettes, coucheMotsCles, bandeau, commandes, coulissesEl;
 
   function parcoursActifs() {
     const actifs = conf().parcoursActifs || {};
@@ -288,6 +290,7 @@
     coucheEtiquettes.innerHTML = '';
     coucheMotsCles.innerHTML = '';
     zoneEcran.className = '';
+    if (coulissesEl && !etat.parcours) coulissesEl.className = 'cachee';
   }
 
   function afficher() {
@@ -323,6 +326,63 @@
     brancherBoutons();
     if (e.motsCles && e.motsCles.length) programmerMotsCles(e.motsCles);
     rendreCommandes(e);
+    rendreCoulisses();
+  }
+
+  // ----- Coulisses : panneau dépliable, commentaires de l'animateur
+
+  /*
+   * Données (dans le fichier de parcours) :
+   *   parcours.coulisses = { scenario, modeOperatoire }
+   *   ecran.coulisses    = 'ce qui se passe sur cet écran'
+   * Le panneau s'ouvre par l'onglet discret à droite ou par la touche C.
+   */
+  function rendreCoulisses() {
+    const boite = coulissesEl;
+    if (!etat.parcours) { boite.className = 'cachee'; return; }
+    const p = etat.parcours, e = ecranCourant(), c = p.coulisses || {};
+    boite.className = etat.coulisses ? 'ouverte' : '';
+    const onglets = [
+      ['ecran', '👀 Cet écran'],
+      ['scenario', '🎬 Le scénario'],
+      ['mode', '🛠️ Le mode opératoire']
+    ];
+    let corps;
+    if (etat.ongletCoulisses === 'scenario') {
+      corps = `<p>${texte(c.scenario || 'Pas de scénario décrit pour ce parcours.')}</p>
+        <div class="cl-fiches">
+          <span class="cl-fiche">🎯 ${texte(p.cible || '')}</span>
+          <span class="cl-fiche">⏱️ ${echapper(p.duree || '')}</span>
+          <span class="cl-fiche ${p.nature === 'legitime' ? 'ok' : 'ko'}">${p.nature === 'legitime' ? '✅ Message légitime' : '🎣 Attaque'}</span>
+        </div>
+        ${p.source ? `<p class="cl-source">📚 ${texte(p.source)}</p>` : ''}`;
+    } else if (etat.ongletCoulisses === 'mode') {
+      corps = `<p>${texte(c.modeOperatoire || 'Pas de mode opératoire décrit pour ce parcours.')}</p>`;
+    } else {
+      const titre = e.type === 'debrief' ? 'Débrief' : e.type === 'vote' ? 'Vote' : e.type === 'bienvu' ? 'Bien vu' : (e.etape || '');
+      corps = `<div class="cl-etape">${echapper(titre)}</div>
+        <p>${e.coulisses ? texte(e.coulisses) : 'Rien de plus à dévoiler ici : passez à l\'onglet « Le scénario » ou « Le mode opératoire ».'}</p>`;
+    }
+    boite.innerHTML = `
+      <button class="cl-poignee" data-cl="basculer" title="Coulisses (C)"><span>🕵️</span><b>Coulisses</b></button>
+      <div class="cl-panneau">
+        <div class="cl-entete"><span class="cl-titre">🕵️ Dans les coulisses</span><button class="cl-fermer" data-cl="basculer" title="Fermer (C)">✕</button></div>
+        <div class="cl-onglets">${onglets.map(([k, l]) => `<button class="cl-onglet${etat.ongletCoulisses === k ? ' actif' : ''}" data-cl="${k}">${l}</button>`).join('')}</div>
+        <div class="cl-corps">${corps}</div>
+      </div>`;
+    boite.querySelectorAll('[data-cl]').forEach(b => b.addEventListener('click', ev => {
+      ev.stopPropagation();
+      const a = b.dataset.cl;
+      if (a === 'basculer') basculerCoulisses();
+      else { etat.ongletCoulisses = a; rendreCoulisses(); }
+    }));
+  }
+
+  function basculerCoulisses() {
+    if (!etat.parcours) return;
+    etat.coulisses = !etat.coulisses;
+    if (etat.coulisses) etat.ongletCoulisses = 'ecran';
+    rendreCoulisses();
   }
 
   function badgeVote() {
@@ -522,31 +582,48 @@
         (etat.revele[id + '.' + k] ? trouves : manques).push(def);
       });
     });
-    const liste = (tab, cls, sym) => tab.map(def => `<li class="${cls} ${def.type}">${sym} ${texte(def.etiquette)}</li>`).join('');
-    const bloc = (titre, contenu, cls) => contenu ? `<section class="debrief-bloc ${cls || ''}"><h2>${titre}</h2><p>${texte(contenu)}</p></section>` : '';
+    const liste = (tab, cls, sym) => tab.map(def => `<li class="${cls} ${def.type}"><span class="db-puce">${sym}</span>${texte(def.etiquette)}</li>`).join('');
+    let rang = 0;
+    const bloc = (icone, titre, contenu, cls) => contenu
+      ? `<section class="db-carte ${cls}" style="--retard:${(rang++) * 0.15 + 0.3}s"><div class="db-icone">${icone}</div><div><h2>${titre}</h2><p>${texte(contenu)}</p></div></section>` : '';
     const legitime = p.nature === 'legitime';
     const suivant = seance();
     const dernier = suivant.indexOf(p) === suivant.length - 1;
+    // score ludique : indices trouvés et votes de la salle
+    const total = trouves.length + manques.length;
+    const etoiles = total ? '★'.repeat(trouves.length) + '☆'.repeat(manques.length) : '';
+    const votes = Object.keys(etat.votes).map(id => ({ v: etat.votes[id], e: p.ecrans[id] }))
+      .filter(x => x.e && x.e.type === 'vote' && x.v.choix != null);
+    const bonsVotes = votes.filter(x => x.e.options[x.v.choix].bon).length;
+    const verdict = !total ? '' : trouves.length === total ? '🏆 Rien ne vous a échappé !'
+      : trouves.length * 2 >= total ? '👏 Bien joué, presque tout repéré' : '🔎 L\'attaquant a été discret…';
     return `<div class="ecran-debrief">
-      <h1>Débrief · ${echapper(brut(p.titre))}</h1>
-      <div class="debrief-colonnes">
-        <div class="debrief-gauche">
-          <section class="debrief-bloc">
-            <h2>${legitime ? 'Les signes rassurants' : 'Les indices'}</h2>
-            <ul class="debrief-indices">
-              ${liste(trouves, 'trouve', '●')}
-              ${manques.length ? `<li class="sous-titre">Non relevés pendant la chasse :</li>${liste(manques, 'manque', '○')}` : ''}
-            </ul>
-          </section>
-        </div>
-        <div class="debrief-droite">
-          ${bloc("Ce que fait l'attaquant ensuite", d.attaquant)}
-          ${bloc('Impact', d.impact)}
-          ${bloc('Variante', d.variante)}
-          ${bloc('À retenir', d.message)}
+      <div class="db-haut">
+        <h1>🎯 Débrief · ${echapper(brut(p.titre))}</h1>
+        <div class="db-scores">
+          ${total ? `<div class="db-score"><span class="db-etoiles">${etoiles}</span><span>${legitime ? 'Signes rassurants' : 'Indices'} : <b>${trouves.length} / ${total}</b></span></div>` : ''}
+          ${votes.length ? `<div class="db-score"><span class="db-gros">${bonsVotes === votes.length ? '✅' : '⚠️'}</span><span>Votes : <b>${bonsVotes} / ${votes.length}</b> bon${bonsVotes > 1 ? 's' : ''} réflexe${bonsVotes > 1 ? 's' : ''}</span></div>` : ''}
         </div>
       </div>
-      <section class="debrief-reflexe"><span>Le bon réflexe</span><p>${texte(d.reflexe)}</p></section>
+      <div class="debrief-colonnes">
+        <section class="db-carte db-indices" style="--retard:.1s">
+          <div class="db-icone">🔍</div>
+          <div>
+            <h2>${legitime ? 'Les signes rassurants' : 'Les indices'}${verdict ? ` <small>${verdict}</small>` : ''}</h2>
+            <ul class="debrief-indices">
+              ${liste(trouves, 'trouve', '✓')}
+              ${liste(manques, 'manque', '?')}
+            </ul>
+          </div>
+        </section>
+        <div class="debrief-droite">
+          ${bloc('🕵️', 'Ce que fait l\'attaquant ensuite', d.attaquant, 'db-attaquant')}
+          ${bloc('💥', 'Impact', d.impact, 'db-impact')}
+          ${bloc('🔀', 'Variante', d.variante, 'db-variante')}
+          ${bloc('💡', 'À retenir', d.message, 'db-retenir')}
+        </div>
+      </div>
+      <section class="debrief-reflexe"><span class="db-medaille">🏅</span><div><span>Le bon réflexe</span><p>${texte(d.reflexe)}</p></div></section>
       <div class="debrief-actions">
         <button class="btn btn-secondaire" data-action="menu">Menu</button>
         <button class="btn btn-principal" data-action="suivant-parcours">${dernier ? 'Réflexes de conclusion' : 'Parcours suivant'} ▸</button>
@@ -622,6 +699,7 @@
     etat.parcours = null;
     etat.ecranId = null;
     scene.dataset.mode = 'menu';
+    coulissesEl.className = 'cachee';
     delete scene.dataset.parcours;
     scene.dataset.ecran = 'menu';
     bandeau.innerHTML = `<span class="bandeau-parcours">${texte('{{COLLECTIVITE}}')}</span>`;
@@ -640,7 +718,7 @@
       <div class="menu-formats"><span>Séance :</span>${formats}</div>
       <div class="menu-cartes">${cartes || '<p class="menu-vide">Aucun parcours actif : vérifiez « parcoursActifs » dans config/collectivite.js.</p>'}</div>
       <div class="menu-pied"><button class="btn btn-secondaire" data-action="conclusion">Réflexes de conclusion</button>
-      <span class="menu-aide">→ suite · ← retour · R dernier vote · F plein écran · K mots-clés · I indices · M menu</span></div>
+      <span class="menu-aide">→ suite · ← retour · R dernier vote · I indices · K mots-clés · C coulisses · F plein écran · M menu</span></div>
     </div>`;
     brancherBoutons();
     commandes.innerHTML = `<span class="cmd-espace"></span><button class="cmd" data-cmd="pleinecran" title="Plein écran (F)">⛶ Plein écran</button>`;
@@ -648,24 +726,30 @@
   }
 
   const REFLEXES = [
-    ['Urgence, secret, peur = stop.', 'Plus on vous presse, plus il faut ralentir.'],
-    ['Vérifier par un autre canal,', 'sur des coordonnées déjà connues (contre-appel, ancien numéro, numéro au dos de la carte).'],
-    ['Aller soi-même sur le site ou l\'application officiels,', 'jamais via le lien reçu.'],
-    ['Ne jamais donner un code, un mot de passe ou la main sur son poste', 'à quelqu\'un qui vous contacte.'],
-    ['Signaler sans honte', 'au {{DSI_NOM}} ({{NUMERO_SUPPORT}}) : un signalement rapide limite les dégâts.']
+    ['🛑', 'Urgence, secret, peur = stop.', 'Plus on vous presse, plus il faut ralentir.'],
+    ['📞', 'Vérifier par un autre canal,', 'sur des coordonnées déjà connues (contre-appel, ancien numéro, numéro au dos de la carte).'],
+    ['🧭', 'Aller soi-même sur le site ou l\'application officiels,', 'jamais via le lien reçu.'],
+    ['🔐', 'Ne jamais donner un code, un mot de passe ou la main sur son poste', 'à quelqu\'un qui vous contacte.'],
+    ['📣', 'Signaler sans honte', 'au {{DSI_NOM}} ({{NUMERO_SUPPORT}}) : un signalement rapide limite les dégâts.']
   ];
 
   function conclusion() {
     nettoyer();
     etat.parcours = null;
     scene.dataset.mode = 'conclusion';
+    coulissesEl.className = 'cachee';
     scene.dataset.ecran = 'conclusion';
     bandeau.innerHTML = `<span class="bandeau-parcours">${texte('{{COLLECTIVITE}}')}</span>`;
     zoneEcran.innerHTML = `<div class="ecran-conclusion">
-      <h1>Cinq réflexes à garder</h1>
-      <ol>${REFLEXES.map(r => `<li><b>${texte(r[0])}</b> ${texte(r[1])}</li>`).join('')}</ol>
-      <p class="conclusion-pied">Vigilant, pas paranoïaque.</p>
-      <button class="btn btn-secondaire" data-action="menu">Menu</button>
+      <h1>🎯 Cinq réflexes à garder</h1>
+      <div class="cc-cartes">${REFLEXES.map((r, i) => `
+        <div class="cc-carte cc-${i + 1}" style="--retard:${i * 0.35 + 0.2}s">
+          <span class="cc-num">${i + 1}</span><span class="cc-icone">${r[0]}</span>
+          <b>${texte(r[1])}</b><p>${texte(r[2])}</p>
+        </div>`).join('')}
+        <div class="cc-tampon" style="--retard:2.2s">Vigilant,<br>pas paranoïaque.</div>
+      </div>
+      <button class="btn btn-secondaire cc-menu" data-action="menu">Menu</button>
     </div>`;
     brancherBoutons();
     commandes.innerHTML = `<span class="cmd-espace"></span><button class="cmd" data-cmd="pleinecran">⛶ Plein écran</button>`;
@@ -701,6 +785,7 @@
     else if (k === 'k' || k === 'K') basculerMotsCles();
     else if (k === 'i' || k === 'I') { if (etat.parcours) basculerTousIndices(); }
     else if (k === 'm' || k === 'M') menu();
+    else if (k === 'c' || k === 'C') basculerCoulisses();
     else return;
     ev.preventDefault();
   }
@@ -712,6 +797,9 @@
     coucheMotsCles = $('#couche-motscles');
     bandeau = $('#bandeau');
     commandes = $('#commandes');
+    coulissesEl = document.createElement('aside');
+    coulissesEl.id = 'coulisses';
+    scene.appendChild(coulissesEl);
     ajuster();
     window.addEventListener('resize', ajuster);
     document.addEventListener('keydown', clavier);

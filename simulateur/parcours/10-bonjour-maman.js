@@ -17,6 +17,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
+      coulisses: 'L\'escroc ne connaît ni votre prénom ni celui de votre enfant : il écrit « maman » et attend. « Nouveau numéro » prépare le terrain : il explique pourquoi le contact n\'est pas enregistré.',
       etape: 'É1',
       composant: 'smartphone',
       donnees: {
@@ -35,6 +36,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      coulisses: 'Le refus d\'appel est le point clé : à la voix, l\'arnaque tomberait. L\'urgence et la promesse « je te rembourse demain » empêchent de réfléchir. Le RIB au nom d\'un inconnu est un signal fort.',
       etape: 'É2',
       composant: 'smartphone',
       donnees: {
@@ -57,6 +59,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
+      coulisses: 'Relance : « Que pourriez-vous demander que seul votre enfant sait ? » « On fait le virement » montre l\'appel du soir ; « on appelle » montre que l\'ancien numéro marche, et la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -67,6 +70,7 @@ SIMU.enregistrerParcours({
     },
 
     e3bon: {
+      coulisses: 'Un simple appel sur le numéro connu suffit : l\'enfant répond, rien n\'est cassé. L\'escroc n\'a aucun moyen d\'empêcher cette vérification, c\'est pour ça qu\'il insiste sur l\'écrit.',
       etape: 'É3',
       composant: 'appel',
       donnees: {
@@ -90,6 +94,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
+      coulisses: 'Le virement est parti vers le compte d\'un tiers. L\'escroc a peut-être déjà transféré l\'argent ailleurs. Seul réflexe utile maintenant : prévenir sa banque immédiatement et porter plainte.',
       etape: 'É3',
       composant: 'appel',
       donnees: {
@@ -105,6 +110,11 @@ SIMU.enregistrerParcours({
       motsCles: ['USURPATION'],
       suivant: 'debrief'
     }
+  },
+
+  coulisses: {
+    scenario: 'Un parent reçoit un message d\'un « enfant » qui aurait changé de numéro. L\'escroc veut obtenir un <b>virement rapide</b>, avant toute vérification.',
+    modeOperatoire: 'Le message « Coucou maman » est envoyé <b>en masse</b> : l\'escroc ne sait pas si vous avez des enfants, il attend que quelqu\'un réponde. Il refuse tout appel vocal pour ne pas être démasqué. Le RIB fourni appartient à un tiers, souvent un intermédiaire qui fait suivre l\'argent. Une fois le virement parti, le récupérer est très difficile.'
   },
 
   debrief: {

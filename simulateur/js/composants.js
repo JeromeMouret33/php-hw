@@ -124,16 +124,23 @@
 
   // ------------------------------------------------------------ Chronologie
 
+  /*
+   * titre, etapes : [{ quand, titre, texte, icone (emoji, facultatif), alerte }]
+   * Les cartes apparaissent l'une après l'autre, comme les cases d'une bande dessinée.
+   */
+  const ICONES_CHRONO = ['⚡', '💸', '🔥', '📉'];
   C.chronologie = function (d, o) {
     const { texte } = o;
-    const etapes = (d.etapes || []).map(e => `
-      <li class="chrono-etape${e.alerte ? ' alerte' : ''}">
+    const etapes = (d.etapes || []).map((e, i) => `
+      ${i ? `<li class="chrono-fleche" style="--retard:${i * 0.9}s">➜</li>` : ''}
+      <li class="chrono-carte${e.alerte ? ' alerte' : ''}" style="--retard:${i * 0.9 + 0.2}s">
         <span class="chrono-quand">${texte(e.quand)}</span>
-        <div class="chrono-contenu">${e.titre ? `<h3>${texte(e.titre)}</h3>` : ''}<p>${texte(e.texte)}</p></div>
+        <span class="chrono-icone">${e.icone || (e.alerte ? '🚨' : ICONES_CHRONO[i % ICONES_CHRONO.length])}</span>
+        ${e.titre ? `<h3>${texte(e.titre)}</h3>` : ''}<p>${texte(e.texte)}</p>
       </li>`).join('');
     return `<div class="chronologie">
-      <h1>${texte(d.titre)}</h1>
-      <ol class="chrono-liste">${etapes}</ol>
+      <h1><span class="chrono-clap">🎬</span>${texte(d.titre)}</h1>
+      <ol class="chrono-bande n${(d.etapes || []).length}">${etapes}</ol>
     </div>`;
   };
 

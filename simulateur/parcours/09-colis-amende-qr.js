@@ -18,6 +18,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
+      coulisses: 'Le petit montant fait baisser la garde : « 1,99 €, ce n\'est rien ». Mais pour payer, il faut saisir sa carte en entier. L\'escroc ignore si vous attendez un colis : il envoie le même SMS à tout le monde.',
       etape: 'É1',
       composant: 'smartphone',
       donnees: {
@@ -35,6 +36,7 @@ SIMU.enregistrerParcours({
     },
 
     voteA: {
+      coulisses: 'Relance : « Attendez-vous un colis ? Et si oui, par quel transporteur ? » Le vote est enregistré, on passe à la variante suivante ; la conséquence se joue à la fin, après les trois variantes.',
       type: 'vote',
       question: 'Le colis : on paie les 1,99 € ?',
       options: [
@@ -46,6 +48,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      coulisses: 'Même mécanique, avec la peur en plus : la majoration. Le lien mène à un site qui imite un paiement d\'amende officiel. Une vraie amende se vérifie sur le site officiel tapé soi-même, avec les références de l\'avis reçu.',
       etape: 'É2',
       composant: 'smartphone',
       donnees: {
@@ -63,6 +66,7 @@ SIMU.enregistrerParcours({
     },
 
     voteB: {
+      coulisses: 'Relance : « Avez-vous reçu un avis de contravention papier ou dans un espace officiel ? » Vote enregistré, on enchaîne sur la variante du QR code ; tout se révèle à la fin.',
       type: 'vote',
       question: 'L\'amende : on paie ?',
       options: [
@@ -74,6 +78,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
+      coulisses: 'Un autocollant collé par-dessus le QR code officiel : il suffit de quelques secondes. Ce type d\'arnaque (« quishing ») a été signalé dans plusieurs villes françaises. Le QR code cache l\'adresse : on ne voit le site qu\'une fois ouvert.',
       etape: 'É3',
       composant: 'photo',
       donnees: {
@@ -91,6 +96,7 @@ SIMU.enregistrerParcours({
     },
 
     voteC: {
+      coulisses: 'Relance : « Comment paie-t-on d\'habitude son stationnement à {{COLLECTIVITE_COURT}} ? » « On paie » montre ce que devient la carte ; « on ne paie pas » mène au bon geste, et la conséquence reste visible.',
       type: 'vote',
       question: 'Le stationnement : on paie par ce QR code ?',
       options: [
@@ -107,6 +113,7 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
+      coulisses: 'La carte a été copiée au moment du paiement de 1,99 €. Les débits arrivent ensuite, souvent à l\'étranger, en plusieurs fois. Le réflexe : faire opposition auprès de sa banque et signaler le SMS au <b>33700</b>.',
       etape: 'É4',
       composant: 'smartphone',
       donnees: {
@@ -126,6 +133,11 @@ SIMU.enregistrerParcours({
       motsCles: ['CARTE COPIÉE'],
       suivant: 'debrief'
     }
+  },
+
+  coulisses: {
+    scenario: 'N\'importe qui peut être visé : un colis, une amende, un stationnement. L\'escroc ne veut pas les 1,99 € ni les 35 € : il veut le <b>numéro de carte complet</b>.',
+    modeOperatoire: 'Les SMS partent en masse : sur des milliers de destinataires, certains attendent justement un colis ou craignent une amende. Le faux site de paiement enregistre la carte (numéro, date, cryptogramme). Elle est ensuite réutilisée ou revendue pour des achats, parfois plusieurs jours après. Pour le QR code, l\'escroc colle simplement un autocollant sur un horodateur : on parle de « quishing ».'
   },
 
   debrief: {

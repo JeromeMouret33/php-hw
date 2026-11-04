@@ -23,6 +23,7 @@ SIMU.enregistrerParcours({
     // ================================================================ Écrans fixes
 
     e1: {
+      coulisses: 'Rien n\'est piraté ici : l\'attaquant a inscrit l\'adresse de l\'agent à des centaines de newsletters, de façon automatique. Ces mails sont « légitimes », donc beaucoup passent les filtres anti-spam. But : créer une vraie gêne, pour que l\'appel du « support » paraisse logique.',
       etape: 'É1',
       composant: 'mail',
       donnees: {
@@ -45,6 +46,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      coulisses: 'L\'attaquant sait que la boîte déborde : c\'est lui qui l\'a provoqué. Le nom du prestataire se trouve souvent en ligne (marchés publics, signatures de mails). Et le numéro affiché ne prouve rien : il peut être falsifié.',
       etape: 'É2',
       composant: 'appel',
       donnees: {
@@ -66,6 +68,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
+      coulisses: '<b>Assistance rapide</b> est un vrai outil Microsoft, déjà présent dans Windows : rien ne paraît louche. Le code sert à relier les deux ordinateurs : une fois la connexion acceptée, l\'appelant voit l\'écran et peut prendre la main. Le refus du ticket est voulu : un ticket laisserait une trace et alerterait le vrai support.',
       etape: 'É3',
       composant: 'appel',
       donnees: {
@@ -86,6 +89,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
+      coulisses: 'Si la salle hésite : « Qui a appelé qui ? Et qui a ouvert un ticket ? » Donner le code montre la prise de contrôle puis la rançon. Raccrocher et rappeler le {{NUMERO_SUPPORT}} montre que le vrai support n\'a jamais appelé.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -96,6 +100,7 @@ SIMU.enregistrerParcours({
     },
 
     e3b: {
+      coulisses: 'Le vrai support confirme qu\'il n\'a jamais appelé. Il peut aussi calmer l\'inondation de mails et prévenir les collègues : l\'attaquant peut viser plusieurs agents de la même structure.',
       etape: 'É3 bis',
       composant: 'appel',
       donnees: {
@@ -112,12 +117,14 @@ SIMU.enregistrerParcours({
     },
 
     bienvu: {
+      coulisses: 'À souligner : le rappel n\'a pris qu\'une minute, et il a tout arrêté.',
       type: 'bienvu',
       texte: 'Raccrocher et rappeler le support sur le numéro connu : l\'attaquant n\'a jamais eu la main sur le poste.',
       suite: 'e4'
     },
 
     e4: {
+      coulisses: 'Une fois connecté, l\'attaquant agit avec les droits de l\'agent : tout ce que l\'agent peut ouvrir, il peut le copier. Il vole d\'abord les données (pour menacer de les publier), puis installe un programme qui lui garde un accès, même après la fin de l\'appel.',
       etape: 'É4',
       composant: 'explorateur',
       donnees: {
@@ -140,6 +147,7 @@ SIMU.enregistrerParcours({
     },
 
     e5: {
+      coulisses: 'Le chiffrement est souvent lancé la nuit ou le week-end, quand personne ne surveille. C\'est la <b>double extorsion</b> : payer pour récupérer les fichiers, et payer pour que les données volées ne soient pas publiées. Payer ne garantit ni l\'un ni l\'autre.',
       etape: 'É5',
       composant: 'rancon',
       donnees: {
@@ -154,6 +162,7 @@ SIMU.enregistrerParcours({
     // ================================================================ Film (6 séquences)
 
     f1: {
+      coulisses: 'Rien n\'est piraté ici : l\'attaquant a inscrit l\'adresse de Nadia à des centaines de newsletters, de façon automatique. Beaucoup passent les filtres anti-spam. But : créer une gêne, pour que l\'appel du « support » paraisse logique.',
       etape: 'Séq. 1',
       composant: 'video',
       donnees: { sequence: 1, fichier: 'videos/parcours1-seq1.mp4', question: 'À votre avis, c\'est quoi ?',
@@ -162,6 +171,7 @@ SIMU.enregistrerParcours({
       suivant: 'f2'
     },
     f2: {
+      coulisses: 'L\'attaquant sait que la boîte de Nadia déborde : c\'est lui qui l\'a provoqué. Le nom du prestataire se trouve souvent en ligne. Et le numéro affiché ne prouve rien : il peut être falsifié.',
       etape: 'Séq. 2',
       composant: 'video',
       donnees: { sequence: 2, fichier: 'videos/parcours1-seq2.mp4', question: 'Qu\'est-ce qu\'il lui dit, d\'après vous ?',
@@ -170,6 +180,7 @@ SIMU.enregistrerParcours({
       suivant: 'voteFilm'
     },
     voteFilm: {
+      coulisses: 'Si la salle hésite : « Qui a appelé qui ? Et qui a ouvert un ticket ? » Donner le code montre la prise de contrôle puis la rançon. Raccrocher et rappeler le {{NUMERO_SUPPORT}} montre que le vrai support n\'a jamais appelé.',
       type: 'vote',
       question: 'On lui demande le code de l\'Assistance rapide. Que fait Nadia ?',
       options: [
@@ -179,11 +190,13 @@ SIMU.enregistrerParcours({
       suiteQuandMeme: 'f3'
     },
     bienvuFilm: {
+      coulisses: 'À souligner : le rappel n\'a pris qu\'une minute, et il a tout arrêté.',
       type: 'bienvu',
       texte: 'Raccrocher et rappeler le support sur le numéro connu : l\'attaquant n\'a jamais eu la main sur le poste.',
       suite: 'f3'
     },
     f3: {
+      coulisses: '<b>Assistance rapide</b> est un vrai outil Microsoft, déjà présent dans Windows : rien ne paraît louche. Le code sert à relier les deux ordinateurs : une fois la connexion acceptée, l\'appelant voit l\'écran et peut prendre la main.',
       etape: 'Séq. 3',
       composant: 'video',
       donnees: { sequence: 3, fichier: 'videos/parcours1-seq3.mp4', question: 'Que fallait-il faire à ce moment ?',
@@ -192,6 +205,7 @@ SIMU.enregistrerParcours({
       suivant: 'f4'
     },
     f4: {
+      coulisses: 'L\'attaquant agit avec les droits de Nadia : tout ce qu\'elle peut ouvrir, il peut le copier. Il vole d\'abord les données, pour pouvoir menacer de les publier.',
       etape: 'Séq. 4',
       composant: 'video',
       donnees: { sequence: 4, fichier: 'videos/parcours1-seq4.mp4', question: 'Quelles données sont parties ?',
@@ -200,6 +214,7 @@ SIMU.enregistrerParcours({
       suivant: 'f5'
     },
     f5: {
+      coulisses: 'Pour Nadia, l\'incident est clos. Pour l\'attaquant, il commence : le programme laissé en arrière-plan lui garde un accès. Il peut explorer le réseau pendant des heures, voire des jours, avant de frapper.',
       etape: 'Séq. 5',
       composant: 'video',
       donnees: { sequence: 5, fichier: 'videos/parcours1-seq5.mp4', question: 'Combien de temps avant qu\'on s\'en rende compte ?',
@@ -208,6 +223,7 @@ SIMU.enregistrerParcours({
       suivant: 'f6'
     },
     f6: {
+      coulisses: 'Le chiffrement est souvent lancé la nuit ou le week-end. C\'est la <b>double extorsion</b> : payer pour récupérer les fichiers, et payer pour que les données volées ne soient pas publiées. Payer ne garantit ni l\'un ni l\'autre.',
       etape: 'Séq. 6',
       composant: 'video',
       donnees: { sequence: 6, fichier: 'videos/parcours1-seq6.mp4', question: 'Débrief et réflexe',
@@ -215,6 +231,11 @@ SIMU.enregistrerParcours({
       motsCles: ['RANÇONGICIEL', 'SERVICES À L\'ARRÊT'],
       suivant: 'debrief'
     }
+  },
+
+  coulisses: {
+    scenario: 'Un agent de {{COLLECTIVITE_COURT}} voit sa boîte mail exploser, puis reçoit l\'appel d\'un faux support informatique. Le but de l\'attaquant : prendre la main sur le poste pour entrer dans le réseau de la collectivité.',
+    modeOperatoire: 'Mode opératoire décrit par Microsoft en 2024. L\'attaquant inonde d\'abord la boîte de la victime de newsletters (<b>« email bombing »</b>), puis appelle en se présentant comme le support. Il fait ouvrir <b>Assistance rapide</b>, l\'outil d\'aide à distance intégré à Windows. Une fois la main prise, il installe ses propres programmes, copie des données et prépare le <b>rançongiciel</b>.'
   },
 
   debrief: {

@@ -17,6 +17,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
+      coulisses: 'L\'expéditeur et le lien pointent vers impots.gouv.fr, ce qui se vérifie en survolant le lien. Le mail n\'annonce rien d\'alarmant et ne demande rien : il renvoie vers l\'espace particulier. Il arrive au moment de l\'année où les avis sont publiés.',
       etape: 'É1',
       composant: 'mail',
       donnees: {
@@ -51,6 +52,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
+      coulisses: 'Relance : « Que nous demande ce mail ? » Rien, sinon d\'aller voir. « On supprime » montre ce qu\'on risque de manquer ; « légitime » confirme, puis la comparaison avec le faux SMS du parcours 8 reste accessible.',
       type: 'vote',
       question: 'Légitime ou malveillant ?',
       options: [
@@ -71,6 +73,7 @@ SIMU.enregistrerParcours({
     },
 
     perte: {
+      coulisses: 'Supprimer ce mail n\'expose à rien : l\'avis reste disponible dans l\'espace particulier. Le risque est seulement d\'oublier une échéance. Mieux vaut vérifier que tout supprimer.',
       etape: 'Et si…',
       composant: 'chronologie',
       donnees: {
@@ -84,6 +87,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      coulisses: 'Côte à côte, les différences sautent aux yeux : expéditeur, adresse du lien, demande, ton. Le faux pousse à agir vite et à donner sa carte ; le vrai informe. Dans les deux cas, taper soi-même impots.gouv.fr protège.',
       etape: 'É2',
       composant: 'comparaison',
       donnees: {
@@ -105,6 +109,11 @@ SIMU.enregistrerParcours({
       },
       suivant: 'debrief'
     }
+  },
+
+  coulisses: {
+    scenario: 'Message légitime : l\'administration fiscale prévient que l\'avis d\'impôt est disponible dans l\'espace particulier. Elle ne demande ni paiement, ni carte, ni saisie.',
+    modeOperatoire: 'Les impôts sont parmi les organismes les plus imités, surtout aux moments clés de l\'année : déclaration, avis, remboursements. L\'imitation (voir le parcours 8) annonce un remboursement ou une dette, donne un lien vers une adresse qui n\'est pas impots.gouv.fr et demande une carte bancaire. Un nom d\'expéditeur se copie facilement : le bon réflexe reste de taper soi-même impots.gouv.fr.'
   },
 
   debrief: {

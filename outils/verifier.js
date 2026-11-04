@@ -79,6 +79,10 @@ function controleStructure(p) {
     if (!ok) signaler(ou, `impasse : le débrief n'est pas atteignable depuis « ${id} »`);
   }
   if (!p.debrief || !p.debrief.reflexe) signaler(ou, 'débrief sans réflexe');
+  // commentaires « Coulisses » : scénario, mode opératoire, et un commentaire par écran d'interface ou de vote
+  if (!p.coulisses || !p.coulisses.scenario || !p.coulisses.modeOperatoire) signaler(ou, 'coulisses : scénario ou mode opératoire manquant');
+  ids.filter(id => (p.ecrans[id].composant || p.ecrans[id].type === 'vote') && !p.ecrans[id].coulisses)
+    .forEach(id => signaler(ou, `coulisses : pas de commentaire pour l'écran « ${id} »`));
 }
 
 /** Tous les chemins du début au débrief ; options = valeurs de configuration qu'ils supposent. */
@@ -142,6 +146,7 @@ async function main() {
   await capture('00-menu');
   await page.evaluate(() => SIMU.conclusion());
   await verifierRendu('conclusion');
+  await page.waitForTimeout(2800); // cartes animées
   await capture('00-conclusion');
 
   const parcours = await page.evaluate(() => SIMU.parcours.map(p => JSON.parse(JSON.stringify(p))));
@@ -162,7 +167,7 @@ async function main() {
       await ouvrir();
       nbEcrans++;
       await verifierRendu(ou);
-      await page.waitForTimeout(150); // laisse le temps aux visuels génériques de remplacer les images absentes
+      await page.waitForTimeout(e.composant === 'chronologie' || e.type === 'debrief' ? 2600 : 150); // images génériques, animations d'apparition
       if (e.motsCles) await page.waitForTimeout(1300 + e.motsCles.length * 900);
       await capture(`${nn}-${id}`);
 
@@ -185,6 +190,13 @@ async function main() {
         await page.keyboard.press('i');
         if (await nbEtiquettes() !== indices.length) signaler(ou, `touche I : ${indices.length} étiquettes attendues après réaffichage`);
       }
+
+      // touche C : ouvre puis referme le panneau « Coulisses » ; capture panneau ouvert
+      await page.keyboard.press('c');
+      if (!(await page.locator('#coulisses.ouverte').count())) signaler(ou, 'touche C : le panneau Coulisses ne s\'ouvre pas');
+      else { await page.waitForTimeout(450); await capture(`${nn}-${id}-coulisses`); }
+      await page.keyboard.press('c');
+      if (await page.locator('#coulisses.ouverte').count()) signaler(ou, 'touche C : le panneau Coulisses ne se ferme pas');
 
       // touche K : masque puis réaffiche les mots-clés
       if (e.motsCles) {
@@ -252,7 +264,7 @@ async function main() {
       }
       if (await ecranActuel() !== 'debrief') signaler(ou, 'le chemin ne se termine pas sur le débrief');
       await verifierRendu(ou);
-      if (k === 0 || k === chemins.length - 1) await capture(`${nn}-debrief-chemin${k + 1}`);
+      if (k === 0 || k === chemins.length - 1) { await page.waitForTimeout(2200); await capture(`${nn}-debrief-chemin${k + 1}`); }
       // touche R : retour au dernier vote
       if (voteVu) {
         await page.keyboard.press('r');

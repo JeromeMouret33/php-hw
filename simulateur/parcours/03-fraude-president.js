@@ -17,6 +17,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
+      coulisses: 'Créer un compte WhatsApp avec la photo du DGS ne demande qu\'un numéro de téléphone et une image trouvée en ligne. L\'excuse « en réunion » empêche l\'appel qui ferait tomber l\'imitation. Le premier message est volontairement vague : l\'escroc teste si l\'agent répond.',
       etape: 'É1',
       composant: 'smartphone',
       donnees: {
@@ -40,6 +41,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      coulisses: 'Une fois la conversation engagée, l\'escroc pose la vraie demande. Le secret isole l\'agent : personne ne pourra lui dire que c\'est une arnaque. Les cartes cadeaux sont prisées car leurs codes se dépensent ou se revendent en quelques minutes, et sont difficiles à tracer.',
       etape: 'É2',
       composant: 'smartphone',
       donnees: {
@@ -63,6 +65,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
+      coulisses: 'Relance : « Si c\'était vraiment le DGS, qu\'est-ce que ça coûterait de l\'appeler ? » S\'exécuter déclenche l\'appel d\'un faux avocat. Rappeler {{DGS_PRENOM}} {{DGS_NOM}} sur son numéro habituel montre qu\'il n\'a rien demandé.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -73,6 +76,7 @@ SIMU.enregistrerParcours({
     },
 
     e2b: {
+      coulisses: 'Le DGS est dans son bureau : un contre-appel sur le numéro de l\'annuaire suffit. Il faut aussi prévenir les finances : d\'autres collègues ont peut-être reçu le même message.',
       etape: 'É2 bis',
       composant: 'appel',
       donnees: {
@@ -95,6 +99,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
+      coulisses: 'Le faux avocat sert à relancer un agent qui hésite, ou à réclamer un second virement. Il invoque l\'urgence et menace l\'agent d\'en porter la responsabilité. Un titre d\'avocat annoncé au téléphone ne prouve rien.',
       etape: 'É3',
       composant: 'appel',
       donnees: {
@@ -110,6 +115,11 @@ SIMU.enregistrerParcours({
       motsCles: ['PRESSION'],
       suivant: 'debrief'
     }
+  },
+
+  coulisses: {
+    scenario: 'Un agent proche de la direction reçoit un WhatsApp au nom du DGS, {{DGS_PRENOM}} {{DGS_NOM}}. L\'escroc veut obtenir un virement ou des cartes cadeaux, en dehors du circuit normal de la dépense.',
+    modeOperatoire: 'C\'est la <b>fraude au président</b>, une forme de FOVI. L\'escroc se prépare avec des informations publiques : organigramme, photos, agenda publiés sur le site ou les réseaux sociaux. Il crée un compte de messagerie avec la photo du dirigeant, choisit un moment où celui-ci est injoignable, puis joue sur l\'autorité, le secret et la flatterie. Un faux avocat rappelle ensuite pour maintenir la pression.'
   },
 
   debrief: {

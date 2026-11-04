@@ -17,6 +17,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
+      coulisses: 'Le message ne contient aucun lien vers une page de connexion : il invite à passer <b>soi-même</b> par l\'application ou ameli.fr. Pas de montant, pas d\'urgence. Le nom de l\'expéditeur, à lui seul, ne prouve rien : c\'est le contenu qui rassure.',
       etape: 'É1',
       composant: 'smartphone',
       donnees: {
@@ -36,6 +37,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
+      coulisses: 'Relance : « Comment vérifier sans toucher au message ? » « On supprime » montre ce qu\'on risque de manquer ; « on ouvre l\'application soi-même » montre le document, et la suite reste visible.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -47,6 +49,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      coulisses: 'On a ouvert l\'application officielle sans passer par le message : le document y est. Ce geste protège dans tous les cas : si le message avait été faux, on n\'aurait rien trouvé, sans aucun risque.',
       etape: 'É2',
       composant: 'smartphone',
       donnees: {
@@ -73,6 +76,7 @@ SIMU.enregistrerParcours({
     },
 
     perte: {
+      coulisses: 'Supprimer ne fait courir aucun risque de sécurité. Mais on peut passer à côté d\'un document utile. La solution n\'est pas de tout supprimer, c\'est de vérifier par l\'application.',
       etape: 'Et si…',
       composant: 'chronologie',
       donnees: {
@@ -84,6 +88,11 @@ SIMU.enregistrerParcours({
       },
       suivant: 'debrief'
     }
+  },
+
+  coulisses: {
+    scenario: 'Message légitime : l\'Assurance Maladie prévient qu\'un document est disponible. Elle ne demande rien d\'autre que d\'aller le consulter dans son compte.',
+    modeOperatoire: 'L\'Assurance Maladie fait partie des organismes les plus imités : faux renouvellement de carte Vitale, faux remboursement. L\'imitation contiendrait un lien vers une page de saisie, une demande de carte bancaire ou de petits frais, et une urgence. Attention : un nom d\'expéditeur comme « Assurance Maladie » peut lui aussi être imité dans un SMS.'
   },
 
   debrief: {

@@ -19,6 +19,7 @@ SIMU.enregistrerParcours({
 
     // ---------------------------------------------------------------- É1
     e1: {
+      coulisses: 'L\'attaquant a acheté un nom de domaine à une lettre près ({{FOURNISSEUR_DOMAINE_PIEGE}} au lieu de {{FOURNISSEUR_DOMAINE}}) : l\'œil glisse dessus. Il connaît la facture : il a lu les marchés publiés, ou piraté la boîte du fournisseur. Le RIB mène à un compte ouvert pour recevoir l\'argent et le faire sortir vite.',
       etape: 'É1',
       composant: 'mail',
       donnees: {
@@ -73,6 +74,7 @@ SIMU.enregistrerParcours({
 
     // ---------------------------------------------------------------- Vote 1
     vote1: {
+      coulisses: 'Relance : « Qu\'est-ce qui, dans ce mail, prouve qu\'il vient vraiment du fournisseur ? » Mettre à jour montre le virement perdu et le double paiement. Vérifier ouvre une seconde question, la plus piégeuse : quel numéro appeler ?',
       type: 'vote',
       question: 'Que fait-on de ce mail ?',
       options: [
@@ -84,6 +86,7 @@ SIMU.enregistrerParcours({
 
     // ---------------------------------------------------------------- Vote 2
     vote2: {
+      coulisses: 'Question à poser : « Qui a écrit ce numéro de téléphone ? » Le numéro du mail est fourni par l\'escroc : un complice décroche. Le numéro du dossier était connu avant le mail : c\'est le seul qui joint le vrai fournisseur.',
       type: 'vote',
       question: 'On vérifie. Quel numéro appelle-t-on ?',
       options: [
@@ -95,6 +98,7 @@ SIMU.enregistrerParcours({
 
     // ---------------------------------------------------------------- É2a – branche piège
     e2a: {
+      coulisses: 'Le complice attend cet appel : il suit un script et remercie même l\'agent d\'être prudent. Un contre-appel ne vaut que si le numéro vient d\'une source connue avant le message. Ici, l\'agent a « vérifié » auprès de l\'escroc lui-même.',
       etape: 'É2a',
       composant: 'appel',
       donnees: {
@@ -114,6 +118,7 @@ SIMU.enregistrerParcours({
 
     // ---------------------------------------------------------------- É2b – bonne branche
     e2b: {
+      coulisses: 'Le vrai fournisseur n\'est au courant de rien. En plus : le prévenir, car sa boîte mail est peut-être piratée, et alerter le comptable public, comme le prévoit le réflexe.',
       etape: 'É2b',
       composant: 'appel',
       donnees: {
@@ -140,6 +145,7 @@ SIMU.enregistrerParcours({
 
     // ---------------------------------------------------------------- É3 – conséquence
     e3: {
+      coulisses: 'Le compte bénéficiaire sert de relais : l\'argent est retransféré, souvent à l\'étranger, en quelques heures. Plus l\'alerte est rapide (banque, comptable public, plainte), plus on a de chances de bloquer les fonds. Quelques jours plus tard, elles sont faibles.',
       etape: 'É3',
       composant: 'chronologie',
       donnees: {
@@ -153,6 +159,11 @@ SIMU.enregistrerParcours({
       motsCles: ['DOUBLE PAIEMENT', 'FONDS PERDUS'],
       suivant: 'debrief'
     }
+  },
+
+  coulisses: {
+    scenario: 'Un agent des finances reçoit un mail de « {{FOURNISSEUR}} » qui annonce un changement de banque. L\'attaquant veut que la prochaine facture soit payée sur son compte à lui.',
+    modeOperatoire: 'C\'est une <b>fraude aux faux ordres de virement (FOVI)</b>, contre laquelle la DGFiP met en garde les collectivités. L\'attaquant repère un vrai marché (avis publiés, ou boîte mail du fournisseur piratée), puis imite le fournisseur avec un domaine presque identique. Il fournit un RIB vers un compte qu\'il contrôle et un numéro de téléphone tenu par un complice. Dès le virement reçu, l\'argent est retransféré ailleurs.'
   },
 
   debrief: {

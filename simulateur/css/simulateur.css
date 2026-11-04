@@ -228,20 +228,6 @@ div > .indice:has(> div) { display: block; }
 .replique-agent { background: #1f4e79; color: #fff; align-self: flex-end; border-bottom-right-radius: 6px; }
 
 /* =====================================================================
-   ÉCRAN MOTEUR : CHRONOLOGIE DES CONSÉQUENCES
-   ===================================================================== */
-.chronologie { height: 100%; padding: 50px 140px; background: #1b1f24; color: #f1f3f5; }
-.chronologie h1 { font-size: 52px; margin: 0 0 46px; }
-.chrono-liste { list-style: none; margin: 0; padding: 0 0 0 40px; border-left: 6px solid #4a5561; }
-.chrono-etape { position: relative; display: flex; gap: 36px; margin-bottom: 40px; padding-left: 30px; }
-.chrono-etape::before { content: ""; position: absolute; left: -57px; top: 8px; width: 28px; height: 28px; border-radius: 50%; background: #8a99a8; border: 6px solid #1b1f24; }
-.chrono-etape.alerte::before { background: var(--suspect); }
-.chrono-quand { width: 400px; flex: none; font-size: 28px; font-weight: 800; color: #ffd166; }
-.chrono-contenu h3 { margin: 0 0 6px; font-size: 34px; }
-.chrono-contenu p { margin: 0; font-size: 30px; line-height: 1.4; color: #cfd6dd; }
-.chrono-etape.alerte h3 { color: #ff6b6b; }
-
-/* =====================================================================
    ÉCRAN MOTEUR : VOTE
    ===================================================================== */
 .ecran-vote { height: 100%; padding: 50px 90px; background: #f1f4f7; display: flex; flex-direction: column; }
@@ -273,27 +259,6 @@ div > .indice:has(> div) { display: block; }
 .bienvu-actions .btn-principal { background: var(--suspect); font-size: 34px; }
 
 /* =====================================================================
-   ÉCRAN MOTEUR : DÉBRIEF
-   ===================================================================== */
-.ecran-debrief { height: 100%; padding: 36px 70px 28px; display: flex; flex-direction: column; gap: 22px; background: #f4f6f8; }
-.ecran-debrief h1 { font-size: 44px; margin: 0; }
-.debrief-colonnes { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; min-height: 0; }
-.debrief-bloc { background: #fff; border-radius: 16px; padding: 18px 28px; margin-bottom: 18px; box-shadow: 0 4px 12px rgba(0,0,0,.06); }
-.debrief-bloc h2 { font-size: 24px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin: 0 0 8px; }
-.debrief-bloc p { font-size: 27px; line-height: 1.4; margin: 0; }
-.debrief-indices { list-style: none; margin: 0; padding: 0; font-size: 26px; line-height: 1.35; }
-.debrief-indices li { padding: 6px 0; }
-.debrief-indices li.trouve.suspect { color: var(--suspect); font-weight: 600; }
-.debrief-indices li.trouve.rassurant { color: var(--rassurant); font-weight: 600; }
-.debrief-indices li.manque { color: var(--encre-2); }
-.debrief-indices li.sous-titre { font-size: 22px; font-weight: 700; text-transform: uppercase; color: var(--encre-2); padding-top: 14px; }
-.debrief-reflexe { background: var(--accent); color: #fff; border-radius: 16px; padding: 18px 32px; display: flex; align-items: center; gap: 30px; }
-.debrief-reflexe span { font-size: 24px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #ffd166; flex: none; }
-.debrief-reflexe p { font-size: 31px; font-weight: 600; margin: 0; line-height: 1.35; }
-.debrief-actions { display: flex; justify-content: flex-end; gap: 20px; }
-.debrief-actions .btn { font-size: 24px; padding: 12px 28px; }
-
-/* =====================================================================
    MENU, CONCLUSION, ERREUR
    ===================================================================== */
 .ecran-menu { height: 100%; padding: 34px 90px 26px; display: flex; flex-direction: column; background: linear-gradient(160deg, #f4f6f8, #e3e9ef); }
@@ -311,13 +276,6 @@ div > .indice:has(> div) { display: block; }
 .menu-pied { margin-top: auto; display: flex; align-items: center; gap: 30px; }
 .menu-aide { font-size: 22px; color: var(--encre-2); }
 
-.ecran-conclusion { height: 100%; padding: 60px 140px; background: #1f4e79; color: #fff; display: flex; flex-direction: column; }
-.ecran-conclusion h1 { font-size: 64px; margin: 0 0 40px; }
-.ecran-conclusion ol { font-size: 36px; line-height: 1.4; margin: 0; padding-left: 50px; }
-.ecran-conclusion li { margin-bottom: 22px; }
-.ecran-conclusion b { color: #ffd166; }
-.conclusion-pied { font-size: 40px; font-weight: 700; margin-top: auto; }
-.ecran-conclusion .btn { align-self: flex-start; }
 
 .ecran-erreur { padding: 80px; }
 .ecran-erreur h1 { color: var(--suspect); font-size: 48px; }
@@ -555,3 +513,124 @@ svg .indice.revele.indice-rassurant { filter: drop-shadow(0 0 5px var(--rassuran
 .cmp-contenu li { margin-bottom: 8px; }
 .cmp-contenu mark { background: #ffd9d9; color: #a00000; padding: 0 6px; border-radius: 4px; font-weight: 700; }
 .cmp-legitime .cmp-contenu b { color: var(--rassurant); }
+
+/* =====================================================================
+   ANIMATIONS LUDIQUES (communes)
+   ===================================================================== */
+@keyframes surgir { 0% { opacity: 0; transform: translateY(30px) scale(.9); } 70% { opacity: 1; transform: translateY(-6px) scale(1.02); } 100% { opacity: 1; transform: none; } }
+@keyframes basculer { 0% { opacity: 0; transform: rotateY(90deg); } 100% { opacity: 1; transform: none; } }
+@keyframes secouer { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-2deg); } 75% { transform: rotate(2deg); } }
+@keyframes flotter { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes poser { 0% { opacity: 0; transform: rotate(-8deg) scale(2.2); } 100% { opacity: 1; transform: rotate(-8deg) scale(1); } }
+
+/* =====================================================================
+   ÉCRAN : CHRONOLOGIE DES CONSÉQUENCES – bande dessinée
+   ===================================================================== */
+.chronologie { height: 100%; padding: 50px 70px; color: #fff; display: flex; flex-direction: column;
+  background: radial-gradient(circle at 20% 0%, #4b1d2b 0%, #1d1530 45%, #0f1424 100%); }
+.chronologie h1 { font-size: 56px; margin: 0 0 44px; display: flex; align-items: center; gap: 20px; }
+.chrono-clap { display: inline-block; animation: flotter 2.4s ease-in-out infinite; }
+.chrono-bande { list-style: none; margin: 0; padding: 0; display: flex; align-items: stretch; gap: 18px; flex: 1; max-height: 640px; }
+.chrono-carte { flex: 1; position: relative; background: #fff; color: var(--encre); border-radius: 26px; padding: 30px 32px;
+  border: 6px solid #1b1f24; box-shadow: 10px 10px 0 rgba(0,0,0,.45); opacity: 0;
+  animation: basculer .6s ease-out var(--retard, 0s) forwards; display: flex; flex-direction: column; }
+.chrono-carte.alerte { background: #fff1f1; border-color: var(--suspect); animation: basculer .6s ease-out var(--retard, 0s) forwards, secouer .4s ease-in-out calc(var(--retard, 0s) + .7s) 3; }
+.chrono-quand { align-self: flex-start; background: #ffd166; color: #3a2a00; font-weight: 800; font-size: 26px; padding: 6px 18px; border-radius: 999px; border: 3px solid #1b1f24; }
+.chrono-carte.alerte .chrono-quand { background: var(--suspect); color: #fff; }
+.chrono-icone { font-size: 96px; line-height: 1; margin: 26px 0 14px; }
+.chrono-carte h3 { font-size: 38px; margin: 0 0 12px; line-height: 1.15; }
+.chrono-carte.alerte h3 { color: var(--suspect); }
+.chrono-carte p { font-size: 29px; line-height: 1.4; margin: 0; color: #2c333b; }
+.chrono-fleche { align-self: center; font-size: 64px; color: #ffd166; opacity: 0; animation: surgir .4s ease-out var(--retard, 0s) forwards; }
+
+/* =====================================================================
+   ÉCRAN : DÉBRIEF – cartes, score, médaille
+   ===================================================================== */
+.ecran-debrief { height: 100%; padding: 28px 60px 22px; display: flex; flex-direction: column; gap: 18px;
+  background: linear-gradient(160deg, #eef3ff 0%, #f7f1ff 50%, #fff6ea 100%); }
+.db-haut { display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+.ecran-debrief h1 { font-size: 42px; margin: 0; }
+.db-scores { display: flex; gap: 16px; }
+.db-score { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 999px; padding: 8px 22px 8px 14px; font-size: 24px;
+  box-shadow: 0 6px 16px rgba(60,40,120,.12); opacity: 0; animation: surgir .5s ease-out .2s forwards; }
+.db-etoiles { color: #f4a300; font-size: 32px; letter-spacing: 2px; }
+.db-gros { font-size: 30px; }
+.debrief-colonnes { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; min-height: 0; }
+.debrief-droite { display: flex; flex-direction: column; gap: 14px; }
+.db-carte { display: flex; gap: 20px; background: #fff; border-radius: 22px; padding: 18px 26px; box-shadow: 0 8px 22px rgba(60,40,120,.10);
+  border-left: 10px solid var(--c, var(--accent)); opacity: 0; animation: surgir .55s ease-out var(--retard, 0s) forwards; }
+.db-icone { font-size: 46px; line-height: 1; flex: none; }
+.db-carte h2 { font-size: 23px; text-transform: uppercase; letter-spacing: 1px; color: var(--c, var(--accent)); margin: 2px 0 6px; }
+.db-carte h2 small { text-transform: none; letter-spacing: 0; font-size: 22px; color: var(--encre-2); margin-left: 8px; }
+.db-carte p { font-size: 26px; line-height: 1.38; margin: 0; }
+.db-indices { --c: #6a4cc2; }
+.db-attaquant { --c: #c2410c; }
+.db-impact { --c: var(--suspect); }
+.db-variante { --c: #0e7490; }
+.db-retenir { --c: #a16207; }
+.debrief-indices { list-style: none; margin: 4px 0 0; padding: 0; font-size: 25px; line-height: 1.3; }
+.debrief-indices li { display: flex; gap: 12px; align-items: flex-start; padding: 6px 0; }
+.db-puce { flex: none; width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; color: #fff; }
+.debrief-indices li.trouve.suspect .db-puce { background: var(--suspect); }
+.debrief-indices li.trouve.rassurant .db-puce { background: var(--rassurant); }
+.debrief-indices li.manque { color: var(--encre-2); }
+.debrief-indices li.manque .db-puce { background: #c3c9d1; }
+.debrief-reflexe { display: flex; align-items: center; gap: 26px; border-radius: 24px; padding: 16px 32px; color: #1b1f24;
+  background: linear-gradient(90deg, #ffd166, #ffe8a3); border: 4px solid #e0a800; box-shadow: 0 10px 26px rgba(224,168,0,.35);
+  opacity: 0; animation: surgir .6s ease-out 1s forwards; }
+.db-medaille { font-size: 70px; line-height: 1; animation: flotter 2.4s ease-in-out infinite; }
+.debrief-reflexe span:not(.db-medaille) { font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #7a5200; }
+.debrief-reflexe p { font-size: 31px; font-weight: 700; margin: 2px 0 0; line-height: 1.3; }
+.debrief-actions { display: flex; justify-content: flex-end; gap: 20px; }
+.debrief-actions .btn { font-size: 24px; padding: 12px 28px; }
+
+/* =====================================================================
+   ÉCRAN : RÉFLEXES DE CONCLUSION – cartes à collectionner
+   ===================================================================== */
+.ecran-conclusion { height: 100%; padding: 40px 80px 30px; display: flex; flex-direction: column; color: #fff;
+  background: radial-gradient(circle at 80% 10%, #3b5bdb 0%, #1f3a8a 40%, #13204d 100%); }
+.ecran-conclusion h1 { font-size: 60px; margin: 0 0 30px; }
+.cc-cartes { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; gap: 26px; position: relative; }
+.cc-carte { position: relative; background: #fff; color: var(--encre); border-radius: 26px; padding: 26px 30px; border-top: 14px solid var(--c);
+  box-shadow: 0 14px 30px rgba(0,0,0,.35); opacity: 0; animation: surgir .6s ease-out var(--retard, 0s) forwards; display: flex; flex-direction: column; }
+.cc-1 { --c: #e03131; } .cc-2 { --c: #f08c00; } .cc-3 { --c: #2f9e44; } .cc-4 { --c: #7048e8; } .cc-5 { --c: #1c7ed6; }
+.cc-num { position: absolute; top: 16px; right: 22px; font-size: 40px; font-weight: 900; color: var(--c); opacity: .25; }
+.cc-icone { font-size: 72px; line-height: 1; margin-bottom: 14px; }
+.cc-carte b { font-size: 31px; line-height: 1.2; color: var(--c); }
+.cc-carte p { font-size: 26px; line-height: 1.38; margin: 8px 0 0; }
+.cc-tampon { align-self: center; justify-self: center; font-size: 44px; font-weight: 900; text-align: center; color: #ffd166; line-height: 1.15;
+  border: 7px solid #ffd166; border-radius: 18px; padding: 18px 30px; opacity: 0; animation: poser .45s cubic-bezier(.2,1.6,.4,1) var(--retard, 0s) forwards; }
+.cc-menu { align-self: flex-start; margin-top: 18px; }
+
+/* =====================================================================
+   PANNEAU « COULISSES » (commentaires de l'animateur, touche C)
+   ===================================================================== */
+#coulisses { position: absolute; top: 52px; bottom: 56px; right: 0; z-index: 35; pointer-events: none; }
+#coulisses.cachee { display: none; }
+.cl-poignee { pointer-events: auto; position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  background: rgba(27,36,48,.55); color: #fff; border: 0; border-radius: 14px 0 0 14px; padding: 16px 10px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: .45; transition: opacity .2s, background .2s; }
+.cl-poignee:hover { opacity: 1; background: #3d2a6e; }
+.cl-poignee span { font-size: 28px; }
+.cl-poignee b { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 18px; letter-spacing: 2px; text-transform: uppercase; }
+#coulisses.ouverte .cl-poignee { display: none; }
+.cl-panneau { pointer-events: auto; position: absolute; top: 14px; right: 14px; bottom: 14px; width: 680px;
+  background: #1d1533; color: #f3efff; border-radius: 22px; box-shadow: -10px 10px 40px rgba(0,0,0,.45);
+  display: flex; flex-direction: column; overflow: hidden; transform: translateX(110%); transition: transform .35s cubic-bezier(.2,.9,.3,1.1); }
+#coulisses.ouverte .cl-panneau { transform: none; }
+.cl-entete { display: flex; justify-content: space-between; align-items: center; padding: 16px 22px;
+  background: repeating-linear-gradient(-45deg, #ffd166 0 22px, #1b1f24 22px 44px); }
+.cl-titre { background: #1b1f24; color: #ffd166; font-weight: 900; font-size: 28px; letter-spacing: 1px; padding: 6px 16px; border-radius: 10px; }
+.cl-fermer { background: #1b1f24; color: #fff; border: 0; border-radius: 50%; width: 46px; height: 46px; font-size: 24px; cursor: pointer; }
+.cl-onglets { display: flex; gap: 8px; padding: 16px 18px 0; }
+.cl-onglet { flex: 1; background: #2e2450; color: #cfc6ee; border: 0; border-radius: 12px 12px 0 0; padding: 12px 8px; font-size: 21px; font-weight: 700; cursor: pointer; }
+.cl-onglet.actif { background: #3d2f6b; color: #fff; box-shadow: inset 0 4px 0 #ffd166; }
+.cl-corps { flex: 1; background: #3d2f6b; margin: 0 18px 18px; border-radius: 0 0 16px 16px; padding: 24px 28px; font-size: 27px; line-height: 1.5; overflow: hidden; }
+.cl-corps p { margin: 0 0 16px; }
+.cl-corps b { color: #ffd166; }
+.cl-etape { display: inline-block; background: #ffd166; color: #3a2a00; font-weight: 800; font-size: 22px; padding: 4px 16px; border-radius: 999px; margin-bottom: 14px; }
+.cl-fiches { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.cl-fiche { background: #2e2450; border-radius: 999px; padding: 6px 16px; font-size: 21px; }
+.cl-fiche.ko { background: #6b1d2b; }
+.cl-fiche.ok { background: #1d5b33; }
+.cl-source { font-size: 21px; color: #cfc6ee; }

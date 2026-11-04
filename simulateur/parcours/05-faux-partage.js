@@ -18,6 +18,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
+      coulisses: 'L\'attaquant a choisi un expéditeur crédible (le DGS) et un document tentant (le budget). Le mail imite une notification de partage, comme les agents en reçoivent tous les jours : on clique par habitude. Le lien mène vers un domaine que l\'attaquant a enregistré.',
       etape: 'É1',
       composant: 'mail',
       donnees: {
@@ -50,6 +51,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      coulisses: 'Derrière cette page, le serveur de l\'attaquant affiche en direct la vraie page de connexion Microsoft, qu\'il relaie. C\'est pour ça qu\'elle est si réaliste : ce sont les vrais écrans, parfois avec l\'habillage de la collectivité. Seule l\'adresse dans la barre trahit le relais.',
       etape: 'É2',
       composant: 'navigateur',
       donnees: {
@@ -70,6 +72,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
+      coulisses: 'Relance : « Si on vous partage vraiment un document, où le retrouvez-vous sans cliquer sur ce lien ? » Se connecter montre le vol du code et de la session. Ouvrir OneDrive soi-même montre qu\'aucun document n\'a été partagé.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
@@ -86,6 +89,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
+      coulisses: 'Le code saisi part aussitôt vers la vraie page Microsoft, par le relais. Microsoft valide la connexion et remet un <b>cookie de session</b> : l\'attaquant le copie. Avec ce cookie, son navigateur est reconnu comme déjà connecté : plus besoin du mot de passe ni du code.',
       etape: 'É3',
       composant: 'navigateur',
       donnees: {
@@ -104,6 +108,7 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
+      coulisses: 'L\'attaquant crée une règle de transfert discrète : il continue de lire les mails, même si l\'agent change de mot de passe. Puis il renvoie le piège depuis le vrai compte, car les contacts font confiance à un expéditeur connu. Il faut changer le mot de passe, fermer les sessions et supprimer la règle.',
       etape: 'É4',
       composant: 'mail',
       donnees: {
@@ -129,6 +134,11 @@ SIMU.enregistrerParcours({
       motsCles: ['REBOND', 'VOTRE NOM'],
       suivant: 'debrief'
     }
+  },
+
+  coulisses: {
+    scenario: 'Un agent reçoit un faux partage de document au nom du DGS. L\'attaquant veut prendre le contrôle de son compte Microsoft 365, malgré la double authentification, pour s\'en servir contre la collectivité et ses contacts.',
+    modeOperatoire: 'C\'est un hameçonnage <b>« adversary-in-the-middle »</b> (l\'attaquant au milieu). La fausse page n\'est pas une simple copie : c\'est un <b>relais</b> placé entre l\'agent et la vraie page Microsoft. Tout ce que l\'agent saisit (identifiant, mot de passe, puis code) est transmis en direct à Microsoft, qui renvoie un <b>cookie de session</b>. L\'attaquant garde ce cookie et ouvre la boîte mail sans plus avoir besoin ni du mot de passe ni du code.'
   },
 
   debrief: {

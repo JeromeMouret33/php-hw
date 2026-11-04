@@ -15,6 +15,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
+      coulisses: 'La clé n\'a pas été perdue : elle a été posée. L\'étiquette joue sur la curiosité (les primes des collègues) et sur le sens du devoir (rendre un document confidentiel). Le lieu est choisi pour qu\'un agent, qui a un poste sur le réseau, la ramasse.',
       etape: 'É1',
       composant: 'photo',
       donnees: {
@@ -33,6 +34,7 @@ SIMU.enregistrerParcours({
     },
 
     vote: {
+      coulisses: 'Relance : « Comment savoir ce qu\'il y a sur cette clé sans la brancher ? » On ne peut pas : d\'où la remise au {{DSI_NOM}}. Brancher montre les deux pièges : le faux fichier et le clavier fantôme.',
       type: 'vote',
       question: 'Que fait-on de cette clé ?',
       options: [
@@ -49,6 +51,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      coulisses: 'Un ordinateur accepte tout clavier branché, sans rien demander. La clé tape en quelques secondes des commandes préparées, qui installent un outil de contrôle à distance. C\'est ensuite le poste qui se connecte à l\'attaquant, depuis l\'intérieur du réseau : la porte est ouverte de dedans.',
       etape: 'É2',
       composant: 'explorateur',
       donnees: {
@@ -71,6 +74,11 @@ SIMU.enregistrerParcours({
       motsCles: ['CLAVIER FANTÔME', 'PORTE OUVERTE'],
       suivant: 'debrief'
     }
+  },
+
+  coulisses: {
+    scenario: 'Un agent trouve une clé USB « Primes 2026 – CONFIDENTIEL RH » sur le {{PARKING}}. L\'attaquant compte sur la curiosité ou la bonne volonté pour qu\'elle soit branchée sur un poste de la collectivité.',
+    modeOperatoire: 'L\'attaquant dépose des clés piégées là où passent les agents, avec une étiquette qui donne envie de regarder. Deux techniques existent : un fichier qui ressemble à un document mais qui est en réalité un programme, ou une clé modifiée qui se présente à l\'ordinateur comme un <b>clavier</b> et tape des commandes toute seule. Dans les deux cas, l\'attaquant obtient un accès au poste, puis au réseau.'
   },
 
   debrief: {
