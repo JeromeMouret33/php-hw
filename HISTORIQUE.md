@@ -2,6 +2,18 @@
 
 Journal daté, en ordre antichronologique.
 
+## 2026-11-04 – Format « Finances et direction »
+
+**Demande de l'animateur** : ajouter la séance proposée pour les publics finances et direction.
+
+**Fait**
+- **Format « Finances et direction (25 min) »** : 10 · 3 · 2 · 5 · 4 · 7, soit 17 minutes de parcours et 5 minutes de réflexes.
+- **Logique** :
+  - on ouvre sur un perso (« Coucou maman ») pour mettre la salle en confiance ;
+  - puis la fraude au président, le RIB fournisseur, le faux partage (le vol de compte, qui explique la variante « boîte du fournisseur piratée » du parcours 2) et la visio truquée ;
+  - on finit sur un message légitime.
+- Ajout dans `moteur.js` et dans la spécification. Vérification au navigateur : menu, et enchaînement 10 → 3 → 2 → 5 → 4 → 7 → conclusion.
+
 ## 2026-11-04 – Formats court et standard pour des agents non spécialistes
 
 **Demande de l'animateur** : composer les séances courte et standard avec des situations accessibles à des agents de mairie, sans les dégoûter. Le format complet garde les 12 parcours.
