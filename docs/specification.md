@@ -2,6 +2,8 @@
 
 Nov 4, 2026 · @Jerome
 
+> **Version 2 – 4 novembre 2026.** Intègre les décisions validées par l'animateur après le développement et la revue de plausibilité (voir « Historique des versions » en fin de document).
+
 ## Mode d'emploi
 
 12 parcours (7 pro, 5 perso, dont 3 légitimes) joués dans un simulateur HTML hors ligne, projeté en plein écran et piloté par l'animateur. Chaque parcours dure 2 à 4 minutes ; on en choisit 5 à 8 selon le temps disponible.
@@ -14,7 +16,11 @@ Nov 4, 2026 · @Jerome
 4. **Conséquence jouée** : quel que soit le vote, le parcours se joue jusqu'au bout (faux site, saisie, appel de rebond, impact). Si la salle a bien répondu, un écran « Bien vu » s'affiche, puis un bouton « Et si on avait continué ? » déroule la suite malveillante complète.
 5. **Débrief** : indices manqués, ce que l'attaquant fait ensuite, impact sur le SI ou sur la victime, le bon réflexe en une phrase.
 
-**Règle d'or : on va toujours au bout.** Le simulateur ne bloque jamais un parcours sur une bonne réponse. Chaque point de vote propose deux sorties : le chemin choisi par la salle et « Voir la suite quand même ». L'animateur peut ainsi dire « Bon réflexe, et voici ce qui se serait passé si on avait cliqué », jusqu'à l'impact final. Pour les parcours légitimes (7, 11, 12), le bouton montre à l'inverse ce que l'agent aurait perdu en supprimant le message. Raccourcis clavier : flèche droite pour avancer sur le chemin malveillant, R pour revenir au dernier vote.
+**Règle d'or : on va toujours au bout.** Le simulateur ne bloque jamais un parcours sur une bonne réponse. Chaque point de vote propose deux sorties : le chemin choisi par la salle et « Voir la suite quand même ». L'animateur peut ainsi dire « Bon réflexe, et voici ce qui se serait passé si on avait cliqué », jusqu'à l'impact final. Pour les parcours légitimes (7, 11, 12), le bouton montre à l'inverse ce que l'agent aurait perdu en supprimant le message. Raccourcis clavier : flèche droite pour avancer sur le chemin malveillant, R pour revenir au dernier vote, flèche gauche pour reculer, I pour afficher ou masquer tous les indices, K pour les mots-clés, C pour les coulisses, F pour le plein écran, M pour le menu.
+
+**Coulisses, à volonté** : un onglet discret à droite de l'écran (ou la touche C) ouvre un panneau qui reste ouvert d'un écran à l'autre, avec trois onglets : « Cet écran » (ce qui se passe réellement), « Le scénario » (cible, durée, source) et « Le mode opératoire ». Si la salle n'a rien vu, on continue ; si elle a vu, on ouvre le panneau pour expliquer. Sur les votes, il ne donne que la question de relance, jamais la réponse, et le verdict « attaque » ou « légitime » n'apparaît qu'après le premier vote.
+
+**Débrief et conclusion ludiques** : score des indices trouvés (étoiles) et des votes ; un choix prudent (par exemple signaler un message légitime) compte comme un bon réflexe. Les conséquences se jouent en cartes de bande dessinée, les réflexes finaux en cartes à collectionner.
 
 **Légende utilisée dans les storyboards**
 
@@ -25,9 +31,9 @@ Nov 4, 2026 · @Jerome
 | 🟢 Indice | Élément rassurant (parcours légitimes) |
 | ❓ Vote | Point de décision soumis à la salle |
 | {{VARIABLE}} | Valeur remplacée par la configuration de la collectivité |
-| Mot-clé | Texte affiché en surimpression, sans voix : l'animateur commente |
+| Mot-clé | Texte affiché en surimpression, sans voix, **à la demande de l'animateur** : masqué par défaut, il s'affiche avec le bouton « Afficher les mots-clés » (présent seulement sur les écrans qui en ont) ou la touche K ; l'animateur commente |
 
-**Règles de réalisme** : aucune vraie marque d'attaquant ni vrai domaine malveillant ; les domaines piégés sont inventés et le simulateur fonctionne sans connexion. Les parcours s'appuient sur des modes opératoires publiés (DGFiP, Cybermalveillance.gouv.fr, cas médiatisés).
+**Règles de réalisme** : aucune vraie marque d'attaquant ni vrai domaine malveillant ; les domaines piégés sont inventés et le simulateur fonctionne sans connexion. Les titres projetés (menu, bandeau) sont neutres et ne révèlent pas la nature du parcours ; le titre complet n'apparaît qu'au débrief. Les parcours s'appuient sur des modes opératoires publiés (DGFiP, Cybermalveillance.gouv.fr, cas médiatisés).
 
 ## Personnalisation par collectivité
 
@@ -40,7 +46,7 @@ Toute la personnalisation passe par un seul fichier de configuration et un dossi
 | {{COLLECTIVITE}} | Commune de Saint-Exemple | Tous |
 | {{COLLECTIVITE\_COURT}} | Saint-Exemple | Objets de mails, SMS |
 | {{DOMAINE\_MAIL}} | saint-exemple.re | 1, 2, 3, 5, 7 |
-| {{DOMAINE\_PIEGE}} | saint-exemple-re.com | 2, 5 |
+| {{DOMAINE\_PIEGE}} | saint-exemple-re.com | 5 |
 | {{FORMAT\_ADRESSE}} | prenom.nom | 1, 3, 5, 7 |
 | {{OUTIL\_MAIL}} | Outlook / Gmail / Zimbra | Habillage de la messagerie |
 | {{DGS\_NOM}} / {{DGS\_PRENOM}} | Marie Payet | 3, 4 |
@@ -51,6 +57,8 @@ Toute la personnalisation passe par un seul fichier de configuration et un dossi
 | {{NUMERO\_SUPPORT}} | 0262 00 00 00 (poste 1234) | 1, 7 |
 | {{OUTIL\_TICKET}} | GLPI | 7 |
 | {{FOURNISSEUR}} | Transports Lagon Bleu | 2 |
+| {{FOURNISSEUR\_DOMAINE}} / {{FOURNISSEUR\_DOMAINE\_PIEGE}} | transports-lagonbleu.re / transport-lagonbleu.re | 2 |
+| {{FOURNISSEUR\_TEL\_DOSSIER}} / {{FOURNISSEUR\_TEL\_PIEGE}} | 0262 00 41 10 / 0693 00 74 52 | 2 |
 | {{SERVICE\_FINANCES}} | Direction des finances | 2, 3 |
 | {{SERVEUR\_FICHIERS}} | \\\\SRV-FICHIERS\\Commun | 1 (film) |
 | {{PARKING}} | Parking de l'Hôtel de ville | 6 |
@@ -63,7 +71,8 @@ Toute la personnalisation passe par un seul fichier de configuration et un dossi
 | logo-collectivite.png | Logo officiel, fond transparent | Signatures, intranet, mail DSI |
 | photo-dgs.jpg | Photo du DGS (avec son accord) | Avatar WhatsApp / Teams, parcours 3 et 4 |
 | photo-maire.jpg | Photo publique du maire | Visio truquée, parcours 4 |
-| signature-mail.png | Signature mail type de la collectivité | Mails internes 1, 3, 7 |
+| signature-mail.png | Signature mail type de la collectivité | Non utilisée : la signature des mails internes affiche le logo |
+| conseiller-1.jpg, conseiller-2.jpg | Photos libres de droits des « conseillers » (facultatif) | Visio, parcours 4 |
 | facture-fournisseur.pdf | Modèle de facture du fournisseur fictif | Parcours 2 |
 
 Si une image manque, le simulateur affiche un visuel générique : aucun parcours ne casse.
@@ -86,21 +95,27 @@ La vidéo est conçue pour lire les mêmes variables (nom de la collectivité, d
 
 ### 1. Le faux support informatique — malveillant
 
-Cible : tout agent. Mode opératoire documenté (inondation de spams puis faux appel du support, prise en main via un outil d'assistance à distance). Durée : 4 min, ou 3 min avec le film (voir plus bas).
+Cible : tout agent. Mode opératoire documenté (inondation de spams puis faux appel du support, prise en main à distance ; Microsoft, 2024). Les agents n'ayant pas les droits d'installation, le scénario montre l'outil bloqué par le poste, puis le plan B de l'attaquant. Durée : 4 min, ou 3 min avec le film (voir plus bas).
 
 1. **É1 — Boîte mail inondée** : 200 mails de newsletters en 10 minutes dans {{OUTIL\_MAIL}}. Mot-clé : « DIVERSION ».
-2. **É2 — Appel entrant** : écran de téléphone « {{PRESTATAIRE\_INFO}} – Support ». L'animateur joue l'attaquant : « On a détecté une attaque sur votre poste, c'est pour ça que vous recevez tous ces mails. »
+2. **É2 — Appel entrant** d'un numéro inconnu : « Support informatique de {{PRESTATAIRE\_INFO}} ». L'animateur joue l'attaquant : « On a détecté une attaque sur votre poste, c'est pour ça que vous recevez tous ces mails. »
    - 🔴 Appel entrant non sollicité, alors qu'aucun ticket n'a été ouvert
    - 🔴 Urgence et peur (« votre poste contamine le réseau »)
    - 🔴 Le problème annoncé est celui que l'attaquant a lui-même provoqué
-3. **É3 — Demande d'installation** : « Ouvrez l'Assistance rapide et donnez-moi le code à 6 chiffres. »
-   - 🔴 Le vrai support ne demande jamais un code de prise en main sur un appel entrant
+3. **É3 — Demande d'outil** : « Lancez l'outil d'assistance depuis ce lien et donnez-moi l'identifiant qui s'affiche. » L'agent objecte qu'il n'a pas les droits ; l'attaquant : « Pas besoin, c'est une version qui se lance sans installation. »
+   - 🔴 Le vrai support ne fait jamais lancer un outil de prise en main sur un appel entrant
    - 🔴 Refus de passer par {{OUTIL\_TICKET}} (« pas le temps, c'est critique »)
-4. **❓ Vote** : on donne le code / on raccroche et on rappelle {{NUMERO\_SUPPORT}}.
-5. **É4 — Conséquence** : le curseur bouge seul, ouvre {{SERVEUR\_FICHIERS}}, copie les dossiers RH et état civil, puis installe un programme. Mots-clés : « PRISE DE CONTRÔLE », « EXFILTRATION », « RANÇONGICIEL ».
-6. **É5 — Écran de rançon** sur tous les postes le lendemain matin.
+   - 🔴 Il a réponse à tout : l'absence de droits ne l'arrête pas
+4. **❓ Vote 1** : on lance l'outil / on raccroche et on rappelle {{NUMERO\_SUPPORT}}.
+5. **É4 — Outil bloqué, plan B** : « Cette application a été bloquée par votre administrateur. » L'attaquant enchaîne : « Pas grave, j'interviens sur votre compte : lisez-moi les deux codes que vous allez recevoir par SMS. » Mot-clé : « PLAN B ».
+   - 🟢 La protection du poste a fonctionné : l'outil est bloqué
+   - 🔴 Plan B : faute d'accès au poste, il vise le compte de l'agent
+   - 🔴 Le SMS le dit lui-même : ce code ne se communique à personne, même au support
+6. **❓ Vote 2** : on lit les codes / on raccroche et on rappelle {{NUMERO\_SUPPORT}}.
+7. **É5 — Conséquence** : avec les codes, l'attaquant réinitialise le mot de passe, valide la double authentification et se connecte à distance avec le compte de l'agent. Sur {{SERVEUR\_FICHIERS}}, RH et paie lui sont refusés, mais il copie ce qui est accessible et trouve un fichier « Mots de passe serveurs.xlsx ». Mots-clés : « COMPTE VOLÉ », « EXFILTRATION ».
+8. **É6 — Écran de rançon** sur tous les postes, quelques jours plus tard. Mot-clé : « RANÇONGICIEL ».
 
-**Débrief** : en quelques minutes, l'attaquant obtient l'accès au réseau, vole des données personnelles d'usagers puis chiffre les serveurs ; les services (état civil, paie, urbanisme) peuvent s'arrêter plusieurs semaines. **Réflexe** : raccrocher, rappeler le support sur le numéro connu {{NUMERO\_SUPPORT}}, ne jamais installer ni ouvrir un outil de prise en main à la demande d'un appelant.
+**Débrief** : bloqué sur le poste, l'attaquant prend le compte de l'agent avec deux codes lus au téléphone, entre dans le réseau à distance, devient administrateur grâce au fichier de mots de passe, puis chiffre les serveurs ; les services (état civil, paie, urbanisme) peuvent s'arrêter plusieurs semaines. « Quand la machine dit non, l'escroc demande à l'humain. » **Réflexe** : raccrocher, rappeler le support sur le numéro connu {{NUMERO\_SUPPORT}}, ne jamais lancer un outil de prise en main ni lire un code reçu par SMS à la demande d'un appelant.
 
 ### 2. Le changement de RIB fournisseur — malveillant
 
@@ -115,7 +130,7 @@ Cible : finances, commande publique, secrétariat. Mode opératoire n°1 signal�
 2. **❓ Vote** : on met à jour / on vérifie. Si « on vérifie » : quel numéro appeler ?
 3. **É2a — Branche piège** : on appelle le numéro du mail ; un complice confirme poliment. Mot-clé : « COMPLICE ».
 4. **É2b — Bonne branche** : on appelle le numéro du dossier fournisseur ; le vrai fournisseur n'a jamais changé de banque.
-5. **É3 — Conséquence (si mise à jour)** : le virement part ; 30 jours plus tard, le vrai fournisseur relance son impayé. Mots-clés : « DOUBLE PAIEMENT », « FONDS PERDUS ».
+5. **É3 — Conséquence (si mise à jour)** : le RIB est modifié et le mandat transmis au comptable public, qui paie quelques jours plus tard sur l'IBAN de l'escroc ; l'argent est retransféré dans les heures qui suivent ; 30 jours plus tard, le vrai fournisseur relance son impayé. Mots-clés : « DOUBLE PAIEMENT », « FONDS PERDUS ».
 
 **Débrief** : variante plus difficile, le mail vient de la vraie boîte du fournisseur, piratée : seul le contre-appel la déjoue. Les sommes partent souvent vers l'étranger en quelques heures. **Réflexe** : contre-appel sur des coordonnées déjà connues, factures uniquement via Chorus Pro, alerte immédiate du comptable public et dépôt de plainte.
 
@@ -127,25 +142,26 @@ Cible : assistants de direction, finances, RH. Escroquerie la plus répandue dan
    - 🔴 Nouveau numéro, photo récupérée sur le site de la collectivité
    - 🔴 Ton inhabituel (tutoiement, formules vagues)
    - 🔴 Impossible d'appeler (« en réunion »)
-2. **É2 — La demande** : régler en urgence un acompte à un cabinet pour une « opération confidentielle », ou acheter des cartes cadeaux « pour les agents méritants ».
+2. **É2 — La demande** : faire passer en urgence un acompte de 24 800 € à un cabinet pour une « opération confidentielle », sans les pièces habituelles (« je signerai après ») ; un agent ne peut pas payer seul, l'escroc vise donc le contournement du circuit. Variante : acheter des cartes cadeaux « pour les agents méritants ».
    - 🔴 Secret demandé, contournement du circuit de la dépense
    - 🔴 Flatterie (« je compte sur toi, tu es la seule personne de confiance »)
 3. **❓ Vote** : on s'exécute / on rappelle {{DGS\_PRENOM}} {{DGS\_NOM}} sur son numéro habituel.
-4. **É3 — Rebond** : appel d'un faux « Maître Lebon, avocat » qui met la pression. Mot-clé : « PRESSION ».
+4. **É2 bis — Bonne branche** : joint sur son numéro habituel, le vrai DGS n'a rien demandé.
+5. **É3 — Rebond** : appel d'un faux « Maître Lebon, avocat » qui met la pression. Mot-clé : « PRESSION ».
 
 **Débrief** : l'escroc s'appuie sur l'organigramme et l'agenda publics de la collectivité. **Réflexe** : rappeler la personne sur son numéro connu, aucune dérogation au circuit de validation, même pour un élu ou le DGS.
 
 ### 4. La visio truquée — malveillant
 
-Cible : direction, finances. Base réelle : en 2024 à Hong Kong, un employé du groupe Arup a viré environ 25 millions de dollars après une visio où le directeur financier et des collègues étaient des imitations générées par IA (chiffre approximatif, à sourcer avant diffusion). Durée : 3 min, avec une courte séquence animée.
+Cible : direction, finances. Base réelle : en 2024 à Hong Kong, un employé du groupe Arup a fait 15 virements, environ 200 millions de dollars de Hong Kong (près de 25 millions de dollars américains), après une visio où le directeur financier et des collègues étaient des imitations générées par IA (CNN, 16 mai 2024 ; confirmé par Arup). Durée : 3 min, avec une courte séquence animée.
 
 1. **É1 — Invitation** : « Réunion confidentielle – acquisition foncière » envoyée au nom de {{MAIRE\_NOM}}.
    - 🔴 Invitation depuis une adresse extérieure à {{DOMAINE\_MAIL}}
-2. **É2 — La visio** : mosaïque avec {{photo-maire.jpg}}, {{photo-dgs.jpg}} et deux « conseillers ». Le maire parle peu ; la demande arrive dans la conversation écrite.
+2. **É2 — La visio** : mosaïque avec {{photo-maire.jpg}}, {{photo-dgs.jpg}} et deux « conseillers ». Le maire parle peu ; la demande arrive dans la conversation écrite : changer aujourd'hui le RIB du notaire de l'acquisition, avant que le comptable public ne paie les 480 000 € (un agent ne peut pas virer seul une telle somme).
    - 🔴 Image légèrement figée, lèvres décalées, « problème de réseau » invoqué
    - 🔴 Personne ne répond à une question imprévue
    - 🔴 Montant important, urgence, confidentialité
-3. **❓ Vote** : on lance le virement / on pose une question de contrôle et on rappelle.
+3. **❓ Vote** : on met à jour le RIB du notaire / on pose une question de contrôle et on rappelle.
 4. **É3 — Révélation** : les visages se dégradent ; mot-clé : « IMITATION PAR IA ».
 
 **Débrief** : quelques minutes de vidéo publique (conseil municipal en ligne) suffisent pour imiter un visage et une voix. **Réflexe** : rappeler par un autre canal, double validation pour tout virement inhabituel, mot de passe convenu en interne pour les demandes sensibles.
@@ -174,9 +190,9 @@ Cible : tout agent. Durée : 2 min.
    - 🔴 Étiquette qui pique la curiosité
    - 🔴 Objet trouvé dans un lieu de passage des agents
 2. **❓ Vote** : on la branche pour retrouver son propriétaire / on la remet au service informatique.
-3. **É2 — Conséquence** : le fichier Primes\_2026.xlsx est un programme ; ou bien la clé se fait passer pour un clavier et tape des commandes en trois secondes. Mots-clés : « CLAVIER FANTÔME », « PORTE OUVERTE ».
+3. **É2 — Conséquence** : le fichier « Primes\_2026.xlsx » s'appelle en réalité « Primes\_2026.xlsx.exe » (Windows cache la fin) : c'est un programme ; ou bien la clé se fait passer pour un clavier et tape des commandes en trois secondes. Mots-clés : « CLAVIER FANTÔME », « PORTE OUVERTE ».
 
-**Débrief** : une étude universitaire américaine (2016) a montré qu'environ la moitié des clés abandonnées étaient branchées par ceux qui les trouvaient (chiffre approximatif, à sourcer). **Réflexe** : ne jamais brancher un support inconnu, le remettre à {{DSI\_NOM}}.
+**Débrief** : en 2016, des chercheurs américains ont abandonné 297 clés USB sur leur campus : des fichiers ont été ouverts sur 135 d'entre elles, soit 45 % (Tischer et al., IEEE S&P 2016). **Réflexe** : ne jamais brancher un support inconnu, le remettre à {{DSI\_NOM}}.
 
 ### 7. Le mail de maintenance de la DSI — légitime
 
@@ -187,8 +203,9 @@ Cible : tout agent. Objectif : montrer qu'un bon réflexe n'est pas de tout supp
    - 🟢 Aucune action demandée, aucun lien de connexion
    - 🟢 Information vérifiable sur l'intranet et au {{NUMERO\_SUPPORT}}
    - 🟢 Annonce faite à l'avance, sans urgence
-2. **❓ Vote** : on supprime / on signale / on garde.
-3. **É2 — Bonne réponse** : on garde, rien à faire.
+2. **❓ Vote** : on supprime / on signale / on garde. « On signale » compte comme un réflexe prudent (écran « Prudent, mais pas nécessaire »).
+3. **É2 — Bonne réponse** : on garde, rien à faire ; la page de l'intranet, ouverte soi-même, confirme la maintenance.
+4. **Et si on l'avait supprimé ?** : samedi, la coupure surprend, on croit à une panne ou à une attaque, et on appelle le support pour rien.
 
 **Débrief** : un message légitime informe ; un message malveillant fait agir vite. **Réflexe** : en cas de doute, vérifier par un autre canal plutôt que supprimer par réflexe.
 
@@ -211,7 +228,7 @@ Cible : tout agent, vie perso. Chaîne complète : hameçonnage puis appel de re
 5. **❓ Vote** : on valide / on raccroche et on rappelle le numéro au dos de sa carte.
 6. **É4 — Conséquence** : trois paiements validés par la victime elle-même. Mots-clés : « VALIDÉ PAR VOUS », « REMBOURSEMENT REFUSÉ ? ».
 
-**Débrief** : le site sert à récolter les données, l'appel sert à faire valider les paiements ; quand la victime a validé, la banque peut contester le remboursement. **Réflexe** : passer soi-même par impots.gouv.fr ; raccrocher et rappeler sa banque sur le numéro connu.
+**Débrief** : le site sert à récolter les données, l'appel sert à faire valider les paiements ; quand la victime a validé, la banque peut contester le remboursement. Malgré l'authentification des numéros imposée aux opérateurs depuis octobre 2024, l'Arcep a reçu plus de 19 000 signalements d'usurpation en 2025. Même après avoir validé : opposition, contestation et plainte ; c'est à la banque de prouver une négligence grave. **Réflexe** : passer soi-même par impots.gouv.fr ; raccrocher et rappeler sa banque sur le numéro connu.
 
 ### 9. Le colis, l'amende et le QR code — malveillant
 
@@ -220,12 +237,12 @@ Cible : tout agent. Trois variantes courtes à enchaîner. Durée : 3 min.
 1. **É1 — SMS colis** : « Votre colis n'a pas pu être livré. Frais de réexpédition : 1,99 € ».
    - 🔴 Aucun colis attendu, petit montant pour baisser la garde
 2. **É2 — SMS amende** : « Avis de contravention impayé, majoration sous 48 h ».
-   - 🔴 Pression de la majoration ; l'ANTAI rappelle qu'elle ne réclame pas de paiement par SMS (à vérifier sur antai.gouv.fr avant diffusion)
+   - 🔴 Pression de la majoration ; l'ANTAI n'envoie jamais de SMS pour réclamer une amende (antai.gouv.fr)
 3. **É3 — Photo d'horodateur** avec un QR code autocollant collé par-dessus l'officiel.
    - 🔴 Autocollant superposé, bords visibles
    - 🔴 Le site ouvert n'est pas celui de l'application de stationnement de {{COLLECTIVITE\_COURT}}
-4. **❓ Vote** sur chaque variante : on paie / on ne paie pas.
-5. **É4 — Conséquence** : 1,99 € payés, puis des centaines d'euros débités les jours suivants. Mot-clé : « CARTE COPIÉE ».
+4. **❓ Vote** sur chaque variante : on paie / on ne paie pas. Les votes des deux premières variantes sont notés et mènent à la suivante ; la conséquence se joue une seule fois, à la fin.
+5. **É4 — Conséquence** : un petit paiement (colis, amende ou stationnement), puis des centaines d'euros débités les jours suivants. Mot-clé : « CARTE COPIÉE ».
 
 **Débrief** : le petit montant n'est qu'un prétexte pour obtenir la carte. **Réflexe** : passer par l'application ou le site officiel tapé soi-même ; signaler le SMS au 33700.
 
@@ -239,7 +256,7 @@ Cible : tout agent parent. Durée : 2 min.
    - 🔴 Refus d'un appel vocal (« micro cassé »)
    - 🔴 Urgence, RIB au nom d'un tiers
 3. **❓ Vote** : on paie / on appelle l'enfant sur son ancien numéro ou on pose une question personnelle.
-4. **É3 — Révélation** : l'enfant répond sur son ancien numéro, il n'a rien cassé. Mot-clé : « USURPATION ».
+4. **É3 — Révélation** : l'enfant répond sur son ancien numéro, il n'a rien cassé (avant tout paiement si la salle a appelé, après le virement de 980 € sinon). Mot-clé : « USURPATION ».
 
 **Débrief** : l'escroc mise sur l'émotion et l'urgence ; il envoie le même message à des milliers de numéros. **Réflexe** : appeler la personne par un canal connu avant tout paiement.
 
@@ -253,6 +270,7 @@ Cible : tout agent. Objectif : apprendre à vérifier sans paniquer. Durée : 2 
    - 🟢 Invitation à passer soi-même par l'application officielle
 2. **❓ Vote** : on supprime / on ouvre l'application soi-même.
 3. **É2 — Bonne réponse** : on ouvre l'application officielle, le document y est bien.
+4. **Et si on l'avait supprimé ?** : rien de grave sur le moment, mais un document utile reste ignoré.
 
 **Débrief** : ce sont précisément les organismes les plus imités ; la bonne pratique reste la même, légitime ou non : passer par l'application ou le site tapé soi-même.
 
@@ -266,25 +284,26 @@ Cible : tout agent. À jouer juste après le parcours 8, en comparaison côte à
    - 🟢 Cohérent avec le calendrier fiscal
 2. **❓ Vote** : légitime ou malveillant ?
 3. **É2 — Écran comparatif** : le faux SMS du parcours 8 à gauche, le vrai mail à droite, les différences surlignées.
+4. **Et si on l'avait supprimé ?** : l'avis reste dans l'espace particulier, mais une échéance peut être oubliée.
 
 **Débrief** : même un mail légitime se consulte au mieux en tapant soi-même impots.gouv.fr ; c'est le geste qui protège dans tous les cas.
 
 ## Film : « Le support qui n'en était pas un »
 
-Film muet de 2 min 30 environ, en 6 séquences qui s'arrêtent seules pour laisser l'animateur commenter et interroger la salle. Style Living Screencast (plan-séquence dans l'écran d'un agent), mots-clés en surimpression, effets sonores ponctuels sans voix. Il remplace les écrans É2 à É5 du parcours 1.
+Film muet de 2 min 30 environ, en 6 séquences qui s'arrêtent seules pour laisser l'animateur commenter et interroger la salle. Style Living Screencast (plan-séquence dans l'écran d'un agent), mots-clés en surimpression, effets sonores ponctuels sans voix. Il remplace tous les écrans fixes du parcours 1 (la séquence 1 reprend la boîte inondée). Un vote est inséré après la séquence 3 (règle d'or).
 
 Personnage : « Nadia », agente au service urbanisme de {{COLLECTIVITE}}, devant son poste un mardi à 9 h 40.
 
 | Séq. | Durée | Ce qu'on voit | Mots-clés à l'écran | Son | Pause : question à la salle |
 | --- | --- | --- | --- | --- | --- |
 | 1 | 20 s | La boîte {{OUTIL\_MAIL}} de Nadia se remplit : 200 newsletters en accéléré, compteur qui s'emballe | DIVERSION | Notifications en rafale | « À votre avis, c'est quoi ? » |
-| 2 | 25 s | Appel entrant « {{PRESTATAIRE\_INFO}} – Support ». Chrono de l'appel qui défile, Nadia décroche | APPEL NON SOLLICITÉ · URGENCE · PEUR | Sonnerie | « Qu'est-ce qu'il lui dit, d'après vous ? » (l'animateur joue l'attaquant) |
-| 3 | 25 s | Nadia ouvre l'outil d'assistance à distance et lit un code à 6 chiffres à voix haute | CODE DONNÉ · PORTE OUVERTE | Clic, silence | « Que fallait-il faire à ce moment ? » |
-| 4 | 35 s | Le curseur bouge seul. Ouverture de {{SERVEUR\_FICHIERS}} : dossiers RH, État civil, Marchés. Barre de copie qui progresse | PRISE DE CONTRÔLE · EXFILTRATION | Bruits de clics rapides | « Quelles données sont parties ? » |
-| 5 | 20 s | Fin d'appel : « C'est réglé, bonne journée. » Nadia sourit, reprend son travail. Un petit programme reste en arrière-plan | TOUT SEMBLE NORMAL | Raccrocher | « Combien de temps avant qu'on s'en rende compte ? » |
-| 6 | 25 s | Le lendemain 8 h : écran de rançon sur tous les postes du service, puis plan large de la mairie aux fenêtres éteintes | RANÇONGICIEL · SERVICES À L'ARRÊT | Bourdonnement grave, puis silence | Débrief et réflexe |
+| 2 | 25 s | Appel entrant d'un numéro inconnu : « Support informatique de {{PRESTATAIRE\_INFO}} ». Chrono de l'appel qui défile, Nadia décroche | APPEL NON SOLLICITÉ · URGENCE · PEUR | Sonnerie | « Qu'est-ce qu'il lui dit, d'après vous ? » (l'animateur joue l'attaquant) |
+| 3 | 25 s | Nadia lance l'outil envoyé par l'appelant : « bloqué par votre administrateur ». L'appelant enchaîne : « lisez-moi les deux codes reçus par SMS » | BLOQUÉ · PLAN B | Clic, vibration du téléphone | « Que fallait-il faire à ce moment ? », puis vote |
+| 4 | 35 s | Depuis l'extérieur, l'attaquant ouvre {{SERVEUR\_FICHIERS}} avec le compte de Nadia : Urbanisme, annuaire, « Accès refusé » sur RH et paie, un fichier « Mots de passe serveurs ». Barre de copie qui progresse | COMPTE VOLÉ · EXFILTRATION | Bruits de clics rapides | « Quelles données sont parties ? » |
+| 5 | 20 s | Fin d'appel : « C'est réglé, bonne journée. » Nadia sourit, reprend son travail. Rien ne paraît anormal | TOUT SEMBLE NORMAL | Raccrocher | « Combien de temps avant qu'on s'en rende compte ? » |
+| 6 | 25 s | Quelques jours plus tard, un lundi à 8 h : écran de rançon sur tous les postes du service, puis plan large de la mairie aux fenêtres éteintes | RANÇONGICIEL · SERVICES À L'ARRÊT | Bourdonnement grave, puis silence | Débrief et réflexe |
 
-**Carton final** (fixe, à laisser à l'écran pendant le débrief) : « Le support ne vous appelle jamais pour prendre la main. Raccrochez, rappelez le {{NUMERO\_SUPPORT}}. »
+**Carton final** (fixe, à laisser à l'écran pendant le débrief) : « Le support ne vous appelle jamais pour prendre la main ni pour demander un code. Raccrochez, rappelez le {{NUMERO\_SUPPORT}}. »
 
 **Notes de production**
 
@@ -309,11 +328,11 @@ Cinq réflexes couvrent les 12 parcours ; ils servent de carton de conclusion.
 | --- | --- | --- |
 | Court (20 min) | 9 · 5 · 2 · 1 (film) · 7 | 15 min + 5 min de réflexes |
 | Standard (35 min) | 9 · 10 · 5 · 2 · 3 · 1 (film) · 7 · 8 + 12 | 30 min + 5 min de réflexes |
-| Complet (50 min) | Les 12, en alternant perso et pro, un légitime tous les 3 ou 4 parcours | 45 min + 5 min de réflexes |
+| Complet (50 min) | 9 · 5 · 10 · 2 · 8 · 12 · 3 · 11 · 6 · 4 · 1 · 7 | 45 min + 5 min de réflexes |
 
 Commencer par un parcours perso (9 ou 10) met la salle en confiance ; finir par le film et un parcours légitime laisse le message « vigilant, pas paranoïaque ».
 
-**Points à sourcer avant diffusion** : le montant et la date du cas Arup (parcours 4), l'étude sur les clés USB (parcours 6), la consigne ANTAI sur les SMS (parcours 9).
+**Points sourcés** (novembre 2026) : cas Arup (parcours 4), étude sur les clés USB (parcours 6), consigne de l'ANTAI sur les SMS (parcours 9), faux support (parcours 1), usurpation des numéros (parcours 8). Voir les sources ci-dessous.
 
 **Sources**
 
@@ -321,6 +340,13 @@ Commencer par un parcours perso (9 ou 10) met la salle en confiance ; finir par 
 - [Dépliant DGFiP – Se prémunir contre les FOVI](https://www.collectivites-locales.gouv.fr/files/finances-locales/doc/4_FOVI%20web.pdf)
 - [La Banque Postale – Collectivités : se protéger des tentatives de fraude](https://www.labanquepostale.fr/collectivites/actualite/2025/tentatives-fraude.html)
 - [Lemo-Opuscar (GitHub)](https://github.com/lemomo-ai/lemo-opuscar)
+- [CNN – Arup, escroquerie par visio truquée (16 mai 2024)](https://edition.cnn.com/2024/05/16/tech/arup-deepfake-scam-loss-hong-kong-intl-hnk)
+- [Tischer et al. – Users Really Do Plug in USB Drives They Find (IEEE S&P 2016)](https://faculty.cc.gatech.edu/~mbailey/publications/oakland16_usb.pdf)
+- [ANTAI – Attention aux SMS, courriels et sites frauduleux](https://www.antai.gouv.fr/en/actualites/beware-fraudulent-text-messages-emails-and-websites/)
+- [Cybermalveillance.gouv.fr – Usurpation ANTAI](https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/campagne-de-messages-frauduleux-reclamant-le-paiement-dune-contravention)
+- [Microsoft Threat Intelligence – abus de l'Assistance rapide (mai 2024), résumé BleepingComputer](https://www.bleepingcomputer.com/news/security/windows-quick-assist-abused-in-black-basta-ransomware-attacks/)
+- [TeamViewer – QuickSupport, sans installation](https://www.teamviewer.com/fr/info/quicksupport/)
+- [Arcep – lutte contre l'usurpation de numéros](https://www.arcep.fr/actualites/actualites-et-communiques/detail/n/protection-des-consommateurs-290126.html)
 
 ## Plan de réalisation (consignes pour la session de développement)
 
@@ -353,3 +379,15 @@ Le contenu de ce document est validé : il sert de spécification figée, rien n
 - Script qui parcourt les 12 parcours, toutes branches comprises (y compris « voir la suite »), et signale impasse, bouton mort ou variable non remplacée.
 - Relecture par un agent séparé, avec un regard d'animateur : lisibilité au fond de la salle, rythme, cohérence des indices.
 - Risques à lever dès le pilote : réalisme des fausses interfaces, contraste et taille du texte sur vidéoprojecteur.
+
+## Historique des versions
+
+- **Version 1 (4 novembre 2026)** : spécification initiale, validée avant développement.
+- **Version 2 (4 novembre 2026)** : décisions validées par l'animateur après le développement, la relecture et la revue de plausibilité.
+  - Parcours 1 : outil de prise en main bloqué par le poste, plan B par les codes SMS, deux votes, droits d'accès réalistes, escalade par un fichier de mots de passe, appel d'un numéro inconnu ; film aligné.
+  - Parcours 2 : paiement par le comptable public. Parcours 3 : contournement du circuit de la dépense. Parcours 4 : changement du RIB du notaire.
+  - Parcours 6, 8, 9 : chiffres et consignes sourcés.
+  - Écrans ajoutés : bonnes réponses (P1, P3, P7, P10) et « Et si on l'avait supprimé ? » (P7, P11, P12).
+  - Mots-clés masqués par défaut, affichés par l'animateur.
+  - Coulisses, débrief ludique, touches supplémentaires, titres neutres projetés, variables fournisseur, ordre « Complet ».
+

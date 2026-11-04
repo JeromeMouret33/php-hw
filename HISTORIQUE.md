@@ -2,6 +2,26 @@
 
 Journal daté, en ordre antichronologique.
 
+## 2026-11-04 (nuit) – Décisions validées, mots-clés à la demande, fusion
+
+**Décisions validées par l'animateur**, toutes conformes aux recommandations :
+- parcours 1 avec deux votes et le fichier de mots de passe ;
+- réorientation des parcours 3 et 4 ;
+- ordre « Complet » ;
+- écrans ajoutés (bonnes réponses et « Et si on l'avait supprimé ? ») ;
+- « On le signale » compté comme prudent ;
+- rythme du parcours 9 ;
+- film qui remplace tous les écrans fixes du parcours 1 ;
+- détails validés en bloc.
+
+**Spécification** : passée en version 2, avec toutes les décisions validées et un historique des versions.
+
+**Retour de l'animateur sur les mots-clés** : ils apparaissaient tout seuls. Désormais ils sont masqués à chaque écran. L'animateur les affiche avec le bouton « Afficher les mots-clés (n) », présent seulement sur les écrans qui en ont, ou avec la touche K. Le vérificateur contrôle qu'ils ne s'affichent jamais d'office et que le bouton correspond à leur présence.
+
+**Fusion** : la branche `simulateur-phishing` est fusionnée dans `master`, à la demande de l'animateur.
+
+**Résultat** : `node outils/verifier.js` → 97 écrans, 106 chemins, aucun problème ; captures relues.
+
 ## 2026-11-04 (soir) – Revue de plausibilité des 12 scénarios
 
 **Demande de l'animateur** : vérifier que chaque scénario est plausible. Pour le parcours 1, les agents de ses clients n'ont pas les droits d'installation, alors que le scénario « faux support qui fait installer un outil (type TeamViewer) » est bien réel chez eux. Choix demandé : rendre le scénario plus costaud, ou assumer que l'installation est impossible.

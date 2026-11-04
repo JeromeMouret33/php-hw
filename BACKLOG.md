@@ -75,6 +75,11 @@ Critères d'acceptation communs, vérifiés le 2026-11-04 par `outils/verifier.j
 - [x] Ordres de passage suggérés (court, standard, complet) sélectionnables depuis le menu ; « Parcours suivant » suit l'ordre choisi *(ordre « complet » proposé, à valider : voir SUIVI)*
 - [x] Style plus ludique pour l'écran de conséquence (cartes de bande dessinée animées), le débrief (score en étoiles, votes, cartes illustrées, médaille du réflexe) et les réflexes de conclusion (cartes à collectionner, tampon final)
 
+### Retours de l'animateur (2026-11-04, soir)
+- [x] Mots-clés masqués par défaut sur chaque écran ; l'animateur les affiche (bouton « Afficher les mots-clés (n) » ou touche K), et le bouton n'existe que s'il y en a (contrôlé par le vérificateur)
+- [x] Toutes les décisions en attente validées ; spécification passée en version 2
+- [x] Travail fusionné dans master
+
 ### Phase 2 ter – Revue de plausibilité des 12 scénarios (demande de l'animateur, 2026-11-04)
 - [x] Parcours 1 : outil de prise en main bloqué par le poste, plan B par les codes SMS, droits d'accès réalistes, escalade par un fichier de mots de passe, film aligné
 - [x] Parcours 2 : paiement par le comptable public, quelques jours après la mise à jour du RIB

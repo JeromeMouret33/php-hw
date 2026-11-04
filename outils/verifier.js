@@ -168,7 +168,10 @@ async function main() {
       nbEcrans++;
       await verifierRendu(ou);
       await page.waitForTimeout(e.composant === 'chronologie' || e.type === 'debrief' ? 2600 : 150); // images génériques, animations d'apparition
-      if (e.motsCles) await page.waitForTimeout(1300 + e.motsCles.length * 900);
+      // mots-clés : jamais affichés d'office ; bouton présent seulement s'il y en a
+      if (await page.locator('#couche-motscles:not(.masque) .mot-cle').count()) signaler(ou, 'mots-clés affichés sans action de l\'animateur');
+      const boutonMots = await page.locator('#commandes [data-cmd="motscles"]').count();
+      if (!!boutonMots !== !!(e.motsCles && e.motsCles.length)) signaler(ou, `bouton Mots-clés ${boutonMots ? 'présent sans mot-clé' : 'absent alors qu\'il y a des mots-clés'}`);
       await capture(`${nn}-${id}`);
 
       // indices : chaque élément cliquable doit afficher une étiquette
@@ -201,9 +204,11 @@ async function main() {
       // touche K : masque puis réaffiche les mots-clés
       if (e.motsCles) {
         await page.keyboard.press('k');
-        if (!(await page.locator('#couche-motscles.masque').count())) signaler(ou, 'touche K : les mots-clés ne se masquent pas');
+        await page.waitForTimeout(e.motsCles.length * 450 + 400);
+        if (await page.locator('#couche-motscles:not(.masque) .mot-cle').count() !== e.motsCles.length) signaler(ou, 'touche K : les mots-clés ne s\'affichent pas');
+        else await capture(`${nn}-${id}-motscles`);
         await page.keyboard.press('k');
-        if (await page.locator('#couche-motscles:not(.masque) .mot-cle').count() !== e.motsCles.length) signaler(ou, 'touche K : les mots-clés ne réapparaissent pas');
+        if (!(await page.locator('#couche-motscles.masque').count())) signaler(ou, 'touche K : les mots-clés ne se masquent pas');
       }
 
       // boutons : chaque bouton doit mener à sa cible

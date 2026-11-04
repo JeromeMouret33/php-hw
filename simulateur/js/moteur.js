@@ -163,7 +163,7 @@
     votes: {},          // idVote -> { choix, decomptes, quandMeme }
     revele: {},         // "ecran.indice" -> true
     visites: [],        // ids d'écrans visités, dans l'ordre
-    motsClesVisibles: true,
+    motsClesVisibles: false, // mots-clés masqués par défaut : l'animateur les affiche (bouton ou K)
     coulisses: false,        // panneau « Coulisses » ouvert ou non (reste ouvert d'un écran à l'autre)
     ongletCoulisses: 'ecran', // 'ecran' | 'scenario' | 'mode'
     minuteries: []
@@ -325,7 +325,9 @@
     zoneEcran.innerHTML = html;
     brancherIndices(e);
     brancherBoutons();
-    if (e.motsCles && e.motsCles.length) programmerMotsCles(e.motsCles);
+    // Mots-clés : jamais automatiques. Masqués à chaque nouvel écran ; l'animateur les affiche s'il le souhaite.
+    etat.motsClesVisibles = false;
+    coucheMotsCles.classList.add('masque');
     rendreCommandes(e);
     rendreCoulisses();
   }
@@ -523,9 +525,11 @@
     coucheMotsCles.appendChild(d);
   }
 
-  function programmerMotsCles(mots) {
-    coucheMotsCles.classList.toggle('masque', !etat.motsClesVisibles);
-    mots.forEach((m, i) => etat.minuteries.push(setTimeout(() => poserMotCle(m), 1200 + i * 900)));
+  /** Pose les mots-clés l'un après l'autre (effet tampon). */
+  function afficherMotsCles(mots) {
+    coucheMotsCles.innerHTML = '';
+    coucheMotsCles.classList.remove('masque');
+    mots.forEach((m, i) => etat.minuteries.push(setTimeout(() => poserMotCle(m), i * 450)));
   }
 
   // ----- Vote
@@ -675,7 +679,7 @@
       (Object.keys(e.indices || {}).length ? `<button class="cmd" data-cmd="indices" title="Révéler / masquer tous les indices (I)">${
         Object.keys(e.indices).every(id => etat.revele[cleIndice(id)]) ? 'Masquer les indices' : 'Tous les indices'}</button>` : '') +
       ((e.motsCles || []).length ? `<button class="cmd" data-cmd="motscles" title="Afficher / masquer les mots-clés (K)">${
-        etat.motsClesVisibles ? 'Masquer les mots-clés' : 'Afficher les mots-clés'}</button>` : '') +
+        etat.motsClesVisibles ? 'Masquer les mots-clés' : `Afficher les mots-clés (${e.motsCles.length})`}</button>` : '') +
       `<button class="cmd" data-cmd="pleinecran" title="Plein écran (F)">⛶</button>` +
       (peutAvancer ? `<button class="cmd cmd-suite" data-cmd="avancer" title="Suite (→)">Suite ▸</button>` : '');
     brancherCommandes();
@@ -693,9 +697,8 @@
     const e = etat.parcours ? ecranCourant() : {};
     if (!e.motsCles || !e.motsCles.length) return bulle('Pas de mot-clé sur cet écran');
     etat.motsClesVisibles = !etat.motsClesVisibles;
-    coucheMotsCles.classList.toggle('masque', !etat.motsClesVisibles);
-    if (etat.motsClesVisibles) e.motsCles.forEach(poserMotCle);
-    bulle(etat.motsClesVisibles ? 'Mots-clés affichés' : 'Mots-clés masqués');
+    if (etat.motsClesVisibles) afficherMotsCles(e.motsCles);
+    else coucheMotsCles.classList.add('masque');
     rendreCommandes(e);
   }
 

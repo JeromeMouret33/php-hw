@@ -2,7 +2,7 @@
 
 ## Référence
 
-- **`docs/specification.md` est la spécification figée.** Son contenu est validé : on ne réinvente rien en cours de route.
+- **`docs/specification.md` est la spécification figée** (version 2 du 2026-11-04, qui intègre les décisions validées après le développement ; voir son historique des versions). Son contenu est validé : on ne réinvente rien en cours de route.
 - Si un détail manque pour réaliser un écran (montant, numéro fictif, texte de remplissage), on peut l'ajouter, à condition de le noter dans `HISTORIQUE.md` comme « détail de réalisme ajouté ».
 - Toute **contradiction ou tout écart** par rapport à la spécification va dans la section « Décisions à valider » de `SUIVI.md`. On ne la tranche pas en silence.
 
