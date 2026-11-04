@@ -108,7 +108,7 @@ SIMU.enregistrerParcours({
         contexte: 'Quelques minutes plus tard, un appel arrive.',
         repliques: [
           { qui: 'appelant', texte: 'Maître Lebon, l\'avocat chargé de l\'opération. Le DGS vous a prévenu ?' },
-          { qui: 'appelant', texte: 'Le virement doit partir avant midi, sinon l\'opération est perdue, et c\'est vous qui en porterez la responsabilité.' }
+          { qui: 'appelant', texte: 'Le paiement doit passer avant midi, sinon l\'opération est perdue, et c\'est vous qui en porterez la responsabilité.' }
         ]
       },
       motsCles: ['PRESSION'],
