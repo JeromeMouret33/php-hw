@@ -4,32 +4,52 @@
 
 ## Où en est-on ?
 
-**Phase 1 terminée côté développement : moteur et parcours pilote n°2 (RIB fournisseur).**
-**⛔ Point d'arrêt n°1 : on attend la validation de l'animateur avant d'attaquer les 11 autres parcours.**
+**Phase 2 terminée : les 12 parcours sont développés et vérifiés.** Le pilote a été validé par l'animateur (point d'arrêt n°1), avec deux retours sur les touches I et K, corrigés.
 
-- Dernière tâche terminée : relecture visuelle des captures du pilote et correction du placement des étiquettes.
-- Prochaine action : l'animateur ouvre `simulateur/index.html` sur son poste et valide le rendu, la fluidité et le réalisme ; il tranche aussi les décisions ci-dessous.
-- Ensuite : composants smartphone, navigateur, visio et explorateur, puis les parcours 1 et 3 à 12 (voir `BACKLOG.md`, phase 2).
+- Dernière tâche terminée : relecture des captures des 12 parcours et correction des défauts vus à l'écran.
+- Prochaine action : l'animateur joue les 12 parcours sur son poste, puis tranche les décisions ci-dessous.
+- Ensuite, d'après la spécification :
+  - phase 3, le film du parcours 1 (chantier parallèle, sur le poste de l'animateur) ;
+  - phase 4, la relecture par un agent séparé, puis **⛔ le point d'arrêt n°2** : répétition à blanc sur le vrai vidéoprojecteur, chronomètre en main ;
+  - plus tard, le style plus ludique de la chronologie, du débrief et des réflexes (retour de l'animateur, « à terme »).
 
-## Comment tester le pilote
+## Comment tester
 
-1. Ouvrir `simulateur/index.html` dans Chrome, Edge ou Firefox, par double-clic : aucun serveur ni connexion n'est nécessaire.
-2. Appuyer sur F pour passer en plein écran, puis cliquer sur la carte « 2 · Un mail de fournisseur ».
-3. Cliquer sur les éléments suspects du mail : ils s'entourent en rouge, avec leur étiquette.
-4. Utiliser → pour la suite, R pour revenir au dernier vote, ← pour reculer, K pour masquer les mots-clés, I pour révéler tous les indices et M pour le menu.
-5. Contrôle automatique : `node outils/verifier.js`, qui produit les captures dans `captures/`.
+1. Ouvrir `simulateur/index.html` dans Chrome, Edge ou Firefox, par double-clic, sans serveur ni connexion.
+2. Choisir un format de séance (Tous, Court, Standard, Complet), puis cliquer sur un parcours. F passe en plein écran.
+3. Touches :
+   - → : suite, sur le chemin malveillant ;
+   - ← : retour ;
+   - R : dernier vote ;
+   - I : afficher ou masquer tous les indices ;
+   - K : masquer ou réafficher les mots-clés (un message s'affiche s'il n'y en a pas sur l'écran) ;
+   - M : menu.
+4. Film du parcours 1 : déposer les 6 vidéos dans `simulateur/videos/` (voir `LISEZMOI.txt`), puis passer `filmParcours1: true` dans `config/collectivite.js`. Sans les vidéos, le simulateur affiche la description de chaque séquence.
+5. Contrôle automatique : `node outils/verifier.js` (94 écrans, 97 chemins, captures dans `captures/`).
 
-## Décisions à valider (écarts ou compléments à la spécification)
+## Décisions à valider
 
-1. **Variables ajoutées pour le parcours 2** : `FOURNISSEUR_DOMAINE`, `FOURNISSEUR_DOMAINE_PIEGE`, `FOURNISSEUR_TEL_DOSSIER` et `FOURNISSEUR_TEL_PIEGE`.
-   La spécification prévoit `{{DOMAINE_PIEGE}}` (exemple : saint-exemple-re.com) pour le domaine du faux fournisseur. Or cet exemple imite le domaine *de la collectivité*, alors que l'indice porte sur un domaine « proche de celui du dossier fournisseur ». Il fallait aussi un vrai numéro de dossier à comparer au numéro du mail.
-   → `DOMAINE_PIEGE` est conservé pour le parcours 5. **À confirmer.**
-2. **Titre « salle » neutre** (`titreSalle`) projeté dans le menu et le bandeau, par exemple « Un mail de fournisseur ». Les titres de la spécification (« Le faux partage… », « — malveillant ») révéleraient la réponse à la salle. Le titre complet n'apparaît qu'au débrief. **À confirmer.**
-3. **Touches en plus** de celles de la spécification (→ et R) : ← retour, F plein écran, K mots-clés, I tous les indices, M menu. **À confirmer.**
-4. **Étiquettes d'indices** : quand les cinq indices d'É1 sont révélés en même temps, deux étiquettes recouvrent un peu de texte ordinaire, jamais un autre indice. En séance, on les révèle une par une. **À juger sur le projecteur.**
-5. **Numéros de téléphone fictifs** (0262 00 41 10, 0693 00 74 52) : il faudra vérifier qu'ils ne sont attribués à personne avant diffusion.
+**Décisions de la phase 1 (pilote)** : variables fournisseur ajoutées, titres neutres projetés, touches supplémentaires, recouvrement des étiquettes quand tout est révélé.
+→ Le pilote a été validé sans remarque sur ces points : je les considère comme acceptés. À reconfirmer si besoin.
+
+**Nouvelles décisions (phase 2)** :
+
+1. **Le film remplace É1 à É5, pas seulement É2 à É5.** La séquence 1 du film montre la même boîte inondée que l'écran É1 ; garder les deux ferait doublon.
+2. **Vote placé après la séquence 2 du film**, avant que Nadia ne donne le code. Le film ne prévoit pas de vote, mais la règle d'or en exige un.
+3. **Écrans ajoutés pour les bonnes réponses**, que le storyboard ne détaille pas :
+   - rappel au vrai support (parcours 1) ;
+   - rappel au vrai DGS (parcours 3) ;
+   - appel de l'enfant sur l'ancien numéro, sans paiement (parcours 10) ;
+   - page intranet de confirmation (parcours 7).
+4. **Écrans « Et si on l'avait supprimé ? »** pour les parcours légitimes 7, 11 et 12 : ce que l'agent aurait perdu, rédigé sobrement, car la spécification n'en donne pas le contenu.
+5. **Parcours 7, option « On le signale »** : un écran « Prudent, mais pas nécessaire » plutôt qu'une mauvaise réponse.
+6. **Parcours 9** : les votes du colis et de l'amende mènent tous deux à la variante suivante. La conséquence (É4) se joue une seule fois, à la fin, comme dans le storyboard.
+7. **Ordre « Complet »** proposé : 9 · 5 · 10 · 2 · 8 · 12 · 3 · 11 · 6 · 4 · 1 · 7. Il alterne perso et pro autant que possible et place 12 juste après 8. Il finit par le film puis un légitime, mais les légitimes tombent en 6e, 8e et 12e positions, pas exactement « tous les 3 ou 4 ».
+8. **Images** : `signature-mail.png` n'est pas utilisée ; la signature des mails internes affiche le logo, sans quoi le visuel générique serait peu lisible. Les « conseillers » de la visio utilisent `conseiller-1.jpg` et `conseiller-2.jpg`, absents de la liste de la spécification : sans ces fichiers, une silhouette générique s'affiche.
+9. **Parcours 5** : l'expéditeur du faux partage utilise `{{DOMAINE_PIEGE}}`, comme le prévoit le tableau des variables, sans indice ajouté dessus.
 
 ## Blocages
 
 - Aucun pour le développement.
-- Le film (Lemo-Opuscar) est un chantier parallèle à mener sur le poste de l'animateur. Il n'a pas été commencé.
+- Film (Lemo-Opuscar) : pas commencé, à faire sur le poste de l'animateur.
+- Plein écran : à essayer sur un vrai poste (impossible à tester ici).

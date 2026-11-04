@@ -2,6 +2,44 @@
 
 Journal daté, en ordre antichronologique.
 
+## 2026-11-04 – Phase 2 : les 11 autres parcours
+
+**Retour de l'animateur sur le pilote** : validé (« c'est top » pour le mail, bien pour le vote, le débrief et les réflexes). Corrections demandées :
+- la touche I doit aussi masquer les indices → elle bascule désormais entre afficher et masquer ;
+- la touche K « ne fait rien » → elle n'agissait que sur les écrans qui ont des mots-clés, sans aucun retour visible. Désormais, un message s'affiche (« Mots-clés masqués », « Pas de mot-clé sur cet écran »), les mots-clés réapparaissent immédiatement, et le bouton n'apparaît que s'il y a des mots-clés ;
+- à terme, un style plus ludique pour É3 (chronologie), le débrief et les réflexes → ajouté au BACKLOG.
+
+**Fait**
+- Moteur :
+  - cibles conditionnées par une option de configuration (mode film) ;
+  - second bouton de « Bien vu » paramétrable (`suiteDebrief`) ;
+  - ordres de passage court, standard et complet au menu ;
+  - adresses mail construites avec `{{ADRESSE:NOM}}` et FORMAT_ADRESSE ;
+  - espaces insécables avant « ? ! : ; » ;
+  - silhouette pour les numéros inconnus ;
+  - texte foncé une fois un indice révélé.
+- Composants : smartphone (SMS, WhatsApp, application), navigateur, visio, explorateur de fichiers, plus les écrans rançon, photo illustrée en SVG (clé USB, horodateur), séquence vidéo et comparaison. Messagerie : compteur, invitation, barre d'état au survol.
+- Parcours 1 et 3 à 12, en fichiers de données. Le parcours 1 a aussi son mode film en 6 séquences, avec le dossier `videos/` et son `LISEZMOI.txt`.
+- Vérificateur : gestion des cibles conditionnelles, contrôle des touches I et K, attente avant capture.
+- Relecture visuelle de toutes les captures, en planches. Défauts corrigés :
+  - menu coupé en bas ;
+  - numéro illisible une fois révélé sur fond sombre ;
+  - avatars « +6 » et « 03 » ;
+  - terminal qui masquait le fichier piégé (parcours 6) ;
+  - « ? » isolé en fin de ligne.
+- Thèmes Gmail et Zimbra de la messagerie relus en capture.
+
+**Résultat** : `node outils/verifier.js` → 94 écrans, 97 chemins complets (mode film compris), aucun problème.
+
+**Détails de réalisme ajoutés** : chaque fichier de parcours les liste en en-tête. Pour l'essentiel :
+- numéros d'appel dans des plages fictives et domaines inventés ;
+- montants (acompte de 24 800 €, 480 000 € pour la visio, 35 € d'amende, paiements débités) ;
+- répliques complètes des appels ;
+- newsletters et mails de remplissage ;
+- textes des écrans « Et si on l'avait supprimé ? ».
+
+**Décisions prises, en attente de validation** : voir `SUIVI.md` (9 points).
+
 ## 2026-11-04 – Phase 1 : moteur et parcours pilote n°2
 
 **Fait**

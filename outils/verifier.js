@@ -27,17 +27,27 @@ const SEUL = args.includes('--parcours') ? +args[args.indexOf('--parcours') + 1]
 const problemes = [];
 const signaler = (ou, msg) => { problemes.push(`[${ou}] ${msg}`); };
 
+/** Une cible peut dépendre d'une option de configuration : { option, alors, sinon }. */
+function deplier(via, cible) {
+  if (cible && typeof cible === 'object') return [
+    { via, cible: cible.alors, option: cible.option, valeur: true },
+    { via, cible: cible.sinon, option: cible.option, valeur: false }];
+  return [{ via, cible }];
+}
+
 function aretes(e) {
   if (!e) return [];
-  if (e.type === 'vote') return [...e.options.map((o, i) => ({ via: `option ${i + 1}`, cible: o.suivant })), { via: 'voir la suite quand même', cible: e.suiteQuandMeme }];
-  if (e.type === 'bienvu') return [{ via: 'et si on avait continué', cible: e.suite }, { via: 'passer au débrief', cible: 'debrief' }];
-  return e.suivant ? [{ via: 'suite', cible: e.suivant }] : [];
+  if (e.type === 'vote') return [...e.options.flatMap((o, i) => deplier(`option ${i + 1}`, o.suivant)), ...deplier('voir la suite quand même', e.suiteQuandMeme)];
+  if (e.type === 'bienvu') return [...deplier('et si on avait continué', e.suite), ...deplier('second bouton', e.suiteDebrief || 'debrief')];
+  return e.suivant ? deplier('suite', e.suivant) : [];
 }
+
+const debuts = p => deplier('début', p.debut);
 
 function controleStructure(p) {
   const ou = `parcours ${p.numero}`;
   const ids = Object.keys(p.ecrans);
-  if (!p.ecrans[p.debut]) signaler(ou, `écran de début « ${p.debut} » introuvable`);
+  debuts(p).forEach(d => { if (!p.ecrans[d.cible]) signaler(ou, `écran de début « ${d.cible} » introuvable`); });
   for (const id of ids) {
     const e = p.ecrans[id];
     const as = aretes(e);
@@ -50,8 +60,8 @@ function controleStructure(p) {
     if (e.type === 'vote' && !e.options.some(o => o.bon)) signaler(ou, `vote « ${id} » sans bonne réponse marquée`);
   }
   // atteignabilité
-  const vus = new Set([p.debut]);
-  const file = [p.debut];
+  const vus = new Set(debuts(p).map(d => d.cible));
+  const file = [...vus];
   while (file.length) {
     const id = file.shift();
     for (const a of aretes(p.ecrans[id])) if (a.cible && a.cible !== 'debrief' && !vus.has(a.cible) && p.ecrans[a.cible]) { vus.add(a.cible); file.push(a.cible); }
@@ -71,14 +81,18 @@ function controleStructure(p) {
   if (!p.debrief || !p.debrief.reflexe) signaler(ou, 'débrief sans réflexe');
 }
 
+/** Tous les chemins du début au débrief ; options = valeurs de configuration qu'ils supposent. */
 function cheminsComplets(p) {
   const res = [];
-  (function dfs(id, chemin, vus) {
-    if (id === 'debrief') { res.push(chemin); return; }
-    if (vus.has(id) || chemin.length > 40) return;
-    const as = aretes(p.ecrans[id]);
-    for (const a of as) dfs(a.cible, chemin.concat({ depuis: id, via: a.via, cible: a.cible }), new Set([...vus, id]));
-  })(p.debut, [], new Set());
+  (function dfs(id, chemin, vus, options) {
+    if (id === 'debrief') { res.push({ chemin, options }); return; }
+    if (vus.has(id) || chemin.length > 60) return;
+    for (const a of (id === '__debut__' ? debuts(p) : aretes(p.ecrans[id]))) {
+      if (a.option && a.option in options && options[a.option] !== a.valeur) continue;
+      const opts = a.option ? Object.assign({}, options, { [a.option]: a.valeur }) : options;
+      dfs(a.cible, id === '__debut__' ? chemin : chemin.concat({ depuis: id, via: a.via, cible: a.cible }), new Set([...vus, id]), opts);
+    }
+  }).call(null, '__debut__', [], new Set(), {});
   return res;
 }
 
@@ -87,7 +101,7 @@ async function main() {
   const page = await navigateur.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
   const erreursConsole = [];
   // une image absente du dossier images/ est prévue (visuel générique) : ce n'est pas une erreur
-  page.on('console', m => { if (m.type() === 'error' && !/\/images\//.test((m.location() || {}).url || '')) erreursConsole.push(m.text()); });
+  page.on('console', m => { if (m.type() === 'error' && !/\/(images|videos)\//.test((m.location() || {}).url || '')) erreursConsole.push(m.text()); });
   page.on('pageerror', e => erreursConsole.push(e.message));
   page.on('request', r => { if (!r.url().startsWith('file:') && !r.url().startsWith('data:')) signaler('réseau', `requête externe interdite : ${r.url()}`); });
 
@@ -148,6 +162,7 @@ async function main() {
       await ouvrir();
       nbEcrans++;
       await verifierRendu(ou);
+      await page.waitForTimeout(150); // laisse le temps aux visuels génériques de remplacer les images absentes
       if (e.motsCles) await page.waitForTimeout(1300 + e.motsCles.length * 900);
       await capture(`${nn}-${id}`);
 
@@ -161,6 +176,23 @@ async function main() {
         if (!ok) signaler(ou, `indice « ${ind} » : pas d'étiquette après le clic`);
       }
       if (indices.length) { await page.waitForTimeout(400); await capture(`${nn}-${id}-indices`); }
+
+      // touche I : tout est révélé -> I masque tout ; I à nouveau -> tout réapparaît
+      if (indices.length) {
+        const nbEtiquettes = () => page.locator('#couche-etiquettes .etiquette').count();
+        await page.keyboard.press('i');
+        if (await nbEtiquettes() !== 0) signaler(ou, 'touche I : les indices ne se masquent pas');
+        await page.keyboard.press('i');
+        if (await nbEtiquettes() !== indices.length) signaler(ou, `touche I : ${indices.length} étiquettes attendues après réaffichage`);
+      }
+
+      // touche K : masque puis réaffiche les mots-clés
+      if (e.motsCles) {
+        await page.keyboard.press('k');
+        if (!(await page.locator('#couche-motscles.masque').count())) signaler(ou, 'touche K : les mots-clés ne se masquent pas');
+        await page.keyboard.press('k');
+        if (await page.locator('#couche-motscles:not(.masque) .mot-cle').count() !== e.motsCles.length) signaler(ou, 'touche K : les mots-clés ne réapparaissent pas');
+      }
 
       // boutons : chaque bouton doit mener à sa cible
       const boutons = await page.$$eval('#ecran button[data-action]', bs => bs.map((b, i) => ({ i, action: b.dataset.action, cible: b.dataset.cible, texte: b.textContent.trim() })));
@@ -185,7 +217,7 @@ async function main() {
       }
 
       // flèche → : chemin malveillant
-      const attendu = e.type === 'vote' ? e.suiteQuandMeme : e.type === 'bienvu' ? e.suite : e.suivant;
+      const attendu = await page.evaluate(c => SIMU.resoudre(c), e.type === 'vote' ? e.suiteQuandMeme : e.type === 'bienvu' ? e.suite : e.suivant || null);
       if (e.type !== 'debrief') {
         await ouvrir();
         await page.keyboard.press('ArrowRight');
@@ -196,10 +228,13 @@ async function main() {
 
     // --- Tous les chemins complets, joués au clic, du début au débrief
     const chemins = cheminsComplets(p);
-    for (const [k, chemin] of chemins.entries()) {
+    for (const [k, { chemin, options }] of chemins.entries()) {
       nbChemins++;
       const ou = `parcours ${p.numero} / chemin ${k + 1} (${chemin.map(c => c.cible).join(' → ')})`;
-      await page.evaluate(n => SIMU.demarrer(n), p.numero);
+      await page.evaluate(([n, opts]) => {
+        const c = window.CONFIG_COLLECTIVITE; c.options = Object.assign({}, c.options, opts);
+        SIMU.demarrer(n);
+      }, [p.numero, options]);
       let voteVu = false;
       for (const pas of chemin) {
         const e = p.ecrans[pas.depuis];

@@ -44,6 +44,12 @@ window.CONFIG_COLLECTIVITE = {
   // un visuel générique s'affiche à la place.
   dossierImages: "images/",
 
+  // Options de séance
+  options: {
+    // true : le parcours 1 joue le film (6 séquences, dossier videos/) à la place des écrans É1 à É5
+    filmParcours1: false
+  },
+
   // Parcours de la séance : true = proposé dans le menu, false = masqué.
   // Les parcours pas encore développés sont ignorés automatiquement.
   parcoursActifs: {

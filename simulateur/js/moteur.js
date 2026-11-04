@@ -78,13 +78,35 @@
     if (s == null) return '';
     let r = String(s);
     r = r.replace(/\{\{img:([^}|]+?)(?:\|(\w+))?\}\}/g, (m, nom, gen) => image(nom.trim(), { generique: gen || 'logo' }));
+    r = r.replace(/\{\{ADRESSE:([A-Z0-9_]+)\}\}/g, (m, nom) => {
+      const a = adresse(nom);
+      return a == null ? `<span class="var-manquante">{{ADRESSE:${nom}}}</span>` : echapper(a);
+    });
     r = r.replace(/\{\{\s*([A-Z0-9_]+)\s*\}\}/g, (m, nom) => {
       const v = valeur(nom);
       return v == null ? `<span class="var-manquante">{{${nom}}}</span>` : echapper(v);
     });
     r = r.replace(/\[\[([a-z0-9_-]+)\|([\s\S]*?)\]\]/gi,
       (m, id, contenu) => `<span class="indice" data-indice="${id}">${contenu}</span>`);
+    // typographie française, uniquement dans le texte (jamais dans les balises)
+    r = r.replace(/(^|>)([^<]*)/g, (m, a, t) => a + t.replace(/ ([?!:;»])/g, '\u00a0$1').replace(/« /g, '«\u00a0'));
     return r;
+  }
+
+  /**
+   * {{ADRESSE:RESPONSABLE_INFO}} -> « paul.grondin@saint-exemple.re », construite à partir du nom,
+   * de FORMAT_ADRESSE (prenom.nom, p.nom, nom.prenom, prenom-nom…) et de DOMAINE_MAIL.
+   * {{ADRESSE:DGS}} utilise DGS_PRENOM et DGS_NOM.
+   */
+  function adresse(nom) {
+    let prenom, famille;
+    if (nom === 'DGS') { prenom = valeur('DGS_PRENOM'); famille = valeur('DGS_NOM'); }
+    else { const v = valeur(nom); if (v == null) return null; const mots = String(v).trim().split(/\s+/); prenom = mots.shift(); famille = mots.join('-'); }
+    const format = valeur('FORMAT_ADRESSE'), domaine = valeur('DOMAINE_MAIL');
+    if (!prenom || !famille || !format || !domaine) return null;
+    const net = x => x.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z-]/g, '');
+    const local = format.replace(/prenom|nom|\bp\b|\bn\b/g, t => ({ prenom: net(prenom), nom: net(famille), p: net(prenom)[0], n: net(famille)[0] })[t]);
+    return local + '@' + domaine;
   }
 
   /** Version texte brut (pour attributs, titres) : variables seulement. */
@@ -96,7 +118,8 @@
   }
 
   function initiales(s) {
-    return String(s || '?').split(/[\s'’-]+/).filter(Boolean).slice(0, 2).map(m => m[0].toUpperCase()).join('');
+    const mots = String(s || '').replace(/<[^>]*>|\[\[[^|]*\||\]\]/g, '').split(/[\s'’-]+/).filter(m => /^\p{L}/u.test(m));
+    return mots.length ? mots.slice(0, 2).map(m => m[0].toUpperCase()).join('') : '👤';
   }
 
   // ---------------------------------------------------------------- Images
@@ -169,11 +192,21 @@
     etat.revele = {};
     etat.visites = [];
     etat.ecranId = null;
-    aller(p.debut);
+    aller(resoudre(p.debut));
+  }
+
+  /**
+   * Une cible peut dépendre d'une option de la configuration :
+   *   { option: 'filmParcours1', alors: 'f1', sinon: 'e1' }
+   */
+  function resoudre(cible) {
+    if (cible && typeof cible === 'object') return (conf().options || {})[cible.option] ? cible.alors : cible.sinon;
+    return cible;
   }
 
   function aller(id) {
     if (!etat.parcours) return;
+    id = resoudre(id);
     if (id !== ECRAN_DEBRIEF && !etat.parcours.ecrans[id]) return erreur(`Écran « ${id} » introuvable dans le parcours ${etat.parcours.numero}`);
     if (etat.ecranId) etat.historique.push(etat.ecranId);
     etat.ecranId = id;
@@ -225,8 +258,23 @@
     aller(opt.suivant);
   }
 
+  /** Ordres de passage suggérés par la spécification (section « Réflexes et ordre de passage »). */
+  const ORDRES = {
+    court:    { nom: 'Court (20 min)',    ordre: [9, 5, 2, 1, 7] },
+    standard: { nom: 'Standard (35 min)', ordre: [9, 10, 5, 2, 3, 1, 7, 8, 12] },
+    complet:  { nom: 'Complet (50 min)',  ordre: [9, 5, 10, 2, 8, 12, 3, 11, 6, 4, 1, 7] }
+  };
+
+  /** Liste des parcours de la séance, dans l'ordre choisi au menu. */
+  function seance() {
+    const actifs = parcoursActifs();
+    const o = ORDRES[etat.format];
+    if (!o) return actifs;
+    return o.ordre.map(n => actifs.find(p => p.numero === n)).filter(Boolean);
+  }
+
   function parcoursSuivant() {
-    const liste = parcoursActifs();
+    const liste = seance();
     const i = liste.indexOf(etat.parcours);
     if (i >= 0 && i < liste.length - 1) demarrer(liste[i + 1].numero);
     else conclusion();
@@ -316,6 +364,7 @@
       etat.revele[k] = true;
       montrerIndice(el, id, def);
     }
+    rendreCommandes(ecranCourant());
   }
 
   function montrerIndice(el, id, def) {
@@ -370,27 +419,48 @@
     et.style.top = meilleur.p.y + 'px';
   }
 
-  function revelerTout() {
+  /** Touche I : révèle tous les indices de l'écran ; s'ils le sont tous déjà, les masque. */
+  function basculerTousIndices() {
     const e = ecranCourant();
     const defs = e.indices || {};
-    zoneEcran.querySelectorAll('[data-indice]').forEach(el => {
-      const id = el.dataset.indice;
-      if (defs[id] && !etat.revele[cleIndice(id)]) { etat.revele[cleIndice(id)] = true; montrerIndice(el, id, defs[id]); }
+    const els = [...zoneEcran.querySelectorAll('[data-indice]')].filter(el => defs[el.dataset.indice]);
+    if (!els.length) return bulle('Aucun indice sur cet écran');
+    const tousReveles = els.every(el => etat.revele[cleIndice(el.dataset.indice)]);
+    els.forEach(el => {
+      const id = el.dataset.indice, k = cleIndice(id);
+      if (tousReveles) {
+        delete etat.revele[k];
+        el.classList.remove('revele');
+      } else if (!etat.revele[k]) { etat.revele[k] = true; montrerIndice(el, id, defs[id]); }
     });
+    if (tousReveles) coucheEtiquettes.innerHTML = '';
+    rendreCommandes(e);
+  }
+
+  /** Petit message temporaire pour l'animateur. */
+  function bulle(msg) {
+    let b = document.getElementById('bulle');
+    if (!b) { b = document.createElement('div'); b.id = 'bulle'; scene.appendChild(b); }
+    b.textContent = msg;
+    b.classList.add('visible');
+    clearTimeout(bulle.t);
+    bulle.t = setTimeout(() => b.classList.remove('visible'), 1600);
   }
 
   // ----- Mots-clés
 
+  function poserMotCle(m) {
+    if ([...coucheMotsCles.children].some(d => d.dataset.mot === m)) return;
+    const d = document.createElement('div');
+    d.className = 'mot-cle';
+    d.dataset.mot = m;
+    d.innerHTML = texte(m);
+    coucheMotsCles.appendChild(d);
+  }
+
   function programmerMotsCles(mots) {
     coucheMotsCles.classList.toggle('masque', !etat.motsClesVisibles);
-    mots.forEach((m, i) => {
-      etat.minuteries.push(setTimeout(() => {
-        const d = document.createElement('div');
-        d.className = 'mot-cle';
-        d.innerHTML = texte(m);
-        coucheMotsCles.appendChild(d);
-      }, 1200 + i * 900));
-    });
+    mots.forEach((m, i) => etat.minuteries.push(setTimeout(() => poserMotCle(m), 1200 + i * 900)));
   }
 
   // ----- Vote
@@ -412,7 +482,7 @@
           <button class="btn-rond" data-action="plus" data-option="${i}" aria-label="Ajouter une voix">+</button>
           <span class="vote-pct">${total ? pct + ' %' : ''}</span>
         </div>
-        <button class="btn btn-choix" data-action="choisir" data-option="${i}" data-cible="${o.suivant}">Jouer ce choix ▸</button>
+        <button class="btn btn-choix" data-action="choisir" data-option="${i}" data-cible="${resoudre(o.suivant)}">Jouer ce choix ▸</button>
       </div>`;
     }).join('');
     return `<div class="ecran-vote">
@@ -420,7 +490,7 @@
       <h1 class="vote-question">${texte(e.question)}</h1>
       <div class="vote-options n${e.options.length}">${opts}</div>
       <div class="vote-pied">
-        <button class="btn btn-secondaire" data-action="quandmeme" data-cible="${e.suiteQuandMeme}">${texte(e.libelleSuiteQuandMeme || 'Voir la suite quand même')} ▸</button>
+        <button class="btn btn-secondaire" data-action="quandmeme" data-cible="${resoudre(e.suiteQuandMeme)}">${texte(e.libelleSuiteQuandMeme || 'Voir la suite quand même')} ▸</button>
       </div>
     </div>`;
   }
@@ -433,8 +503,8 @@
       <h1>${texte(e.titre || 'Bien vu !')}</h1>
       <p class="bienvu-texte">${texte(e.texte)}</p>
       <div class="bienvu-actions">
-        <button class="btn btn-principal" data-action="aller" data-cible="${e.suite}">${texte(e.libelleSuite || 'Et si on avait continué ?')} ▸</button>
-        <button class="btn btn-secondaire" data-action="aller" data-cible="${ECRAN_DEBRIEF}">Passer au débrief</button>
+        <button class="btn btn-principal" data-action="aller" data-cible="${resoudre(e.suite)}">${texte(e.libelleSuite || 'Et si on avait continué ?')} ▸</button>
+        <button class="btn btn-secondaire" data-action="aller" data-cible="${resoudre(e.suiteDebrief) || ECRAN_DEBRIEF}">${texte(e.libelleSuiteDebrief || 'Passer au débrief')}</button>
       </div>
     </div>`;
   }
@@ -455,7 +525,7 @@
     const liste = (tab, cls, sym) => tab.map(def => `<li class="${cls} ${def.type}">${sym} ${texte(def.etiquette)}</li>`).join('');
     const bloc = (titre, contenu, cls) => contenu ? `<section class="debrief-bloc ${cls || ''}"><h2>${titre}</h2><p>${texte(contenu)}</p></section>` : '';
     const legitime = p.nature === 'legitime';
-    const suivant = parcoursActifs();
+    const suivant = seance();
     const dernier = suivant.indexOf(p) === suivant.length - 1;
     return `<div class="ecran-debrief">
       <h1>Débrief · ${echapper(brut(p.titre))}</h1>
@@ -505,6 +575,7 @@
         else if (a === 'suivant-parcours') parcoursSuivant();
         else if (a === 'demarrer') demarrer(+b.dataset.parcours);
         else if (a === 'conclusion') conclusion();
+        else if (a === 'format') { etat.format = b.dataset.format; menu(); }
       });
     });
   }
@@ -517,8 +588,10 @@
       `<button class="cmd" data-cmd="retour" title="Retour (←)">◂ Retour</button>` +
       (aUnVote ? `<button class="cmd" data-cmd="vote" title="Revenir au dernier vote (R)">↺ Dernier vote</button>` : '') +
       `<span class="cmd-espace"></span>` +
-      `<button class="cmd" data-cmd="indices" title="Révéler tous les indices (I)">Indices</button>` +
-      `<button class="cmd" data-cmd="motscles" title="Afficher / masquer les mots-clés (K)">Mots-clés</button>` +
+      (Object.keys(e.indices || {}).length ? `<button class="cmd" data-cmd="indices" title="Révéler / masquer tous les indices (I)">${
+        Object.keys(e.indices).every(id => etat.revele[cleIndice(id)]) ? 'Masquer les indices' : 'Tous les indices'}</button>` : '') +
+      ((e.motsCles || []).length ? `<button class="cmd" data-cmd="motscles" title="Afficher / masquer les mots-clés (K)">${
+        etat.motsClesVisibles ? 'Masquer les mots-clés' : 'Afficher les mots-clés'}</button>` : '') +
       `<button class="cmd" data-cmd="pleinecran" title="Plein écran (F)">⛶</button>` +
       (peutAvancer ? `<button class="cmd cmd-suite" data-cmd="avancer" title="Suite (→)">Suite ▸</button>` : '');
     brancherCommandes();
@@ -526,14 +599,20 @@
 
   function brancherCommandes() {
     commandes.querySelectorAll('[data-cmd]').forEach(b => b.addEventListener('click', () => ({
-      menu, retour, vote: revenirAuVote, avancer, indices: revelerTout,
+      menu, retour, vote: revenirAuVote, avancer, indices: basculerTousIndices,
       motscles: basculerMotsCles, pleinecran: pleinEcran
     })[b.dataset.cmd]()));
   }
 
+  /** Touche K : masque ou réaffiche les mots-clés en surimpression de l'écran. */
   function basculerMotsCles() {
+    const e = etat.parcours ? ecranCourant() : {};
+    if (!e.motsCles || !e.motsCles.length) return bulle('Pas de mot-clé sur cet écran');
     etat.motsClesVisibles = !etat.motsClesVisibles;
     coucheMotsCles.classList.toggle('masque', !etat.motsClesVisibles);
+    if (etat.motsClesVisibles) e.motsCles.forEach(poserMotCle);
+    bulle(etat.motsClesVisibles ? 'Mots-clés affichés' : 'Mots-clés masqués');
+    rendreCommandes(e);
   }
 
   // ---------------------------------------------------------------- Menu, conclusion
@@ -546,16 +625,19 @@
     delete scene.dataset.parcours;
     scene.dataset.ecran = 'menu';
     bandeau.innerHTML = `<span class="bandeau-parcours">${texte('{{COLLECTIVITE}}')}</span>`;
-    const liste = parcoursActifs();
-    const cartes = liste.map(p => `
+    const liste = seance();
+    const formats = [['tous', 'Tous les parcours']].concat(Object.keys(ORDRES).map(k => [k, ORDRES[k].nom]))
+      .map(([k, nom]) => `<button class="btn-format${(etat.format || 'tous') === k ? ' actif' : ''}" data-action="format" data-format="${k}">${nom}</button>`).join('');
+    const cartes = liste.map((p, i) => `
       <button class="carte-parcours" data-action="demarrer" data-parcours="${p.numero}">
-        <span class="carte-numero">${p.numero}</span>
+        <span class="carte-numero">${ORDRES[etat.format] ? `${i + 1}. ` : ''}Parcours ${p.numero}</span>
         <span class="carte-titre">${texte(p.titreSalle)}</span>
         <span class="carte-meta">${p.domaine === 'perso' ? 'Vie perso' : 'Vie pro'} · ${echapper(p.duree || '')}</span>
       </button>`).join('');
     zoneEcran.innerHTML = `<div class="ecran-menu">
       <div class="menu-entete">${image('logo-collectivite.png', { classe: 'menu-logo', generique: 'logo', alt: 'Logo' })}
         <div><h1>Hameçonnage : à vous de jouer</h1><p>${texte('{{COLLECTIVITE}}')} · séance de sensibilisation</p></div></div>
+      <div class="menu-formats"><span>Séance :</span>${formats}</div>
       <div class="menu-cartes">${cartes || '<p class="menu-vide">Aucun parcours actif : vérifiez « parcoursActifs » dans config/collectivite.js.</p>'}</div>
       <div class="menu-pied"><button class="btn btn-secondaire" data-action="conclusion">Réflexes de conclusion</button>
       <span class="menu-aide">→ suite · ← retour · R dernier vote · F plein écran · K mots-clés · I indices · M menu</span></div>
@@ -617,7 +699,7 @@
     else if (k === 'r' || k === 'R') revenirAuVote();
     else if (k === 'f' || k === 'F') pleinEcran();
     else if (k === 'k' || k === 'K') basculerMotsCles();
-    else if (k === 'i' || k === 'I') { if (etat.parcours) revelerTout(); }
+    else if (k === 'i' || k === 'I') { if (etat.parcours) basculerTousIndices(); }
     else if (k === 'm' || k === 'M') menu();
     else return;
     ev.preventDefault();
@@ -638,7 +720,7 @@
   }
 
   // API publique (utilisée aussi par outils/verifier.js)
-  Object.assign(SIMU, { texte, brut, image, demarrer, aller, retour, avancer, revenirAuVote, menu, conclusion, ECRAN_DEBRIEF });
+  Object.assign(SIMU, { resoudre, texte, brut, image, demarrer, aller, retour, avancer, revenirAuVote, menu, conclusion, ECRAN_DEBRIEF });
 
   document.addEventListener('DOMContentLoaded', init);
 })();
