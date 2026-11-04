@@ -647,3 +647,9 @@ svg .indice.revele.indice-rassurant { filter: drop-shadow(0 0 5px var(--rassuran
 /* Parcours 1 : fenêtre de blocage du poste et SMS reçu, dans le contexte d'un appel */
 .fenetre-alerte { background: #fff; border: 2px solid #9aa5b1; border-top: 10px solid #1f6feb; border-radius: 8px; padding: 14px 20px; font-size: 26px; line-height: 1.4; margin-bottom: 16px; box-shadow: 0 6px 16px rgba(0,0,0,.12); }
 .sms-recu { background: #e9e9eb; border-radius: 22px; padding: 12px 22px; font-size: 26px; line-height: 1.4; display: inline-block; }
+
+/* Parcours 1 : fenêtre générique de l'outil de prise en main (aucun logo d'éditeur) */
+.fenetre-outil { background: #fff; border: 2px solid #9aa5b1; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,.12); max-width: 760px; }
+.fo-titre { background: #2b6cb0; color: #fff; font-size: 24px; font-weight: 700; padding: 10px 20px; }
+.fo-ligne { display: flex; justify-content: space-between; gap: 30px; padding: 12px 20px; font-size: 26px; border-top: 1px solid #e3e7eb; }
+.fo-ligne b { font-family: var(--mono); letter-spacing: 2px; }

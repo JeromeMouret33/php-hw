@@ -55,7 +55,8 @@ Toute la personnalisation passe par un seul fichier de configuration et un dossi
 | {{RESPONSABLE\_INFO}} | Paul Grondin | 1, 7 |
 | {{PRESTATAIRE\_INFO}} | InfoRéunion Services | 1 |
 | {{NUMERO\_SUPPORT}} | 0262 00 00 00 (poste 1234) | 1, 7 |
-| {{OUTIL\_TICKET}} | GLPI | 7 |
+| {{OUTIL\_TICKET}} | GLPI | 1, 7 |
+| {{OUTIL\_PRISE\_EN\_MAIN}} | TeamViewer | 1 (et film) |
 | {{FOURNISSEUR}} | Transports Lagon Bleu | 2 |
 | {{FOURNISSEUR\_DOMAINE}} / {{FOURNISSEUR\_DOMAINE\_PIEGE}} | transports-lagonbleu.re / transport-lagonbleu.re | 2 |
 | {{FOURNISSEUR\_TEL\_DOSSIER}} / {{FOURNISSEUR\_TEL\_PIEGE}} | 0262 00 41 10 / 0693 00 74 52 | 2 |
@@ -95,27 +96,26 @@ La vidéo est conçue pour lire les mêmes variables (nom de la collectivité, d
 
 ### 1. Le faux support informatique — malveillant
 
-Cible : tout agent. Mode opératoire documenté (inondation de spams puis faux appel du support, prise en main à distance ; Microsoft, 2024). Les agents n'ayant pas les droits d'installation, le scénario montre l'outil bloqué par le poste, puis le plan B de l'attaquant. Durée : 4 min, ou 3 min avec le film (voir plus bas).
+Cible : tout agent. Mode opératoire documenté (inondation de spams puis faux appel du support, prise en main à distance avec un outil légitime ; Microsoft, 2024). Les agents utilisent déjà l'outil de prise en main du vrai support ({{OUTIL\_PRISE\_EN\_MAIN}}, par exemple TeamViewer) : l'escroc n'a rien à faire installer. Durée : 4 min, ou 3 min avec le film (voir plus bas).
 
 1. **É1 — Boîte mail inondée** : 200 mails de newsletters en 10 minutes dans {{OUTIL\_MAIL}}. Mot-clé : « DIVERSION ».
 2. **É2 — Appel entrant** d'un numéro inconnu : « Support informatique de {{PRESTATAIRE\_INFO}} ». L'animateur joue l'attaquant : « On a détecté une attaque sur votre poste, c'est pour ça que vous recevez tous ces mails. »
    - 🔴 Appel entrant non sollicité, alors qu'aucun ticket n'a été ouvert
    - 🔴 Urgence et peur (« votre poste contamine le réseau »)
    - 🔴 Le problème annoncé est celui que l'attaquant a lui-même provoqué
-3. **É3 — Demande d'outil** : « Lancez l'outil d'assistance depuis ce lien et donnez-moi l'identifiant qui s'affiche. » L'agent objecte qu'il n'a pas les droits ; l'attaquant : « Pas besoin, c'est une version qui se lance sans installation. »
-   - 🔴 Le vrai support ne fait jamais lancer un outil de prise en main sur un appel entrant
+3. **É3 — L'outil habituel** : « Ouvrez {{OUTIL\_PRISE\_EN\_MAIN}} comme d'habitude, et donnez-moi l'identifiant et le mot de passe qui s'affichent. » La fenêtre de l'outil (habillage générique) affiche l'identifiant et le mot de passe.
+   - 🔴 Le bon outil, mais pas le bon interlocuteur : le vrai support ne s'en sert jamais sur un appel qu'on n'a pas demandé
+   - 🔴 Identifiant + mot de passe = les clés du poste : seulement pour un support qu'on a soi-même appelé
    - 🔴 Refus de passer par {{OUTIL\_TICKET}} (« pas le temps, c'est critique »)
-   - 🔴 Il a réponse à tout : l'absence de droits ne l'arrête pas
-4. **❓ Vote 1** : on lance l'outil / on raccroche et on rappelle {{NUMERO\_SUPPORT}}.
-5. **É4 — Outil bloqué, plan B** : « Cette application a été bloquée par votre administrateur. » L'attaquant enchaîne : « Pas grave, j'interviens sur votre compte : lisez-moi les deux codes que vous allez recevoir par SMS. » Mot-clé : « PLAN B ».
-   - 🟢 La protection du poste a fonctionné : l'outil est bloqué
-   - 🔴 Plan B : faute d'accès au poste, il vise le compte de l'agent
+4. **❓ Vote 1** : on donne l'identifiant et le mot de passe / on raccroche et on rappelle {{NUMERO\_SUPPORT}}.
+5. **É4 — Prise de contrôle** : le curseur bouge seul ; sur {{SERVEUR\_FICHIERS}}, RH et paie sont refusés, mais l'attaquant copie ce qui est accessible et trouve un fichier « Mots de passe serveurs.xlsx ». Mots-clés : « PRISE DE CONTRÔLE », « EXFILTRATION ».
+6. **É5 — Le code SMS** : « Pour valider la mise à jour de sécurité, lisez-moi le code que vous venez de recevoir par SMS. » Ce code lui donne le compte de l'agent, donc un accès après l'appel.
+   - 🔴 Avec ce code, il garde votre compte après avoir raccroché
    - 🔴 Le SMS le dit lui-même : ce code ne se communique à personne, même au support
-6. **❓ Vote 2** : on lit les codes / on raccroche et on rappelle {{NUMERO\_SUPPORT}}.
-7. **É5 — Conséquence** : avec les codes, l'attaquant réinitialise le mot de passe, valide la double authentification et se connecte à distance avec le compte de l'agent. Sur {{SERVEUR\_FICHIERS}}, RH et paie lui sont refusés, mais il copie ce qui est accessible et trouve un fichier « Mots de passe serveurs.xlsx ». Mots-clés : « COMPTE VOLÉ », « EXFILTRATION ».
+7. **❓ Vote 2** : on lit le code / on raccroche et on prévient le support. Bonne réponse : il perd l'accès en raccrochant, mais des fichiers sont partis, donc on prévient le support tout de suite.
 8. **É6 — Écran de rançon** sur tous les postes, quelques jours plus tard. Mot-clé : « RANÇONGICIEL ».
 
-**Débrief** : bloqué sur le poste, l'attaquant prend le compte de l'agent avec deux codes lus au téléphone, entre dans le réseau à distance, devient administrateur grâce au fichier de mots de passe, puis chiffre les serveurs ; les services (état civil, paie, urbanisme) peuvent s'arrêter plusieurs semaines. « Quand la machine dit non, l'escroc demande à l'humain. » **Réflexe** : raccrocher, rappeler le support sur le numéro connu {{NUMERO\_SUPPORT}}, ne jamais lancer un outil de prise en main ni lire un code reçu par SMS à la demande d'un appelant.
+**Débrief** : avec l'identifiant de l'outil, l'attaquant pilote le poste et copie ce que l'agent peut ouvrir, dont un fichier de mots de passe ; avec le code SMS, il garde le compte, revient quelques jours plus tard, devient administrateur et chiffre les serveurs ; les services (état civil, paie, urbanisme) peuvent s'arrêter plusieurs semaines. « C'est le bon outil, mais pas le bon interlocuteur. » **Réflexe** : raccrocher, rappeler le support sur le numéro connu {{NUMERO\_SUPPORT}} ; ne donner l'identifiant de {{OUTIL\_PRISE\_EN\_MAIN}} qu'au support qu'on a soi-même appelé, et ne jamais lire un code reçu par SMS.
 
 ### 2. Le changement de RIB fournisseur — malveillant
 
@@ -290,16 +290,16 @@ Cible : tout agent. À jouer juste après le parcours 8, en comparaison côte à
 
 ## Film : « Le support qui n'en était pas un »
 
-Film muet de 2 min 30 environ, en 6 séquences qui s'arrêtent seules pour laisser l'animateur commenter et interroger la salle. Style Living Screencast (plan-séquence dans l'écran d'un agent), mots-clés en surimpression, effets sonores ponctuels sans voix. Il remplace tous les écrans fixes du parcours 1 (la séquence 1 reprend la boîte inondée). Un vote est inséré après la séquence 3 (règle d'or).
+Film muet de 2 min 30 environ, en 6 séquences qui s'arrêtent seules pour laisser l'animateur commenter et interroger la salle. Style Living Screencast (plan-séquence dans l'écran d'un agent), mots-clés en surimpression, effets sonores ponctuels sans voix. Il remplace tous les écrans fixes du parcours 1 (la séquence 1 reprend la boîte inondée). Un vote est inséré après la séquence 2 (règle d'or).
 
 Personnage : « Nadia », agente au service urbanisme de {{COLLECTIVITE}}, devant son poste un mardi à 9 h 40.
 
 | Séq. | Durée | Ce qu'on voit | Mots-clés à l'écran | Son | Pause : question à la salle |
 | --- | --- | --- | --- | --- | --- |
 | 1 | 20 s | La boîte {{OUTIL\_MAIL}} de Nadia se remplit : 200 newsletters en accéléré, compteur qui s'emballe | DIVERSION | Notifications en rafale | « À votre avis, c'est quoi ? » |
-| 2 | 25 s | Appel entrant d'un numéro inconnu : « Support informatique de {{PRESTATAIRE\_INFO}} ». Chrono de l'appel qui défile, Nadia décroche | APPEL NON SOLLICITÉ · URGENCE · PEUR | Sonnerie | « Qu'est-ce qu'il lui dit, d'après vous ? » (l'animateur joue l'attaquant) |
-| 3 | 25 s | Nadia lance l'outil envoyé par l'appelant : « bloqué par votre administrateur ». L'appelant enchaîne : « lisez-moi les deux codes reçus par SMS » | BLOQUÉ · PLAN B | Clic, vibration du téléphone | « Que fallait-il faire à ce moment ? », puis vote |
-| 4 | 35 s | Depuis l'extérieur, l'attaquant ouvre {{SERVEUR\_FICHIERS}} avec le compte de Nadia : Urbanisme, annuaire, « Accès refusé » sur RH et paie, un fichier « Mots de passe serveurs ». Barre de copie qui progresse | COMPTE VOLÉ · EXFILTRATION | Bruits de clics rapides | « Quelles données sont parties ? » |
+| 2 | 25 s | Appel entrant d'un numéro inconnu : « Support informatique de {{PRESTATAIRE\_INFO}}. Ouvrez {{OUTIL\_PRISE\_EN\_MAIN}} comme d'habitude, et donnez-moi l'identifiant et le mot de passe. » | APPEL NON SOLLICITÉ · URGENCE · PEUR | Sonnerie | « Qu'est-ce qu'il lui dit, d'après vous ? », puis vote |
+| 3 | 25 s | Nadia ouvre {{OUTIL\_PRISE\_EN\_MAIN}}, comme d'habitude, et lit l'identifiant et le mot de passe. Le curseur se met à bouger tout seul | OUTIL HABITUEL · PORTE OUVERTE | Clic, silence | « Que fallait-il faire à ce moment ? » |
+| 4 | 35 s | Ouverture de {{SERVEUR\_FICHIERS}} : Urbanisme, annuaire, « Accès refusé » sur RH et paie, un fichier « Mots de passe serveurs ». Barre de copie qui progresse. « Pour finir, lisez-moi le code reçu par SMS. » | EXFILTRATION · CODE DONNÉ | Bruits de clics rapides, vibration du téléphone | « Quelles données sont parties ? Et pourquoi ce code ? » |
 | 5 | 20 s | Fin d'appel : « C'est réglé, bonne journée. » Nadia sourit, reprend son travail. Rien ne paraît anormal | TOUT SEMBLE NORMAL | Raccrocher | « Combien de temps avant qu'on s'en rende compte ? » |
 | 6 | 25 s | Quelques jours plus tard, un lundi à 8 h : écran de rançon sur tous les postes du service, puis plan large de la mairie aux fenêtres éteintes | RANÇONGICIEL · SERVICES À L'ARRÊT | Bourdonnement grave, puis silence | Débrief et réflexe |
 
@@ -390,6 +390,7 @@ Le contenu de ce document est validé : il sert de spécification figée, rien n
   - Parcours 6, 8, 9 : chiffres et consignes sourcés.
   - Écrans ajoutés : bonnes réponses (P1, P3, P7, P10) et « Et si on l'avait supprimé ? » (P7, P11, P12).
   - Mots-clés masqués par défaut, affichés par l'animateur.
+  - Parcours 1 sur l'outil de prise en main habituel ({{OUTIL\_PRISE\_EN\_MAIN}}) : identifiant et mot de passe donnés (vote 1), puis code SMS pour garder le compte (vote 2).
   - Format « Finances et direction » (10 · 3 · 2 · 5 · 4 · 7).
   - Formats court (9 · 10 · 5 · 1 · 7) et standard (30 min : 9 · 5 · 10 · 11 · 6 · 8 · 12 · 1 · 7) recomposés pour des agents non spécialistes, sans les parcours 2, 3 et 4.
   - Coulisses, débrief ludique, touches supplémentaires, titres neutres projetés, variables fournisseur, ordre « Complet ».

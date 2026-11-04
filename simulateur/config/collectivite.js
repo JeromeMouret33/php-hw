@@ -25,6 +25,7 @@ window.CONFIG_COLLECTIVITE = {
     PRESTATAIRE_INFO:   "InfoRéunion Services",
     NUMERO_SUPPORT:     "0262 00 00 00 (poste 1234)",
     OUTIL_TICKET:       "GLPI",
+    OUTIL_PRISE_EN_MAIN:"TeamViewer",       // outil de prise en main à distance utilisé par le vrai support
     FOURNISSEUR:        "Transports Lagon Bleu",
     SERVICE_FINANCES:   "Direction des finances",
     SERVEUR_FICHIERS:   "\\\\SRV-FICHIERS\\Commun",
