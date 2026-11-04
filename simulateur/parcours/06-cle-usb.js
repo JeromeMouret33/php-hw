@@ -11,6 +11,7 @@ SIMU.enregistrerParcours({
   nature: 'malveillant',
   cible: 'Tout agent',
   duree: '2 min',
+  source: 'Tischer et al., « Users Really Do Plug in USB Drives They Find », IEEE Symposium on Security and Privacy, 2016',
   debut: 'e1',
 
   ecrans: {
@@ -83,7 +84,7 @@ SIMU.enregistrerParcours({
 
   debrief: {
     attaquant: 'Dès le branchement, un programme s\'exécute ou la clé tape elle-même des commandes : l\'attaquant obtient un accès au réseau.',
-    message: 'Une étude universitaire américaine (2016) a montré qu\'environ la moitié des clés abandonnées étaient branchées par ceux qui les trouvaient.',
+    message: 'En 2016, des chercheurs américains ont abandonné 297 clés USB sur leur campus : des fichiers ont été ouverts sur 135 d\'entre elles, soit 45 %, souvent pour retrouver le propriétaire.',
     reflexe: 'Ne jamais brancher un support inconnu, le remettre au {{DSI_NOM}}.'
   }
 });

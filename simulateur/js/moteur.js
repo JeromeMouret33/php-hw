@@ -730,7 +730,7 @@
     ['📞', 'Vérifier par un autre canal,', 'sur des coordonnées déjà connues (contre-appel, ancien numéro, numéro au dos de la carte).'],
     ['🧭', 'Aller soi-même sur le site ou l\'application officiels,', 'jamais via le lien reçu.'],
     ['🔐', 'Ne jamais donner un code, un mot de passe ou la main sur son poste', 'à quelqu\'un qui vous contacte.'],
-    ['📣', 'Signaler sans honte', 'au {{DSI_NOM}} ({{NUMERO_SUPPORT}}) : un signalement rapide limite les dégâts.']
+    ['📣', 'Signaler sans honte', 'au {{DSI_NOM}}, au {{NUMERO_SUPPORT}} : un signalement rapide limite les dégâts.']
   ];
 
   function conclusion() {

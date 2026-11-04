@@ -14,6 +14,7 @@ SIMU.enregistrerParcours({
   nature: 'malveillant',
   cible: 'Tout agent',
   duree: '3 min',
+  source: 'ANTAI, « Attention aux SMS, courriels et sites frauduleux » ; Cybermalveillance.gouv.fr, usurpation ANTAI',
   debut: 'e1',
 
   ecrans: {
@@ -60,7 +61,7 @@ SIMU.enregistrerParcours({
         ]
       },
       indices: {
-        majoration: { type: 'suspect', etiquette: 'Pression de la majoration ; l\'ANTAI ne réclame pas de paiement par SMS' }
+        majoration: { type: 'suspect', etiquette: 'Pression de la majoration ; l\'ANTAI n\'envoie jamais de SMS pour réclamer une amende' }
       },
       suivant: 'voteB'
     },

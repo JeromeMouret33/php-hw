@@ -15,7 +15,7 @@ SIMU.enregistrerParcours({
   nature: 'malveillant',
   cible: 'Tout agent',
   duree: '4 min (3 min avec le film)',
-  source: 'Mode opératoire documenté : inondation de spams puis faux appel du support, prise en main à distance',
+  source: 'Mode opératoire documenté : inondation de spams puis faux appel du support, prise en main à distance avec l\'Assistance rapide de Windows (Microsoft Threat Intelligence, mai 2024)',
   debut: { option: 'filmParcours1', alors: 'f1', sinon: 'e1' },
 
   ecrans: {
@@ -68,7 +68,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
-      coulisses: '<b>Assistance rapide</b> est un vrai outil Microsoft, déjà présent dans Windows : rien ne paraît louche. Le code sert à relier les deux ordinateurs : une fois la connexion acceptée, l\'appelant voit l\'écran et peut prendre la main. Le refus du ticket est voulu : un ticket laisserait une trace et alerterait le vrai support.',
+      coulisses: '<b>Assistance rapide</b> est un vrai outil Microsoft, déjà présent dans Windows : rien ne paraît louche. Le code, généré côté attaquant puis dicté à la victime, sert à relier les deux ordinateurs : une fois la connexion acceptée, l\'appelant voit l\'écran et peut prendre la main. Le refus du ticket est voulu : un ticket laisserait une trace et alerterait le vrai support.',
       etape: 'É3',
       composant: 'appel',
       donnees: {
@@ -76,24 +76,24 @@ SIMU.enregistrerParcours({
         numero: '0262 00 55 17',
         duree: '02:14',
         repliques: [
-          { qui: 'appelant', texte: '[[code|Ouvrez l\'Assistance rapide et donnez-moi le code à 6 chiffres.]]' },
+          { qui: 'appelant', texte: '[[code|Ouvrez l\'Assistance rapide et tapez le code que je vais vous dicter.]]' },
           { qui: 'agent', texte: 'Je préfère ouvrir un ticket {{OUTIL_TICKET}}, non ?' },
           { qui: 'appelant', texte: '[[ticket|Pas le temps, c\'est critique !]]' }
         ]
       },
       indices: {
-        code:   { type: 'suspect', etiquette: 'Le vrai support ne demande jamais un code de prise en main sur un appel entrant' },
+        code:   { type: 'suspect', etiquette: 'Le vrai support ne fait jamais ouvrir un outil de prise en main sur un appel entrant' },
         ticket: { type: 'suspect', etiquette: 'Refus de passer par {{OUTIL_TICKET}} (« pas le temps, c\'est critique »)' }
       },
       suivant: 'vote'
     },
 
     vote: {
-      coulisses: 'Si la salle hésite : « Qui a appelé qui ? Et qui a ouvert un ticket ? » Donner le code montre la prise de contrôle puis la rançon. Raccrocher et rappeler le {{NUMERO_SUPPORT}} montre que le vrai support n\'a jamais appelé.',
+      coulisses: 'Si la salle hésite : « Qui a appelé qui ? Et qui a ouvert un ticket ? » Taper le code montre la prise de contrôle puis la rançon. Raccrocher et rappeler le {{NUMERO_SUPPORT}} montre que le vrai support n\'a jamais appelé.',
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
-        { libelle: 'On donne le code', suivant: 'e4', bon: false },
+        { libelle: 'On tape le code dicté', suivant: 'e4', bon: false },
         { libelle: 'On raccroche et on rappelle le support<br><span class="vote-detail">{{NUMERO_SUPPORT}}</span>', suivant: 'e3b', bon: true }
       ],
       suiteQuandMeme: 'e4'
@@ -110,7 +110,7 @@ SIMU.enregistrerParcours({
         contexte: 'Vous rappelez le support sur le <b>numéro connu</b>.',
         repliques: [
           { qui: 'agent', texte: 'On vient de m\'appeler de votre part pour une attaque sur mon poste…' },
-          { qui: 'appelant', texte: 'Nous ne vous avons pas appelé. Ne donnez aucun code : on s\'occupe de votre boîte mail.' }
+          { qui: 'appelant', texte: 'Nous ne vous avons pas appelé. Ne tapez aucun code : on s\'occupe de votre boîte mail.' }
         ]
       },
       suivant: 'bienvu'
@@ -180,11 +180,11 @@ SIMU.enregistrerParcours({
       suivant: 'voteFilm'
     },
     voteFilm: {
-      coulisses: 'Si la salle hésite : « Qui a appelé qui ? Et qui a ouvert un ticket ? » Donner le code montre la prise de contrôle puis la rançon. Raccrocher et rappeler le {{NUMERO_SUPPORT}} montre que le vrai support n\'a jamais appelé.',
+      coulisses: 'Si la salle hésite : « Qui a appelé qui ? Et qui a ouvert un ticket ? » Taper le code montre la prise de contrôle puis la rançon. Raccrocher et rappeler le {{NUMERO_SUPPORT}} montre que le vrai support n\'a jamais appelé.',
       type: 'vote',
-      question: 'On lui demande le code de l\'Assistance rapide. Que fait Nadia ?',
+      question: 'On lui dicte un code pour l\'Assistance rapide. Que fait Nadia ?',
       options: [
-        { libelle: 'Elle donne le code', suivant: 'f3', bon: false },
+        { libelle: 'Elle tape le code', suivant: 'f3', bon: false },
         { libelle: 'Elle raccroche et rappelle le support<br><span class="vote-detail">{{NUMERO_SUPPORT}}</span>', suivant: 'bienvuFilm', bon: true }
       ],
       suiteQuandMeme: 'f3'
@@ -196,11 +196,11 @@ SIMU.enregistrerParcours({
       suite: 'f3'
     },
     f3: {
-      coulisses: '<b>Assistance rapide</b> est un vrai outil Microsoft, déjà présent dans Windows : rien ne paraît louche. Le code sert à relier les deux ordinateurs : une fois la connexion acceptée, l\'appelant voit l\'écran et peut prendre la main.',
+      coulisses: '<b>Assistance rapide</b> est un vrai outil Microsoft, déjà présent dans Windows : rien ne paraît louche. Le code, généré côté attaquant puis dicté à la victime, sert à relier les deux ordinateurs : une fois la connexion acceptée, l\'appelant voit l\'écran et peut prendre la main.',
       etape: 'Séq. 3',
       composant: 'video',
       donnees: { sequence: 3, fichier: 'videos/parcours1-seq3.mp4', question: 'Que fallait-il faire à ce moment ?',
-        description: 'Nadia ouvre l\'outil d\'assistance à distance et lit un code à 6 chiffres à voix haute.' },
+        description: 'Nadia ouvre l\'outil d\'assistance à distance et tape le code à 6 chiffres que lui dicte l\'appelant.' },
       motsCles: ['CODE DONNÉ', 'PORTE OUVERTE'],
       suivant: 'f4'
     },

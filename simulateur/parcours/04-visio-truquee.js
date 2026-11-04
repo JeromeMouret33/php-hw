@@ -14,7 +14,7 @@ SIMU.enregistrerParcours({
   nature: 'malveillant',
   cible: 'Direction, finances',
   duree: '3 min',
-  source: 'Cas réel Arup, Hong Kong, 2024 (chiffres à sourcer avant diffusion)',
+  source: 'Cas réel Arup, Hong Kong, 2024 (CNN, 16/05/2024 ; South China Morning Post)',
   debut: 'e1',
 
   ecrans: {
@@ -118,7 +118,7 @@ SIMU.enregistrerParcours({
 
   debrief: {
     attaquant: 'Quelques minutes de vidéo publique (conseil municipal en ligne) suffisent pour imiter un visage et une voix.',
-    message: 'En 2024 à Hong Kong, un employé du groupe Arup a viré environ 25 millions de dollars après une visio où le directeur financier et des collègues étaient des imitations générées par IA.',
+    message: 'En 2024 à Hong Kong, un employé du groupe Arup a fait 15 virements, environ 200 millions de dollars de Hong Kong (près de 25 millions de dollars américains), après une visio où le directeur financier et des collègues étaient des imitations générées par IA. Arup l\'a confirmé en mai 2024.',
     reflexe: 'Rappeler par un autre canal, double validation pour tout virement inhabituel, mot de passe convenu en interne pour les demandes sensibles.'
   }
 });
