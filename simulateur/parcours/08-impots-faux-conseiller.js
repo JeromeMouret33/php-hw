@@ -13,6 +13,7 @@ SIMU.enregistrerParcours({
   nature: 'malveillant',
   cible: 'Tout agent, vie perso',
   duree: '4 min',
+  source: 'Arcep : signalements d\'usurpation de numéro passés de 531 en 2023 à plus de 19 000 en 2025, malgré l\'authentification des numéros imposée depuis octobre 2024',
   debut: 'e1',
 
   ecrans: {
@@ -75,7 +76,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
-      coulisses: 'L\'escroc a saisi la carte sur un site marchand ; la banque envoie une demande de validation. Il appelle, avec le <b>vrai numéro de la banque affiché</b> : ce numéro peut être usurpé. Il cite les infos du faux site, donc il paraît crédible. « Valider pour annuler » est un mensonge : valider, c\'est payer.',
+      coulisses: 'L\'escroc a saisi la carte sur un site marchand ; la banque envoie une demande de validation. Il appelle avec le <b>numéro de la banque affiché</b> : malgré les contrôles imposés aux opérateurs depuis fin 2024, l\'usurpation reste fréquente (plus de 19 000 signalements à l\'Arcep en 2025). Il cite les infos du faux site, donc il paraît crédible. « Valider pour annuler » est un mensonge : valider, c\'est payer.',
       etape: 'É3',
       composant: 'appel',
       donnees: {

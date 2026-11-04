@@ -2,6 +2,34 @@
 
 Journal daté, en ordre antichronologique.
 
+## 2026-11-04 (soir) – Revue de plausibilité des 12 scénarios
+
+**Demande de l'animateur** : vérifier que chaque scénario est plausible. Pour le parcours 1, les agents de ses clients n'ont pas les droits d'installation, alors que le scénario « faux support qui fait installer un outil (type TeamViewer) » est bien réel chez eux. Choix demandé : rendre le scénario plus costaud, ou assumer que l'installation est impossible.
+
+**Choix retenu : les deux.** Le poste bloque l'outil (la protection fonctionne), et l'attaquant contourne par le compte de l'agent.
+
+**Fait**
+- Parcours 1, réécrit :
+  - appel d'un numéro inconnu ;
+  - demande de lancer un outil, « même sans droits » ;
+  - vote 1, puis **outil bloqué** (indice vert) ;
+  - plan B : « lisez-moi les deux codes reçus par SMS » ;
+  - vote 2, puis connexion à distance avec le compte, où RH et paie sont refusés mais où traîne un fichier de mots de passe ;
+  - rançon quelques jours plus tard ;
+  - film aligné sur cette histoire.
+- Parcours 2 : chronologie par le comptable public.
+- Parcours 3 : « faire passer » le paiement sans les pièces.
+- Parcours 4 : changement du RIB du notaire.
+- Parcours 6 et 8 : nuances dans les coulisses ; source Arcep ajoutée au parcours 8.
+- Parcours 5, 7, 9, 10, 11 et 12 : relus, sans changement.
+
+**Sources consultées** :
+- TeamViewer (QuickSupport « ne nécessite aucune installation ») ;
+- Arcep (authentification des numéros depuis octobre 2024 ; 531 signalements d'usurpation en 2023, plus de 19 000 en 2025) ;
+- Microsoft Threat Intelligence (mai 2024).
+
+**Résultat** : `node outils/verifier.js` → 97 écrans, 106 chemins, aucun problème ; captures relues.
+
 ## 2026-11-04 (fin de journée) – Coulisses, style ludique, sources, relecture
 
 **Demandes de l'animateur** :

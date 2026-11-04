@@ -52,7 +52,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
-      coulisses: 'Un ordinateur accepte tout clavier branché, sans rien demander. La clé tape en quelques secondes des commandes préparées, qui installent un outil de contrôle à distance. C\'est ensuite le poste qui se connecte à l\'attaquant, depuis l\'intérieur du réseau : la porte est ouverte de dedans.',
+      coulisses: 'Un ordinateur accepte tout clavier branché, sans rien demander. La clé tape en quelques secondes des commandes préparées, qui installent un outil de contrôle à distance. C\'est ensuite le poste qui se connecte à l\'attaquant, depuis l\'intérieur du réseau : la porte est ouverte de dedans. Si le poste bloque les programmes inconnus, le faux fichier échoue ; la clé-clavier, elle, tape des commandes avec les droits de l\'agent.',
       etape: 'É2',
       composant: 'explorateur',
       donnees: {

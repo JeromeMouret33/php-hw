@@ -145,14 +145,14 @@ SIMU.enregistrerParcours({
 
     // ---------------------------------------------------------------- É3 – conséquence
     e3: {
-      coulisses: 'Le compte bénéficiaire sert de relais : l\'argent est retransféré, souvent à l\'étranger, en quelques heures. Plus l\'alerte est rapide (banque, comptable public, plainte), plus on a de chances de bloquer les fonds. Quelques jours plus tard, elles sont faibles.',
+      coulisses: 'Le comptable public paie le mandat avec les coordonnées que la collectivité lui a transmises : le contrôle du RIB se joue <b>au moment de la demande</b>, côté collectivité. Le compte bénéficiaire sert de relais : l\'argent repart en quelques heures. Plus l\'alerte est rapide (banque, comptable public, plainte), plus on a de chances de bloquer les fonds.',
       etape: 'É3',
       composant: 'chronologie',
       donnees: {
         titre: 'Le RIB est mis à jour…',
         etapes: [
-          { quand: 'Jour J', titre: 'Le virement part', texte: 'Les coordonnées de {{FOURNISSEUR}} sont modifiées. La facture n° 2026-118 est payée : <b>18 450 €</b> partent vers l\'IBAN lituanien.' },
-          { quand: 'Quelques heures plus tard', titre: 'L\'argent disparaît', texte: 'Les fonds sont retransférés vers l\'étranger. Ils sont désormais introuvables.' },
+          { quand: 'Jour J', titre: 'Le RIB est modifié', texte: 'La fiche de {{FOURNISSEUR}} est mise à jour, et le mandat de la facture n° 2026-118 part chez le comptable public.' },
+          { quand: 'Quelques jours plus tard', titre: 'Le comptable paie', texte: 'Rien ne l\'alerte : <b>18 450 €</b> partent vers l\'IBAN de l\'escroc… et sont retransférés à l\'étranger dans les heures qui suivent.' },
           { quand: '30 jours plus tard', titre: 'Le vrai fournisseur relance', texte: '« Facture n° 2026-118 impayée : merci de régulariser. » La collectivité doit payer une seconde fois.', alerte: true }
         ]
       },

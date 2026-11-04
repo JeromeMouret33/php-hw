@@ -41,7 +41,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
-      coulisses: 'Une fois la conversation engagée, l\'escroc pose la vraie demande. Le secret isole l\'agent : personne ne pourra lui dire que c\'est une arnaque. Les cartes cadeaux sont prisées car leurs codes se dépensent ou se revendent en quelques minutes, et sont difficiles à tracer.',
+      coulisses: 'Une fois la conversation engagée, l\'escroc pose la vraie demande. Un agent ne peut pas payer seul : il demande donc de <b>faire passer</b> le paiement sans les pièces habituelles (« je signerai après »). Le secret isole l\'agent. Variante fréquente : les cartes cadeaux, payées de sa poche « je te rembourse », dont les codes se dépensent en quelques minutes.',
       etape: 'É2',
       composant: 'smartphone',
       donnees: {
@@ -51,7 +51,7 @@ SIMU.enregistrerParcours({
         heure: '10:14',
         messages: [
           { de: 'moi', texte: 'Oui bien sûr, de quoi avez-vous besoin ?', heure: '10:12' },
-          { de: 'eux', texte: '<span class="cle">Il faut régler en urgence un acompte de 24 800 € à un cabinet</span> pour une opération confidentielle. Je t\'envoie le RIB. [[secret|N\'en parle à personne, pas même aux finances.]]', heure: '10:13' },
+          { de: 'eux', texte: '<span class="cle">Il faut faire passer en urgence un acompte de 24 800 € à un cabinet</span>, pour une opération confidentielle. Je t\'envoie le RIB : prépare le paiement aujourd\'hui, je signerai les pièces après. [[secret|N\'en parle à personne, même pas à ton chef de service.]]', heure: '10:13' },
           { de: 'eux', texte: '[[flatterie|Je compte sur toi, tu es la seule personne de confiance.]]', heure: '10:13' }
         ],
         contexte: '<p>Variante fréquente : acheter des <b>cartes cadeaux</b> « pour les agents méritants ».</p>'
@@ -84,7 +84,7 @@ SIMU.enregistrerParcours({
         duree: '00:38',
         contexte: 'Vous appelez le DGS sur son <b>numéro connu</b>.',
         repliques: [
-          { qui: 'agent', texte: 'Vous m\'avez demandé un acompte de 24 800 € sur WhatsApp ?' },
+          { qui: 'agent', texte: 'Vous m\'avez demandé de faire passer un acompte de 24 800 € sur WhatsApp ?' },
           { qui: 'appelant', texte: 'Pas du tout, je suis dans mon bureau ! C\'est une arnaque : ne payez rien et prévenez les finances.' }
         ]
       },
@@ -117,7 +117,7 @@ SIMU.enregistrerParcours({
   },
 
   coulisses: {
-    scenario: 'Un agent proche de la direction reçoit un WhatsApp au nom du DGS, {{DGS_PRENOM}} {{DGS_NOM}}. L\'escroc veut obtenir un virement ou des cartes cadeaux, en dehors du circuit normal de la dépense.',
+    scenario: 'Un agent des finances ou de la direction reçoit un WhatsApp au nom du DGS, {{DGS_PRENOM}} {{DGS_NOM}}. L\'escroc veut faire passer un paiement <b>en contournant le circuit de la dépense</b> (« je signerai les pièces après »), ou obtenir des cartes cadeaux.',
     modeOperatoire: 'C\'est la <b>fraude au président</b>, une forme de FOVI. L\'escroc se prépare avec des informations publiques : organigramme, photos, agenda publiés sur le site ou les réseaux sociaux. Il crée un compte de messagerie avec la photo du dirigeant, choisit un moment où celui-ci est injoignable, puis joue sur l\'autorité, le secret et la flatterie. Un faux avocat rappelle ensuite pour maintenir la pression.'
   },
 

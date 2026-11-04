@@ -1,6 +1,6 @@
 # SUIVI – état actuel
 
-*Mis à jour le 2026-11-04 (fin de journée).*
+*Mis à jour le 2026-11-04 (revue de plausibilité).*
 
 ## Où en est-on ?
 
@@ -54,6 +54,16 @@
 13. **Parcours 7, « On le signale »** : ce choix compte comme un bon réflexe (« prudent ») dans le score du débrief, par cohérence avec le réflexe n° 5, « Signaler sans honte ».
 14. **Parcours 12, expéditeur** : on garde `impots.gouv.fr`, comme le prévoit la spécification. Les vrais mails peuvent aussi venir de `dgfip.finances.gouv.fr`, qui est également officiel.
 15. **Parcours 8 et 9, compléments** : « on fait opposition, on conteste, on porte plainte : c'est à la banque de prouver une négligence grave » (P8). La conséquence du P9 parle d'un petit paiement en général, et plus seulement du colis.
+
+**Revue de plausibilité (demande de l'animateur, 2026-11-04)** :
+
+16. **Parcours 1, version « plus costaude »** : les agents n'ont pas les droits d'installation. Le faux support demande de lancer un outil de prise en main (parfois une version qui se lance sans installation) ; **le poste le bloque**, ce qui montre que la protection fonctionne. L'attaquant passe alors au **plan B** : il se fait lire deux codes reçus par SMS, pour réinitialiser le mot de passe et valider la double authentification, puis se connecte à distance avec le compte de l'agent. Il y a donc deux votes au lieu d'un. Le film suit la même histoire (séquence 3 : outil bloqué, puis demande des codes).
+17. **Parcours 1, droits d'accès** : un agent de l'urbanisme n'a pas accès aux dossiers RH ni à l'état civil. L'attaquant ne copie que ce que l'agent peut ouvrir (Urbanisme, annuaire, RH et paie en « Accès refusé ») et trouve un **fichier de mots de passe** dans le dossier commun, ce qui explique comment il devient administrateur. La rançon arrive « quelques jours plus tard » et non « le lendemain ».
+18. **Parcours 1, appel** : l'écran affiche « Numéro inconnu », et l'appelant se présente comme le prestataire. Avec l'authentification des numéros imposée aux opérateurs depuis octobre 2024, afficher le nom du prestataire n'est plus le cas le plus probable. Les coulisses citent la variante par Teams.
+19. **Parcours 2** : le paiement passe par le **comptable public**, quelques jours après la mise à jour du RIB. Le contrôle se joue au moment de la demande, côté collectivité.
+20. **Parcours 3** : un agent ne peut pas « régler » seul un acompte. Le faux DGS demande de **faire passer** le paiement sans les pièces (« je signerai après »), ce qui contourne le circuit de la dépense. Les cartes cadeaux restent en variante.
+21. **Parcours 4** : un agent ne vire pas seul 480 000 €. La visio truquée demande de **changer le RIB du notaire** de l'acquisition avant que le comptable public ne paie. Le vote devient « On met à jour le RIB du notaire / On pose une question de contrôle et on rappelle ».
+22. **Parcours 8** : la mention « le numéro peut être usurpé » est conservée, avec une nuance sourcée : plus de 19 000 signalements à l'Arcep en 2025, malgré les contrôles.
 
 ## Blocages
 

@@ -75,6 +75,14 @@ Critères d'acceptation communs, vérifiés le 2026-11-04 par `outils/verifier.j
 - [x] Ordres de passage suggérés (court, standard, complet) sélectionnables depuis le menu ; « Parcours suivant » suit l'ordre choisi *(ordre « complet » proposé, à valider : voir SUIVI)*
 - [x] Style plus ludique pour l'écran de conséquence (cartes de bande dessinée animées), le débrief (score en étoiles, votes, cartes illustrées, médaille du réflexe) et les réflexes de conclusion (cartes à collectionner, tampon final)
 
+### Phase 2 ter – Revue de plausibilité des 12 scénarios (demande de l'animateur, 2026-11-04)
+- [x] Parcours 1 : outil de prise en main bloqué par le poste, plan B par les codes SMS, droits d'accès réalistes, escalade par un fichier de mots de passe, film aligné
+- [x] Parcours 2 : paiement par le comptable public, quelques jours après la mise à jour du RIB
+- [x] Parcours 3 : « faire passer » un paiement en contournant le circuit de la dépense
+- [x] Parcours 4 : changement du RIB du notaire plutôt qu'un virement direct
+- [x] Parcours 6 et 8 : nuances (poste qui bloque les programmes inconnus ; usurpation de numéro malgré l'authentification des opérateurs)
+- [x] Parcours 5, 7, 9, 10, 11 et 12 : relus, plausibles en l'état
+
 ### Phase 2 bis – Panneau « Coulisses » (demande de l'animateur, 2026-11-04)
 - [x] Onglet discret à droite et touche C : panneau dépliable, qui reste ouvert d'un écran à l'autre
 - [x] Trois onglets : « Cet écran » (ce qui se passe), « Le scénario » (cible, durée, source), « Le mode opératoire »

@@ -19,7 +19,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
-      coulisses: 'L\'adresse est extérieure, mais l\'attaquant y affiche le nom du maire : c\'est ce que l\'œil lit en premier. Le prétexte « acquisition foncière confidentielle » justifie le secret et un gros montant. La réunion est fixée le jour même, pour laisser peu de temps à la réflexion.',
+      coulisses: 'L\'adresse est extérieure, mais l\'attaquant y affiche le nom du maire : c\'est ce que l\'œil lit en premier. Le prétexte « acquisition foncière confidentielle » justifie le secret, et le paiement au notaire un gros montant. La réunion est fixée le jour même, pour laisser peu de temps à la réflexion.',
       etape: 'É1',
       composant: 'mail',
       donnees: {
@@ -60,8 +60,8 @@ SIMU.enregistrerParcours({
           { nom: 'Conseiller financier', image: 'conseiller-2.jpg' }
         ],
         chat: [
-          { de: '{{MAIRE_NOM}}', texte: '[[demande|Nous devons verser aujourd\'hui l\'acompte de l\'acquisition : 480 000 €. Confidentialité absolue jusqu\'au conseil.]]' },
-          { de: 'Vous', texte: 'Le montant a-t-il été validé en commission ?' },
+          { de: '{{MAIRE_NOM}}', texte: '[[demande|Le notaire de l\'acquisition a changé de banque : mettez à jour son RIB aujourd\'hui, le paiement de 480 000 € part demain. Confidentialité absolue jusqu\'au conseil.]]' },
+          { de: 'Vous', texte: 'L\'étude notariale a-t-elle confirmé ce changement ?' },
           { de: '{{MAIRE_NOM}}', texte: '[[question|Le réseau coupe… Le conseiller financier vous envoie le RIB.]]' }
         ],
         bandeau: 'Connexion instable'
@@ -79,7 +79,7 @@ SIMU.enregistrerParcours({
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
-        { libelle: 'On lance le virement', suivant: 'e3', bon: false },
+        { libelle: 'On met à jour le RIB du notaire', suivant: 'e3', bon: false },
         { libelle: 'On pose une question de contrôle et on rappelle', suivant: 'bienvu', bon: true }
       ],
       suiteQuandMeme: 'e3'
@@ -104,7 +104,7 @@ SIMU.enregistrerParcours({
           { nom: 'Conseiller juridique', image: 'conseiller-1.jpg', etat: 'degrade' },
           { nom: 'Conseiller financier', image: 'conseiller-2.jpg', etat: 'degrade' }
         ],
-        chat: [{ de: 'Conseiller financier', texte: 'RIB : LT77 9990 0000 9921 4410' }]
+        chat: [{ de: 'Conseiller financier', texte: 'Nouveau RIB du notaire : LT77 9990 0000 9921 4410' }]
       },
       motsCles: ['IMITATION PAR IA'],
       suivant: 'debrief'
@@ -112,7 +112,7 @@ SIMU.enregistrerParcours({
   },
 
   coulisses: {
-    scenario: 'Un agent des finances est invité à une visio « confidentielle » avec le maire et le DGS. Pendant la réunion, on lui demande de virer un acompte important. Les visages et les voix sont imités.',
+    scenario: 'Un agent des finances est invité à une visio « confidentielle » avec le maire et le DGS. On lui demande de changer en urgence le RIB du notaire d\'une acquisition, juste avant le paiement. Les visages et les voix sont imités.',
     modeOperatoire: 'L\'attaquant utilise des outils d\'IA qui imitent un visage et une voix à partir de vidéos publiques (conseil municipal diffusé en ligne, interviews). Il peut s\'agir de séquences préparées à l\'avance ou d\'imitations en direct, encore imparfaites : d\'où les excuses de « mauvais réseau ». C\'est le scénario du cas Arup à Hong Kong en 2024, où les autres participants de la visio étaient des imitations.'
   },
 
