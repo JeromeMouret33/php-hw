@@ -33,7 +33,7 @@
 **Nouvelles décisions (phase 2)** :
 
 1. **Le film remplace É1 à É5, pas seulement É2 à É5.** La séquence 1 du film montre la même boîte inondée que l'écran É1 ; garder les deux ferait doublon.
-2. **Vote placé après la séquence 2 du film**, avant que Nadia ne donne le code. Le film ne prévoit pas de vote, mais la règle d'or en exige un.
+2. ~~**Vote placé après la séquence 2 du film**, avant que Nadia ne donne le code. Le film ne prévoit pas de vote, mais la règle d'or en exige un.~~ *Obsolète : remplacée par la décision 16 (vote après la séquence 3).*
 3. **Écrans ajoutés pour les bonnes réponses**, que le storyboard ne détaille pas :
    - rappel au vrai support (parcours 1) ;
    - rappel au vrai DGS (parcours 3) ;
@@ -48,7 +48,7 @@
 
 **Nouvelles décisions (coulisses et relecture)** :
 
-10. **Parcours 1, code de l'Assistance rapide** : la spécification fait dire « donnez-moi le code » et montre Nadia qui « lit un code ». Dans le vrai outil, c'est l'attaquant qui dicte le code, et la victime le tape (rapport de Microsoft, mai 2024). Le simulateur suit la réalité : « tapez le code que je vais vous dicter », vote « On tape le code dicté », mot-clé « CODE SAISI ». **À reporter dans le script du film.**
+10. ~~**Parcours 1, code de l'Assistance rapide** : la spécification fait dire « donnez-moi le code » et montre Nadia qui « lit un code ». Dans le vrai outil, c'est l'attaquant qui dicte le code, et la victime le tape (rapport de Microsoft, mai 2024). Le simulateur suit la réalité : « tapez le code que je vais vous dicter », vote « On tape le code dicté », mot-clé « CODE SAISI ». **À reporter dans le script du film.**~~ *Obsolète : remplacée par la décision 16 (outil bloqué, puis codes SMS).*
 11. **Parcours 6, chiffre de l'étude** : la spécification dit « environ la moitié ». L'étude (Tischer et al., 2016) donne 45 % (135 clés sur 297 avec des fichiers ouverts). Le texte affiche le chiffre exact.
 12. **Panneau Coulisses, écrans de vote** : il ne montre que la question de relance, jamais ce que révèle chaque choix. Le verdict « Attaque » ou « Légitime » n'apparaît qu'après le premier vote, pour ne pas souffler la réponse si le panneau est ouvert devant la salle.
 13. **Parcours 7, « On le signale »** : ce choix compte comme un bon réflexe (« prudent ») dans le score du débrief, par cohérence avec le réflexe n° 5, « Signaler sans honte ».
