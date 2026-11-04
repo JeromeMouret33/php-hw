@@ -326,11 +326,11 @@ Cinq réflexes couvrent les 12 parcours ; ils servent de carton de conclusion.
 
 | Format | Parcours, dans l'ordre | Durée indicative |
 | --- | --- | --- |
-| Court (20 min) | 9 · 5 · 2 · 1 (film) · 7 | 15 min + 5 min de réflexes |
-| Standard (35 min) | 9 · 10 · 5 · 2 · 3 · 1 (film) · 7 · 8 + 12 | 30 min + 5 min de réflexes |
+| Court (20 min) | 9 · 10 · 5 · 1 (film) · 7 | 14 min + 5 min de réflexes |
+| Standard (30 min) | 9 · 5 · 10 · 11 · 6 · 8 · 12 · 1 (film) · 7 | 24 min + 5 min de réflexes |
 | Complet (50 min) | 9 · 5 · 10 · 2 · 8 · 12 · 3 · 11 · 6 · 4 · 1 · 7 | 45 min + 5 min de réflexes |
 
-Commencer par un parcours perso (9 ou 10) met la salle en confiance ; finir par le film et un parcours légitime laisse le message « vigilant, pas paranoïaque ».
+Les formats court et standard s'adressent à tous les agents : ils ne contiennent que des situations du quotidien (SMS, WhatsApp, mail, clé USB, faux technicien) et laissent de côté les parcours 2, 3 et 4, qui demandent de connaître le circuit de la dépense ; ceux-ci sont réservés au format complet. Commencer par un parcours perso (9 ou 10) met la salle en confiance ; finir par le film et un parcours légitime laisse le message « vigilant, pas paranoïaque ».
 
 **Points sourcés** (novembre 2026) : cas Arup (parcours 4), étude sur les clés USB (parcours 6), consigne de l'ANTAI sur les SMS (parcours 9), faux support (parcours 1), usurpation des numéros (parcours 8). Voir les sources ci-dessous.
 
@@ -389,5 +389,6 @@ Le contenu de ce document est validé : il sert de spécification figée, rien n
   - Parcours 6, 8, 9 : chiffres et consignes sourcés.
   - Écrans ajoutés : bonnes réponses (P1, P3, P7, P10) et « Et si on l'avait supprimé ? » (P7, P11, P12).
   - Mots-clés masqués par défaut, affichés par l'animateur.
+  - Formats court (9 · 10 · 5 · 1 · 7) et standard (30 min : 9 · 5 · 10 · 11 · 6 · 8 · 12 · 1 · 7) recomposés pour des agents non spécialistes, sans les parcours 2, 3 et 4.
   - Coulisses, débrief ludique, touches supplémentaires, titres neutres projetés, variables fournisseur, ordre « Complet ».
 

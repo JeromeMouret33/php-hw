@@ -263,8 +263,10 @@
 
   /** Ordres de passage suggérés par la spécification (section « Réflexes et ordre de passage »). */
   const ORDRES = {
-    court:    { nom: 'Court (20 min)',    ordre: [9, 5, 2, 1, 7] },
-    standard: { nom: 'Standard (35 min)', ordre: [9, 10, 5, 2, 3, 1, 7, 8, 12] },
+    // Court et standard : situations vécues par tous les agents (sans les parcours 2, 3 et 4,
+    // réservés aux finances et à la direction), un légitime toutes les 3 ou 4, fin sur un légitime.
+    court:    { nom: 'Court (20 min)',    ordre: [9, 10, 5, 1, 7] },
+    standard: { nom: 'Standard (30 min)', ordre: [9, 5, 10, 11, 6, 8, 12, 1, 7] },
     complet:  { nom: 'Complet (50 min)',  ordre: [9, 5, 10, 2, 8, 12, 3, 11, 6, 4, 1, 7] }
   };
 
