@@ -19,7 +19,7 @@ Légende : `[x]` fait et vérifié · `[ ]` à faire · `[~]` commencé, voir la
 - [x] Variante légitime : le bouton montre ce que l'agent aurait perdu en supprimant le message (`libelleSuite`, écran « Et si… ») – éprouvée sur les parcours 7, 11 et 12
 - [x] Mots-clés en surimpression, sans voix (apparition en tampon ; K masque et réaffiche, avec un message de confirmation ; bouton présent seulement s'il y a des mots-clés)
 - [x] Débrief : indices trouvés et manqués, ce que fait l'attaquant ensuite, impact, réflexe en une phrase
-- [~] Plein écran (bouton et touche F) *Note : impossible à tester sans écran, à essayer sur le poste de l'animateur*
+- [x] Plein écran (bouton et touche F) – validé par l'animateur sur son poste
 - [x] Raccourcis clavier (I bascule désormais : afficher / masquer tous les indices) : → avance sur le chemin malveillant, R revient au dernier vote (plus ← retour, F plein écran, K mots-clés, I tous les indices, M menu)
 - [x] Scène fixe en 1920×1080, mise à l'échelle de la fenêtre
 - [x] Lecture du fichier de configuration : variables textuelles, parcours actifs (cases à cocher), dossier images
@@ -73,11 +73,17 @@ Critères d'acceptation communs, vérifiés le 2026-11-04 par `outils/verifier.j
 - [x] Parcours 11 – Le message de l'Assurance Maladie (légitime)
 - [x] Parcours 12 – L'avis d'impôt disponible (légitime, écran comparatif avec le parcours 8)
 - [x] Ordres de passage suggérés (court, standard, complet) sélectionnables depuis le menu ; « Parcours suivant » suit l'ordre choisi *(ordre « complet » proposé, à valider : voir SUIVI)*
-- [ ] Style plus ludique et sympathique pour l'écran de conséquence (chronologie), le débrief et les réflexes de conclusion *(retour de l'animateur, « à terme »)*
+- [x] Style plus ludique pour l'écran de conséquence (cartes de bande dessinée animées), le débrief (score en étoiles, votes, cartes illustrées, médaille du réflexe) et les réflexes de conclusion (cartes à collectionner, tampon final)
+
+### Phase 2 bis – Panneau « Coulisses » (demande de l'animateur, 2026-11-04)
+- [x] Onglet discret à droite et touche C : panneau dépliable, qui reste ouvert d'un écran à l'autre
+- [x] Trois onglets : « Cet écran » (ce qui se passe), « Le scénario » (cible, durée, source), « Le mode opératoire »
+- [x] Commentaires rédigés pour les 12 parcours : scénario et mode opératoire de chaque parcours, plus un commentaire par écran d'interface et par vote (contrôlé par le vérificateur)
+- [x] Parcours 5 : explication du vol du code de double authentification (fausse page servant de relais en temps réel, cookie de session)
 
 ## Phase 3 – Film du parcours 1 (chantier parallèle)
 
-- [-] Réalisation avec Lemo-Opuscar, style Living Screencast, muet, mots-clés, 6 séquences à arrêt automatique. *Note : chantier séparé, à mener sur le poste de l'animateur, hors de ce dépôt pour l'instant.*
+- [-] *(Facultatif, reporté par l'animateur : « on verra après »)* Réalisation avec Lemo-Opuscar, style Living Screencast, muet, mots-clés, 6 séquences à arrêt automatique. *Note : chantier séparé, à mener sur le poste de l'animateur, hors de ce dépôt pour l'instant.*
 - [ ] Variables COLLECTIVITE, PRESTATAIRE_INFO, SERVEUR_FICHIERS, OUTIL_MAIL et NUMERO_SUPPORT lues depuis la configuration
 - [~] Export en 6 fichiers courts, appelés par le parcours 1 du simulateur *Note : côté simulateur, c'est prêt (`videos/parcours1-seqN.mp4`, option `filmParcours1`, description affichée si une séquence manque) ; les fichiers restent à produire*
 - [x] Carton final fixe pendant le débrief (bloc « À retenir » du débrief du parcours 1)
@@ -87,11 +93,15 @@ Critères d'acceptation communs, vérifiés le 2026-11-04 par `outils/verifier.j
 
 - [x] Captures automatiques de chaque écran des 12 parcours en 1920×1080, relues visuellement (premier passage ; à refaire après chaque modification d'écran)
 - [x] Script qui parcourt les 12 parcours, toutes branches comprises, sans impasse, bouton mort ni variable non remplacée (94 écrans, 97 chemins, mode film compris, touches I et K)
-- [ ] Relecture par un agent séparé, avec un regard d'animateur : lisibilité au fond de la salle, rythme, cohérence des indices
+- [~] Relecture par un agent séparé, avec un regard d'animateur : lisibilité au fond de la salle, rythme, cohérence des indices *Note : lancée le 2026-11-04, retours à intégrer*
 - [ ] ⛔ Point d'arrêt n°2 : répétition à blanc des 12 parcours sur le vidéoprojecteur réel, chronomètre en main
 
 ## Hors développement – à faire par l'animateur
 
-- [ ] Vérifier que les numéros fictifs utilisés (0262 00 …, 0693 00 …, 06 39 98 …, 01 99 00 …) ne sont attribués à personne
-- [ ] Sourcer avant diffusion : montant et date du cas Arup (parcours 4), étude sur les clés USB de 2016 (parcours 6), consigne de l'ANTAI sur les SMS (parcours 9)
+- [-] Vérifier que les numéros fictifs ne sont attribués à personne *(l'animateur choisit de les laisser tels quels)*
+- [x] Sourcer avant diffusion, sources intégrées aux textes et à l'onglet « Le scénario » :
+  - Arup (P4) : 15 virements, environ 200 M HK$ (≈ 25 M US$), confirmé par Arup en mai 2024 – CNN 16/05/2024, South China Morning Post
+  - Clés USB (P6) : Tischer et al., IEEE S&P 2016, 297 clés, fichiers ouverts sur 135 (45 %) – le texte disait « environ la moitié », corrigé
+  - ANTAI (P9) : « l'ANTAI n'envoie jamais de SMS » (antai.gouv.fr ; Cybermalveillance.gouv.fr)
+  - Faux support (P1) : Microsoft Threat Intelligence, mai 2024 (abus de l'Assistance rapide après inondation de mails)
 - [ ] Recueillir auprès de la collectivité : outil de messagerie, format des adresses, prestataire informatique et support, procédure réelle de changement de RIB, accord du DGS pour sa photo
