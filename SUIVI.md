@@ -4,11 +4,11 @@
 
 ## Où en est-on ?
 
-**Les 12 parcours sont prêts, avec le panneau « Coulisses » et le style ludique. La relecture par un agent séparé est faite et ses retours sont intégrés.**
+**Développement terminé : 12 parcours, coulisses, style ludique, plausibilité revue, formats court et standard recomposés. Tout est sur master.**
 
-- Dernière tâche terminée : intégration des retours de la relecture, puis nouvelle vérification (94 écrans, 97 chemins, aucun problème) et relecture des captures.
-- Prochaine action : **⛔ point d'arrêt n°2** de la spécification, une répétition à blanc des 12 parcours sur le vrai vidéoprojecteur, chronomètre en main.
-- Reporté : le film du parcours 1 (facultatif, « on verra après »).
+- Prochaine action : **⛔ point d'arrêt n°2.** L'animateur teste les séances courte (20 min) et standard (30 min) sur le vrai vidéoprojecteur, chronomètre en main, puis valide ou envoie ses retours.
+- En parallèle : réponses de la collectivité au mail (variables, photos, procédure RIB), puis mise à jour de `config/collectivite.js`.
+- Reporté : le film du parcours 1 (facultatif).
 
 ## Comment tester
 
