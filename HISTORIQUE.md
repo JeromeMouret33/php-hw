@@ -2,6 +2,21 @@
 
 Journal daté, en ordre antichronologique.
 
+## 2026-11-04 – Formats court et standard pour des agents non spécialistes
+
+**Demande de l'animateur** : composer les séances courte et standard avec des situations accessibles à des agents de mairie, sans les dégoûter. Le format complet garde les 12 parcours.
+
+**Fait**
+- **Court (20 min)** : 9 · 10 · 5 · 1 · 7, soit 14 minutes de parcours et 5 minutes de réflexes.
+- **Standard (30 min, au lieu de 35)** : 9 · 5 · 10 · 11 · 6 · 8 · 12 · 1 · 7, soit 24 minutes de parcours et 5 minutes de réflexes.
+- **Principes** :
+  - les parcours 2, 3 et 4 sont écartés : ils demandent de connaître le circuit de la dépense et sont réservés au format complet ;
+  - la séance commence par du perso ;
+  - il y a un légitime toutes les 3 ou 4 situations ;
+  - le parcours 12 vient juste après le 8 ;
+  - la séance finit par le faux technicien, puis un message légitime.
+- Mise à jour dans `moteur.js` et dans la spécification. Vérification au navigateur : menu filtré, et enchaînement 9 → 10 → 5 → 1 → 7 → conclusion.
+
 ## 2026-11-04 (nuit) – Décisions validées, mots-clés à la demande, fusion
 
 **Décisions validées par l'animateur**, toutes conformes aux recommandations :

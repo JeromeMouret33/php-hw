@@ -79,6 +79,7 @@ Critères d'acceptation communs, vérifiés le 2026-11-04 par `outils/verifier.j
 - [x] Mots-clés masqués par défaut sur chaque écran ; l'animateur les affiche (bouton « Afficher les mots-clés (n) » ou touche K), et le bouton n'existe que s'il y en a (contrôlé par le vérificateur)
 - [x] Toutes les décisions en attente validées ; spécification passée en version 2
 - [x] Travail fusionné dans master
+- [x] Formats court (20 min) et standard (30 min) recomposés pour des agents de mairie non spécialistes, sans les parcours 2, 3 et 4 ; menu et enchaînement « Parcours suivant » vérifiés
 
 ### Phase 2 ter – Revue de plausibilité des 12 scénarios (demande de l'animateur, 2026-11-04)
 - [x] Parcours 1 : outil de prise en main bloqué par le poste, plan B par les codes SMS, droits d'accès réalistes, escalade par un fichier de mots de passe, film aligné
