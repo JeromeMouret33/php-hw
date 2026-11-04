@@ -267,7 +267,10 @@
     // réservés aux finances et à la direction), un légitime toutes les 3 ou 4, fin sur un légitime.
     court:    { nom: 'Court (20 min)',    ordre: [9, 10, 5, 1, 7] },
     standard: { nom: 'Standard (30 min)', ordre: [9, 5, 10, 11, 6, 8, 12, 1, 7] },
-    complet:  { nom: 'Complet (50 min)',  ordre: [9, 5, 10, 2, 8, 12, 3, 11, 6, 4, 1, 7] }
+    complet:  { nom: 'Complet (50 min)',  ordre: [9, 5, 10, 2, 8, 12, 3, 11, 6, 4, 1, 7] },
+    // Finances et direction : les parcours qui demandent de connaître le circuit de la dépense,
+    // encadrés par un perso pour démarrer et un légitime pour finir.
+    finances: { nom: 'Finances et direction (25 min)', ordre: [10, 3, 2, 5, 4, 7] }
   };
 
   /** Liste des parcours de la séance, dans l'ordre choisi au menu. */
