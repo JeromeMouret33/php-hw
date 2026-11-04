@@ -338,7 +338,7 @@ Les formats court et standard s'adressent à tous les agents : ils ne contiennen
 **Sources**
 
 - [Collectivités locales – Lutte contre les tentatives d'escroquerie (FOVI)](https://www.collectivites-locales.gouv.fr/index.php/gerer-les-finances-publiques-locales/lutte-contre-les-tentatives-descroquerie)
-- [Dépliant DGFiP – Se prémunir contre les FOVI](https://www.collectivites-locales.gouv.fr/files/finances-locales/doc/4_FOVI%20web.pdf)
+- [Dépliant « Le point sur » – Les escroqueries aux faux ordres de virement (FOVI)](https://www.collectivites-locales.gouv.fr/files/files/Ressources/D%C3%A9pliants%20LePointsur/depl-fovi_web.pdf)
 - [La Banque Postale – Collectivités : se protéger des tentatives de fraude](https://www.labanquepostale.fr/collectivites/actualite/2025/tentatives-fraude.html)
 - [Lemo-Opuscar (GitHub)](https://github.com/lemomo-ai/lemo-opuscar)
 - [CNN – Arup, escroquerie par visio truquée (16 mai 2024)](https://edition.cnn.com/2024/05/16/tech/arup-deepfake-scam-loss-hong-kong-intl-hnk)

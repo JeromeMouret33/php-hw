@@ -11,3 +11,6 @@ Déposez ici les fichiers suivants, avec exactement ces noms :
 
 Si un fichier manque, le simulateur affiche un visuel générique : aucun parcours ne casse.
 Le dossier est indiqué par « dossierImages » dans config/collectivite.js.
+
+ATTENTION, DÉPÔT PUBLIC : les images déposées ici sont ignorées par git (.gitignore).
+Ne les forcez jamais dans le dépôt (pas de « git add -f »).

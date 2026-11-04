@@ -2,6 +2,17 @@
 
 Journal daté, en ordre antichronologique.
 
+## 2026-11-04 – Lien mort (issue #1) et protection du dépôt public
+
+**Contexte** : une issue GitHub, ouverte par un robot publicitaire de vérification de liens, signale que le lien du dépliant DGFiP sur les FOVI renvoie une erreur 404. Après vérification directe, c'est exact. Le lien « Replay » du robot n'a pas été ouvert.
+
+**Fait**
+- Lien remplacé par la nouvelle adresse officielle du dépliant « Le point sur – Les escroqueries aux faux ordres de virement » (collectivites-locales.gouv.fr), vérifiée : PDF, code 200.
+- Autres liens de la spécification testés : la plupart répondent. La Banque Postale, BleepingComputer et GitHub (Lemo-Opuscar) répondent 403, et l'étude sur les clés USB ne répond pas : ce sont probablement des blocages anti-robots, à vérifier dans un navigateur.
+- Dépôt public : `.gitignore` empêche de publier les configurations clients (`collectivite-<client>.js`), les images et les vidéos (seuls les LISEZMOI restent publiés). Un avertissement est ajouté en tête de `config/collectivite.js` et dans `images/LISEZMOI.txt`. Testé avec des fichiers fictifs.
+
+**Résultat** : `node outils/verifier.js` → 97 écrans, 106 chemins, aucun problème.
+
 ## 2026-11-04 – Parcours 1 sur l'outil de prise en main habituel
 
 **Constat de l'animateur** : ses clients utilisent déjà TeamViewer avec leur vrai support. Version validée : outil habituel, puis code SMS, avec deux votes.

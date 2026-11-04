@@ -1,2 +1,12 @@
 captures/
 node_modules/
+
+# Dépôt public : ne jamais publier les données réelles d'une collectivité.
+# Configurations clients : nommer le fichier collectivite-<client>.js (ignoré),
+# puis le copier sur config/collectivite.js le jour de la séance, sans le committer.
+simulateur/config/collectivite-*.js
+# Photos, logos et vidéos des clients (seuls les LISEZMOI sont publiés)
+simulateur/images/*
+!simulateur/images/LISEZMOI.txt
+simulateur/videos/*
+!simulateur/videos/LISEZMOI.txt

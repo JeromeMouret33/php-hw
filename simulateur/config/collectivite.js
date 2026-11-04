@@ -6,6 +6,10 @@
  * Les images vont dans le dossier indiqué par « dossierImages » (voir images/LISEZMOI.txt).
  *
  * Collectivité fictive par défaut : Commune de Saint-Exemple.
+ *
+ * ATTENTION, DÉPÔT PUBLIC : ne committez jamais ce fichier rempli avec les données
+ * d'un vrai client. Gardez la version client dans collectivite-<client>.js (ignoré par git)
+ * et copiez-la ici seulement sur le poste de l'animateur, le jour de la séance.
  */
 window.CONFIG_COLLECTIVITE = {
 
