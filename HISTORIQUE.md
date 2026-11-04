@@ -2,6 +2,24 @@
 
 Journal daté, en ordre antichronologique.
 
+## 2026-11-04 – Parcours 1 sur l'outil de prise en main habituel
+
+**Constat de l'animateur** : ses clients utilisent déjà TeamViewer avec leur vrai support. Version validée : outil habituel, puis code SMS, avec deux votes.
+
+**Fait**
+- Nouvelle variable `OUTIL_PRISE_EN_MAIN` (« TeamViewer » par défaut). La fenêtre de l'outil a un habillage générique, sans logo de l'éditeur.
+- Parcours 1 réécrit :
+  - boîte inondée, puis appel d'un numéro inconnu ;
+  - « ouvrez {{OUTIL_PRISE_EN_MAIN}} comme d'habitude, donnez-moi l'identifiant et le mot de passe » (vote 1) ;
+  - prise de contrôle : RH et paie refusés, copie, fichier de mots de passe ;
+  - « lisez-moi le code SMS » pour garder le compte après l'appel (vote 2) ;
+  - rançon quelques jours plus tard.
+- Message clé : « le bon outil, mais pas le bon interlocuteur ».
+- Film aligné (vote après la séquence 2), spécification mise à jour.
+- Ajout à prévoir dans le mail à la collectivité : demander quel outil de prise en main utilise leur support.
+
+**Résultat** : `node outils/verifier.js` sans erreur ; captures du parcours 1 relues.
+
 ## 2026-11-04 – Format « Finances et direction »
 
 **Demande de l'animateur** : ajouter la séance proposée pour les publics finances et direction.

@@ -79,6 +79,7 @@ Critères d'acceptation communs, vérifiés le 2026-11-04 par `outils/verifier.j
 - [x] Mots-clés masqués par défaut sur chaque écran ; l'animateur les affiche (bouton « Afficher les mots-clés (n) » ou touche K), et le bouton n'existe que s'il y en a (contrôlé par le vérificateur)
 - [x] Toutes les décisions en attente validées ; spécification passée en version 2
 - [x] Travail fusionné dans master
+- [x] Parcours 1 sur l'outil de prise en main habituel ({{OUTIL_PRISE_EN_MAIN}}, TeamViewer par défaut) : identifiant et mot de passe (vote 1), prise de contrôle, code SMS (vote 2), rançon ; film et spécification alignés
 - [x] Format « Finances et direction » (25 min) : 10 · 3 · 2 · 5 · 4 · 7 ; menu et enchaînement vérifiés
 - [x] Formats court (20 min) et standard (30 min) recomposés pour des agents de mairie non spécialistes, sans les parcours 2, 3 et 4 ; menu et enchaînement « Parcours suivant » vérifiés
 
