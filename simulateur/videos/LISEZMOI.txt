@@ -1,0 +1,14 @@
+FILM DU PARCOURS 1 – « Le support qui n'en était pas un »
+=========================================================
+
+Déposez ici les 6 séquences du film, avec exactement ces noms :
+
+  parcours1-seq1.mp4   Diversion : la boîte mail se remplit
+  parcours1-seq2.mp4   Appel entrant du faux support
+  parcours1-seq3.mp4   Le code de prise en main est donné
+  parcours1-seq4.mp4   Prise de contrôle et copie des fichiers
+  parcours1-seq5.mp4   Fin d'appel, tout semble normal
+  parcours1-seq6.mp4   Le lendemain : rançongiciel
+
+Puis, dans config/collectivite.js, passez « filmParcours1 » à true.
+Si une séquence manque, le simulateur affiche sa description à la place.

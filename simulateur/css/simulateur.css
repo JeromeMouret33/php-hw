@@ -1,0 +1,649 @@
+/* =====================================================================
+   SIMULATEUR – scène fixe 1920×1080 mise à l'échelle de la fenêtre.
+   Pensé pour vidéoprojecteur : textes ≥ 22 px, contrastes forts.
+   Aucune ressource externe (100 % hors ligne).
+   ===================================================================== */
+
+:root {
+  --police: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: Consolas, "Courier New", monospace;
+  --suspect: #d7191c;
+  --suspect-fond: #fff0f0;
+  --rassurant: #1a9641;
+  --rassurant-fond: #eefbf2;
+  --encre: #1b1f24;
+  --encre-2: #4a5561;
+  --trait: #d5dbe1;
+  --fond-app: #f4f6f8;
+  --accent: #1f4e79;
+  --scene-fond: #ffffff;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #0d1117; overflow: hidden; }
+body { font-family: var(--police); color: var(--encre); }
+button { font-family: inherit; }
+
+#scene {
+  position: absolute; top: 50%; left: 50%;
+  width: 1920px; height: 1080px;
+  transform-origin: center center;
+  background: var(--scene-fond);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+/* ---------------------------------------------------------- Bandeau */
+#bandeau {
+  height: 52px; flex: none;
+  display: flex; align-items: center; gap: 24px;
+  padding: 0 24px;
+  background: #1b2430; color: #e9eef3;
+  font-size: 22px;
+}
+.bandeau-parcours { font-weight: 600; }
+.bandeau-etape { background: #33414f; border-radius: 6px; padding: 2px 12px; font-weight: 700; }
+.bandeau-etape:empty { display: none; }
+.bandeau-vote { margin-left: auto; color: #ffd166; }
+
+/* ---------------------------------------------------------- Zone écran */
+#ecran { flex: 1; position: relative; overflow: hidden; }
+
+/* ---------------------------------------------------------- Commandes animateur */
+#commandes {
+  height: 56px; flex: none;
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 16px;
+  background: #1b2430;
+}
+.cmd {
+  background: #2c3947; color: #dfe6ec; border: 0; border-radius: 8px;
+  font-size: 20px; padding: 8px 16px; cursor: pointer;
+}
+.cmd:hover { background: #3b4b5c; }
+.cmd-suite { background: #c0392b; color: #fff; font-weight: 700; }
+.cmd-suite:hover { background: #d9473a; }
+.cmd-espace { flex: 1; }
+
+/* ---------------------------------------------------------- Boutons génériques */
+.btn {
+  border: 0; border-radius: 12px; cursor: pointer;
+  font-size: 28px; font-weight: 600; padding: 18px 34px;
+}
+.btn-principal { background: var(--accent); color: #fff; }
+.btn-principal:hover { filter: brightness(1.15); }
+.btn-secondaire { background: #e4e9ee; color: var(--encre); }
+.btn-secondaire:hover { background: #d4dbe2; }
+
+/* ---------------------------------------------------------- Indices */
+.indice { cursor: pointer; border-radius: 6px; transition: box-shadow .2s, background .2s; }
+.indice.revele.indice-suspect { box-shadow: 0 0 0 5px var(--suspect); background: var(--suspect-fond); }
+.indice.revele.indice-rassurant { box-shadow: 0 0 0 5px var(--rassurant); background: var(--rassurant-fond); }
+/* fond clair une fois révélé : le texte doit rester foncé, même sur un fond sombre (en-tête, téléphone) */
+.indice.revele { color: var(--encre); }
+div > .indice:has(> div) { display: block; }
+
+#couche-etiquettes { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
+.etiquette {
+  position: absolute; max-width: 620px;
+  padding: 10px 18px; border-radius: 10px;
+  color: #fff; font-size: 24px; font-weight: 700; line-height: 1.25;
+  box-shadow: 0 6px 18px rgba(0,0,0,.3);
+  animation: apparition .25s ease-out;
+}
+.etiquette-suspect { background: var(--suspect); }
+.etiquette-rassurant { background: var(--rassurant); }
+@keyframes apparition { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* ---------------------------------------------------------- Mots-clés */
+#couche-motscles {
+  position: absolute; left: 0; right: 0; bottom: 84px; z-index: 30;
+  display: flex; justify-content: center; gap: 32px; pointer-events: none;
+}
+#couche-motscles.masque { display: none; }
+.mot-cle {
+  font-size: 56px; font-weight: 900; letter-spacing: 3px;
+  color: var(--suspect); background: rgba(255,255,255,.94);
+  border: 7px solid var(--suspect); border-radius: 10px;
+  padding: 6px 28px; transform: rotate(-3deg);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  animation: tampon .35s cubic-bezier(.2,1.6,.4,1);
+}
+@keyframes tampon { from { opacity: 0; transform: rotate(-3deg) scale(1.8); } to { opacity: 1; transform: rotate(-3deg) scale(1); } }
+
+.var-manquante { background: #ff0; color: #c00; font-weight: 700; outline: 2px dashed #c00; }
+
+/* ---------------------------------------------------------- Avatars */
+.avatar {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 64px; height: 64px; border-radius: 50%;
+  background: #6b7c8f; color: #fff; font-weight: 700; font-size: 26px;
+}
+.avatar.petit { width: 40px; height: 40px; font-size: 18px; }
+
+/* =====================================================================
+   COMPOSANT : MESSAGERIE
+   ===================================================================== */
+.mail { --theme: #0f6cbd; --theme-clair: #e8f1fb; height: 100%; display: flex; flex-direction: column; background: var(--fond-app); }
+.mail.theme-gmail  { --theme: #c5221f; --theme-clair: #fce8e6; }
+.mail.theme-zimbra { --theme: #31577b; --theme-clair: #e6edf4; }
+
+.mail-barre {
+  height: 64px; flex: none; display: flex; align-items: center; gap: 32px;
+  padding: 0 24px; background: var(--theme); color: #fff; font-size: 22px;
+}
+.theme-gmail .mail-barre { background: #fff; color: var(--encre); border-bottom: 1px solid var(--trait); }
+.mail-app { font-weight: 700; display: flex; align-items: center; gap: 12px; min-width: 380px; }
+.mail-app-icone { font-size: 30px; }
+.mail-recherche {
+  flex: 1; max-width: 640px; background: rgba(255,255,255,.9); color: #6b7680;
+  border-radius: 8px; padding: 8px 16px; font-size: 20px;
+}
+.theme-gmail .mail-recherche { background: #eef2f6; }
+.mail-utilisateur { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+
+.mail-corps { flex: 1; display: flex; min-height: 0; }
+.mail-rail { width: 72px; flex: none; background: #e9edf1; display: flex; flex-direction: column; align-items: center; padding-top: 16px; gap: 12px; }
+.rail-btn { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #56616c; }
+.rail-btn.actif { background: var(--theme-clair); color: var(--theme); box-shadow: inset 4px 0 0 var(--theme); }
+
+.mail-liste { width: 440px; flex: none; background: #fff; border-right: 1px solid var(--trait); overflow: hidden; }
+.ml-entete { padding: 18px 20px; font-size: 24px; font-weight: 700; border-bottom: 1px solid var(--trait); }
+.ml-item { padding: 14px 20px; border-bottom: 1px solid #eceff2; border-left: 5px solid transparent; }
+.ml-item.selectionne { background: var(--theme-clair); border-left-color: var(--theme); }
+.ml-ligne1 { display: flex; justify-content: space-between; gap: 8px; font-size: 22px; }
+.ml-de { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ml-item.non-lu .ml-de, .ml-item.non-lu .ml-objet { font-weight: 700; }
+.ml-item.non-lu .ml-objet { color: var(--theme); }
+.ml-heure { color: var(--encre-2); font-size: 20px; flex: none; }
+.ml-objet { font-size: 21px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ml-apercu { font-size: 20px; color: var(--encre-2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ml-trombone { margin-right: 6px; }
+
+.mail-lecture { flex: 1; display: flex; min-width: 0; background: #fff; }
+.mail-message { flex: 1; padding: 28px 40px; overflow: hidden; min-width: 0; }
+.mail-objet { font-size: 34px; margin: 0 0 22px; line-height: 1.2; }
+.mail-entete { display: flex; align-items: center; gap: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--trait); }
+.mail-exp { flex: 1; min-width: 0; font-size: 24px; line-height: 1.4; }
+.mail-de-nom { font-weight: 700; }
+.mail-de-adresse { color: var(--encre-2); }
+.mail-a { color: var(--encre-2); font-size: 22px; }
+.mail-date { color: var(--encre-2); font-size: 22px; flex: none; align-self: flex-start; }
+.mail-pjs { display: flex; gap: 16px; flex-wrap: wrap; padding: 18px 0; }
+.mail-pj { display: flex; align-items: center; gap: 12px; border: 1px solid var(--trait); border-radius: 10px; padding: 10px 16px 10px 10px; background: #fafbfc; }
+.mail-pj.ouverte { border-color: var(--theme); background: var(--theme-clair); }
+.pj-type { width: 52px; height: 52px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 18px; background: #b5372e; }
+.pj-texte { display: flex; flex-direction: column; }
+.pj-nom { font-size: 22px; font-weight: 600; }
+.pj-taille { font-size: 20px; color: var(--encre-2); }
+.mail-texte { font-size: 27px; line-height: 1.5; }
+.mail-texte p { margin: 0 0 16px; }
+.mail-texte .signature { margin-top: 26px; color: #39444f; }
+
+.mail-apercu { width: 640px; flex: none; background: #525a63; display: flex; flex-direction: column; }
+.apercu-barre { display: flex; justify-content: space-between; padding: 12px 20px; color: #fff; font-size: 21px; background: #3d444c; }
+.apercu-page { flex: 1; padding: 28px; overflow: hidden; }
+
+/* Document RIB (aperçu de pièce jointe) */
+.doc-rib { background: #fff; border-radius: 4px; padding: 34px 34px 28px; box-shadow: 0 8px 24px rgba(0,0,0,.35); font-size: 24px; }
+.rib-titre { font-weight: 800; letter-spacing: 1px; font-size: 24px; border-bottom: 3px solid #333; padding-bottom: 12px; margin-bottom: 18px; }
+.rib-ligne { display: flex; flex-direction: column; gap: 2px; padding: 10px 6px; border-bottom: 1px solid #e6e9ec; }
+.rib-ligne span { font-size: 21px; color: var(--encre-2); text-transform: uppercase; letter-spacing: .5px; }
+.rib-ligne b { font-size: 25px; }
+.rib-note { margin-top: 18px; font-size: 21px; font-style: italic; color: var(--encre-2); }
+.mono { font-family: var(--mono); letter-spacing: 1px; }
+
+/* =====================================================================
+   COMPOSANT : ÉCRAN D'APPEL
+   ===================================================================== */
+.appel { height: 100%; display: flex; align-items: center; gap: 80px; padding: 0 110px; background: linear-gradient(135deg, #e8edf2, #d5dde5); }
+.telephone {
+  width: 430px; height: 860px; flex: none; position: relative;
+  border-radius: 56px; background: linear-gradient(180deg, #23384d, #101b26);
+  border: 12px solid #0b0f14; box-shadow: 0 30px 60px rgba(0,0,0,.35);
+  display: flex; flex-direction: column; align-items: center; color: #fff; padding-top: 70px;
+}
+.tel-encoche { position: absolute; top: 14px; width: 130px; height: 30px; border-radius: 16px; background: #0b0f14; }
+.tel-statut { font-size: 22px; color: #a9bdd0; }
+.tel-avatar { width: 150px; height: 150px; border-radius: 50%; background: #5d7891; display: flex; align-items: center; justify-content: center; font-size: 60px; font-weight: 700; margin: 36px 0 24px; }
+.tel-nom { font-size: 32px; font-weight: 700; text-align: center; padding: 0 20px; }
+.tel-numero { font-size: 28px; margin-top: 10px; font-family: var(--mono); }
+.tel-duree { font-size: 24px; color: #a9bdd0; margin-top: 12px; min-height: 30px; }
+.tel-grille { display: flex; gap: 26px; margin-top: auto; margin-bottom: 40px; }
+.tel-btn-gris { width: 86px; height: 86px; border-radius: 50%; background: rgba(255,255,255,.14); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 28px; }
+.tel-btn-gris small { font-size: 18px; margin-top: 2px; }
+.tel-raccrocher { margin-bottom: 60px; }
+.tel-boutons-entrant { display: flex; gap: 120px; margin-top: auto; margin-bottom: 80px; }
+.tel-btn { width: 96px; height: 96px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+.tel-btn.rouge { background: #e5383b; }
+.tel-btn.vert { background: #2bb24c; }
+
+.appel-droite { flex: 1; display: flex; flex-direction: column; gap: 28px; }
+.appel-contexte { font-size: 28px; background: #fff; border-left: 8px solid var(--accent); border-radius: 10px; padding: 18px 26px; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+.appel-repliques { display: flex; flex-direction: column; gap: 20px; }
+.replique { max-width: 980px; border-radius: 22px; padding: 18px 28px; font-size: 30px; line-height: 1.4; box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+.replique p { margin: 4px 0 0; }
+.replique-qui { font-size: 21px; font-weight: 700; opacity: .75; }
+.replique-appelant { background: #fff; align-self: flex-start; border-bottom-left-radius: 6px; }
+.replique-agent { background: #1f4e79; color: #fff; align-self: flex-end; border-bottom-right-radius: 6px; }
+
+/* =====================================================================
+   ÉCRAN MOTEUR : VOTE
+   ===================================================================== */
+.ecran-vote { height: 100%; padding: 50px 90px; background: #f1f4f7; display: flex; flex-direction: column; }
+.vote-titre { font-size: 28px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; }
+.vote-question { font-size: 58px; margin: 14px 0 46px; line-height: 1.15; }
+.vote-options { display: grid; gap: 36px; grid-template-columns: repeat(2, 1fr); }
+.vote-options.n3 { grid-template-columns: repeat(3, 1fr); }
+.vote-option { background: #fff; border-radius: 20px; padding: 34px; box-shadow: 0 8px 22px rgba(0,0,0,.08); display: flex; flex-direction: column; gap: 22px; }
+.vote-libelle { font-size: 40px; font-weight: 700; line-height: 1.2; min-height: 100px; }
+.vote-detail { font-size: 32px; font-weight: 500; color: var(--encre-2); font-family: var(--mono); }
+.vote-barre { height: 22px; background: #e4e9ee; border-radius: 11px; overflow: hidden; }
+.vote-barre span { display: block; height: 100%; background: var(--accent); transition: width .3s; }
+.vote-compteur { display: flex; align-items: center; gap: 18px; font-size: 32px; }
+.btn-rond { width: 56px; height: 56px; border-radius: 50%; border: 0; background: #e4e9ee; font-size: 32px; cursor: pointer; }
+.btn-rond:hover { background: #d4dbe2; }
+.vote-nombre { min-width: 50px; text-align: center; font-weight: 700; }
+.vote-pct { color: var(--encre-2); margin-left: auto; font-weight: 700; }
+.btn-choix { background: var(--accent); color: #fff; align-self: flex-start; }
+.vote-pied { margin-top: auto; display: flex; justify-content: flex-end; }
+
+/* =====================================================================
+   ÉCRAN MOTEUR : BIEN VU
+   ===================================================================== */
+.ecran-bienvu { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 200px; background: linear-gradient(180deg, #eefbf2, #ffffff); }
+.bienvu-icone { width: 160px; height: 160px; border-radius: 50%; background: var(--rassurant); color: #fff; font-size: 100px; display: flex; align-items: center; justify-content: center; }
+.ecran-bienvu h1 { font-size: 84px; margin: 30px 0 20px; color: var(--rassurant); }
+.bienvu-texte { font-size: 36px; line-height: 1.45; max-width: 1300px; margin: 0 0 50px; }
+.bienvu-actions { display: flex; gap: 28px; }
+.bienvu-actions .btn-principal { background: var(--suspect); font-size: 34px; }
+
+/* =====================================================================
+   MENU, CONCLUSION, ERREUR
+   ===================================================================== */
+.ecran-menu { height: 100%; padding: 34px 90px 26px; display: flex; flex-direction: column; background: linear-gradient(160deg, #f4f6f8, #e3e9ef); }
+.menu-entete { display: flex; align-items: center; gap: 32px; margin-bottom: 24px; }
+.menu-logo { width: 100px; height: 100px; object-fit: contain; }
+.menu-entete h1 { font-size: 56px; margin: 0; }
+.menu-entete p { font-size: 30px; margin: 6px 0 0; color: var(--encre-2); }
+.menu-cartes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.carte-parcours { text-align: left; border: 0; background: #fff; border-radius: 18px; padding: 18px 26px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+.carte-parcours:hover { box-shadow: 0 0 0 4px var(--accent), 0 6px 16px rgba(0,0,0,.08); }
+.carte-numero { font-size: 26px; font-weight: 800; color: var(--accent); }
+.carte-titre { font-size: 30px; font-weight: 700; color: var(--encre); }
+.carte-meta { font-size: 22px; color: var(--encre-2); }
+.menu-vide { font-size: 28px; }
+.menu-pied { margin-top: auto; display: flex; align-items: center; gap: 30px; }
+.menu-aide { font-size: 22px; color: var(--encre-2); }
+
+
+.ecran-erreur { padding: 80px; }
+.ecran-erreur h1 { color: var(--suspect); font-size: 48px; }
+.ecran-erreur p { font-size: 30px; }
+
+/* Menu : choix du format de séance */
+.menu-formats { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; font-size: 24px; color: var(--encre-2); }
+.btn-format { border: 2px solid #c3ccd5; background: #fff; border-radius: 999px; padding: 8px 22px; font-size: 22px; cursor: pointer; color: var(--encre); }
+.btn-format.actif { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Bulle d'information animateur (touches I et K) */
+#bulle {
+  position: absolute; left: 50%; bottom: 76px; transform: translateX(-50%);
+  background: rgba(27,36,48,.92); color: #fff; font-size: 24px; padding: 10px 26px; border-radius: 999px;
+  opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 40;
+}
+#bulle.visible { opacity: 1; }
+
+/* =====================================================================
+   COMPLÉMENTS MESSAGERIE : compteur, boîte vide, invitation, lien, barre d'état
+   ===================================================================== */
+.ml-compteur { float: right; background: var(--suspect); color: #fff; border-radius: 999px; padding: 2px 14px; font-size: 22px; }
+.mail-vide { display: flex; align-items: center; justify-content: center; color: var(--encre-2); font-size: 28px; }
+.mail-invitation { display: flex; align-items: center; gap: 24px; border: 2px solid var(--theme); border-radius: 12px; padding: 16px 22px; margin: 4px 0 20px; background: var(--theme-clair); }
+.inv-date { width: 90px; height: 90px; border-radius: 10px; background: var(--theme); color: #fff; font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.1; }
+.inv-texte { flex: 1; display: flex; flex-direction: column; font-size: 24px; gap: 2px; }
+.inv-texte b { font-size: 27px; }
+.inv-btn { background: var(--theme); color: #fff; font-weight: 700; padding: 12px 22px; border-radius: 8px; font-size: 22px; }
+.lien { color: #0b57d0; text-decoration: underline; }
+.btn-mail { display: inline-block; background: var(--theme); color: #fff; font-weight: 700; padding: 12px 26px; border-radius: 6px; }
+.mail-message { position: relative; }
+.barre-etat { position: absolute; left: 0; bottom: 0; background: #f1f3f4; border: 1px solid #c4c9ce; border-bottom: 0; border-left: 0; border-top-right-radius: 8px; padding: 6px 16px; font-size: 22px; font-family: var(--mono); color: #333; max-width: 95%; }
+
+/* SVG : un indice ne peut pas avoir d'ombre portée de boîte, on l'auréole */
+svg .indice.revele.indice-suspect { filter: drop-shadow(0 0 5px var(--suspect)) drop-shadow(0 0 5px var(--suspect)) drop-shadow(0 0 3px var(--suspect)); }
+svg .indice.revele.indice-rassurant { filter: drop-shadow(0 0 5px var(--rassurant)) drop-shadow(0 0 5px var(--rassurant)); }
+
+/* =====================================================================
+   COMPOSANT : SMARTPHONE (SMS, WhatsApp, application)
+   ===================================================================== */
+.smartphone-scene { height: 100%; display: flex; align-items: center; gap: 80px; padding: 0 140px; background: linear-gradient(135deg, #e8edf2, #d5dde5); }
+.smartphone-scene.seul { justify-content: center; }
+.sp { width: 540px; height: 900px; flex: none; border-radius: 60px; background: #0b0f14; padding: 14px; box-shadow: 0 30px 60px rgba(0,0,0,.35); display: flex; flex-direction: column; }
+.sp-statut { height: 46px; display: flex; justify-content: space-between; align-items: center; padding: 0 30px; color: #fff; font-size: 20px; font-weight: 600; background: #111; border-radius: 46px 46px 0 0; }
+.sp-encoche { width: 120px; height: 28px; background: #000; border-radius: 14px; }
+.sp-ecran { flex: 1; background: #fff; border-radius: 0 0 46px 46px; overflow: hidden; display: flex; flex-direction: column; }
+.sp-entete { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: #f6f6f8; border-bottom: 1px solid #ddd; }
+.sp-retour { font-size: 44px; line-height: 1; color: #0b84fe; }
+.sp-avatar { width: 60px; height: 60px; border-radius: 50%; overflow: hidden; flex: none; background: #8e9aa6; display: flex; align-items: center; justify-content: center; }
+.sp-avatar-img { width: 100%; height: 100%; object-fit: cover; }
+.sp-avatar-ini { color: #fff; font-weight: 700; font-size: 24px; }
+.sp-contact { display: flex; flex-direction: column; font-size: 24px; line-height: 1.2; min-width: 0; }
+.sp-contact small { font-size: 20px; color: #666; }
+.sp-fil { flex: 1; padding: 18px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+.sp-bulle { max-width: 85%; padding: 12px 18px; border-radius: 22px; font-size: 24px; line-height: 1.35; position: relative; word-wrap: break-word; }
+.sp-eux { background: #e9e9eb; align-self: flex-start; border-bottom-left-radius: 6px; }
+.sp-moi { background: #0b84fe; color: #fff; align-self: flex-end; border-bottom-right-radius: 6px; }
+.sp-heure { display: block; font-size: 18px; opacity: .6; text-align: right; margin-top: 2px; }
+.sp-info { align-self: center; font-size: 19px; color: #666; background: #f0f0f0; padding: 4px 14px; border-radius: 10px; text-align: center; }
+.sp-saisie { margin: 10px 14px 18px; border: 1px solid #ccc; border-radius: 24px; padding: 10px 18px; font-size: 21px; color: #999; display: flex; justify-content: space-between; }
+.sp-envoi { color: #0b84fe; }
+.sp .lien { color: inherit; }
+/* WhatsApp : habillage évocateur, sans logo */
+.sp-whatsapp .sp-entete { background: #0f5c4e; border-bottom: 0; }
+.sp-whatsapp .sp-retour, .sp-whatsapp .sp-contact, .sp-whatsapp .sp-contact small { color: #fff; }
+.sp-whatsapp .sp-fil { background: #ece5dc; }
+.sp-whatsapp .sp-eux { background: #fff; color: #111; }
+.sp-whatsapp .sp-moi { background: #d6f8c8; color: #111; }
+.sp-whatsapp .sp-saisie { background: #fff; }
+.sp-whatsapp .sp-envoi { color: #0f5c4e; }
+.sp-whatsapp .sp-info { background: #fdf3c7; color: #5a5030; }
+/* Application */
+.sp-app-entete { color: #fff; font-size: 26px; font-weight: 700; padding: 22px 24px; }
+.sp-app-contenu { flex: 1; padding: 20px; font-size: 24px; line-height: 1.4; background: #f4f6f8; overflow: hidden; }
+.app-carte { background: #fff; border-radius: 14px; padding: 16px 18px; margin-bottom: 14px; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+.app-carte small { display: block; color: #555; font-size: 22px; font-weight: 700; }
+.app-alerte small { color: var(--suspect); }
+.app-alerte { border-left: 6px solid var(--suspect); }
+.app-ok { border-left: 6px solid var(--rassurant); }
+.sp-contexte { flex: 1; font-size: 30px; line-height: 1.45; background: #fff; border-left: 8px solid var(--accent); border-radius: 12px; padding: 26px 32px; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+.sp-contexte p { margin: 0 0 14px; }
+
+/* =====================================================================
+   COMPOSANT : NAVIGATEUR
+   ===================================================================== */
+.nav { height: 100%; display: flex; flex-direction: column; background: #dee1e6; position: relative; }
+.nav-onglets { display: flex; align-items: flex-end; gap: 6px; padding: 10px 16px 0; height: 54px; }
+.nav-onglet { background: #fff; border-radius: 12px 12px 0 0; padding: 10px 22px; font-size: 21px; min-width: 360px; display: flex; justify-content: space-between; gap: 20px; }
+.nav-onglet i { font-style: normal; color: #777; }
+.nav-plus { font-size: 26px; color: #555; padding: 6px 12px; }
+.nav-barre { background: #fff; display: flex; align-items: center; gap: 20px; padding: 10px 20px; border-bottom: 1px solid #ccc; }
+.nav-fleches, .nav-menu { font-size: 26px; color: #555; }
+.nav-url { flex: 1; background: #f1f3f4; border-radius: 999px; padding: 10px 22px; font-size: 26px; font-family: var(--police); display: flex; gap: 12px; align-items: center; }
+.nav-cadenas { font-size: 22px; }
+.nav-page { flex: 1; background: #fff; overflow: hidden; position: relative; }
+
+/* Utilitaires de pages factices (habillage évocateur, sans logo) */
+.site-entete { padding: 22px 60px; color: #fff; font-size: 30px; font-weight: 800; display: flex; align-items: center; gap: 20px; }
+.site-entete small { font-weight: 400; font-size: 22px; opacity: .85; }
+.site-corps { padding: 40px 60px; display: flex; gap: 50px; justify-content: center; }
+.site-carte { background: #fff; border-radius: 10px; box-shadow: 0 6px 22px rgba(0,0,0,.12); padding: 34px 40px; width: 720px; font-size: 25px; }
+.site-carte h2 { margin: 0 0 18px; font-size: 34px; }
+.site-carte p { margin: 0 0 16px; line-height: 1.4; }
+.site-champ { margin: 0 0 16px; }
+.site-champ label { display: block; font-size: 21px; color: #555; margin-bottom: 4px; }
+.site-champ div { border: 2px solid #b8bec5; border-radius: 6px; padding: 10px 14px; font-size: 25px; min-height: 52px; background: #fff; }
+.site-champ div.vide { color: #999; }
+.site-btn { display: inline-block; color: #fff; font-weight: 700; padding: 14px 34px; border-radius: 6px; font-size: 25px; margin-top: 6px; }
+.site-btn.bleu { background: #000091; }
+.site-btn.neutre { background: #2b6cb0; }
+.site-note { font-size: 21px; color: #666; }
+.theme-fisc .site-entete { background: #000091; }
+.theme-fisc .site-bandeau { height: 8px; background: linear-gradient(90deg, #000091 33%, #fff 33% 66%, #e1000f 66%); }
+.theme-fisc { background: #f5f5fe; height: 100%; }
+.theme-connexion { background: linear-gradient(135deg, #e8eef6, #f6f8fb); height: 100%; display: flex; align-items: center; justify-content: center; }
+.theme-connexion .site-carte { width: 640px; }
+.theme-stationnement .site-entete { background: #e67e22; }
+.theme-stationnement { background: #fdf6ee; height: 100%; }
+.theme-intranet .site-entete { background: var(--accent); }
+.theme-intranet { background: #f4f6f8; height: 100%; }
+
+/* =====================================================================
+   COMPOSANT : VISIO
+   ===================================================================== */
+.visio { height: 100%; display: flex; flex-direction: column; background: #1c1f24; color: #fff; position: relative; }
+.vi-haut { display: flex; justify-content: space-between; padding: 14px 26px; font-size: 24px; background: #15171b; }
+.vi-titre { font-weight: 700; }
+.vi-duree { color: #ff6b6b; }
+.vi-corps { flex: 1; display: flex; min-height: 0; }
+.vi-grille { flex: 1; display: grid; gap: 14px; padding: 18px; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; }
+.vi-tuile { position: relative; background: #2b3038; border-radius: 12px; overflow: hidden; }
+.vi-tuile.parle { box-shadow: 0 0 0 5px #3ddc84; }
+.vi-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vi-nom { position: absolute; left: 12px; bottom: 12px; background: rgba(0,0,0,.6); padding: 6px 14px; border-radius: 8px; font-size: 22px; }
+.vi-fige .vi-img { filter: saturate(.7) contrast(1.1); }
+.vi-fige { }
+.vi-tuile .vi-fige { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,.65); padding: 6px 14px; border-radius: 8px; font-size: 21px; color: #ffd166; }
+.vi-degrade .vi-img { filter: blur(3px) hue-rotate(70deg) saturate(2.4) contrast(1.6); animation: glitch .45s steps(2) infinite; }
+.vi-degrade::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,255,170,.12) 0 6px, transparent 6px 14px); }
+@keyframes glitch { 0% { transform: translate(0); clip-path: inset(0 0 0 0); } 50% { transform: translate(-12px, 4px); clip-path: inset(20% 0 30% 0); } 100% { transform: translate(8px, -3px); } }
+.vi-chat { width: 520px; flex: none; background: #fff; color: var(--encre); display: flex; flex-direction: column; }
+.vi-chat-titre { font-size: 24px; font-weight: 700; padding: 16px 22px; border-bottom: 1px solid var(--trait); }
+.vi-msg { padding: 14px 22px; font-size: 24px; line-height: 1.35; }
+.vi-msg b { font-size: 21px; color: var(--accent); }
+.vi-msg p { margin: 4px 0 0; }
+.vi-chat-saisie { margin-top: auto; border-top: 1px solid var(--trait); padding: 16px 22px; color: #999; font-size: 21px; }
+.vi-bandeau { position: absolute; left: 25%; top: 70px; transform: translateX(-50%); background: #ffd166; color: #222; font-size: 24px; font-weight: 700; padding: 8px 24px; border-radius: 999px; }
+.vi-bas { display: flex; justify-content: center; gap: 26px; padding: 12px; background: #15171b; font-size: 28px; }
+.vi-bas span { background: #2b3038; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; }
+.vi-bas .vi-quitter { width: auto; border-radius: 30px; padding: 0 26px; background: #e5383b; font-size: 22px; font-weight: 700; }
+
+/* =====================================================================
+   COMPOSANT : EXPLORATEUR DE FICHIERS
+   ===================================================================== */
+.explorateur { height: 100%; display: flex; gap: 40px; align-items: center; padding: 30px 50px; background: linear-gradient(135deg, #2a5a86, #173653); }
+.ex-fenetre { flex: 1; height: 100%; background: #fff; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,.4); }
+.ex-titre { display: flex; justify-content: space-between; padding: 10px 18px; font-size: 22px; background: #f3f3f3; }
+.ex-btns { letter-spacing: 18px; color: #555; }
+.ex-chemin { display: flex; gap: 20px; align-items: center; padding: 10px 18px; border-bottom: 1px solid #ddd; font-size: 22px; color: #555; }
+.ex-adresse { flex: 1; border: 1px solid #ccc; padding: 6px 14px; font-family: var(--mono); color: var(--encre); font-size: 23px; }
+.ex-corps { flex: 1; display: flex; min-height: 0; }
+.ex-gauche { width: 260px; background: #fafafa; border-right: 1px solid #e3e3e3; padding: 14px 18px; font-size: 22px; line-height: 2; color: #333; }
+.ex-liste { flex: 1; overflow: hidden; }
+.ex-ligne { display: grid; grid-template-columns: 2.4fr 1fr 1.2fr .7fr; gap: 14px; padding: 9px 22px; font-size: 23px; border-bottom: 1px solid #f0f0f0; align-items: center; }
+.ex-ligne.selectionne { background: #cce4f7; }
+.ex-entete { font-size: 20px; color: #666; background: #fafafa; }
+.ex-nom { display: flex; align-items: center; gap: 12px; }
+.ex-icone { font-size: 26px; }
+.ex-copie { position: absolute; right: 40px; top: 470px; width: 640px; background: #fff; border: 1px solid #bbb; border-radius: 8px; box-shadow: 0 12px 30px rgba(0,0,0,.3); padding: 20px 24px; }
+.ex-copie-titre { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+.ex-copie-barre { height: 22px; background: #e6e6e6; border-radius: 4px; overflow: hidden; }
+.ex-copie-barre span { display: block; height: 100%; background: #06b025; }
+.ex-copie-detail { font-size: 21px; color: #555; margin-top: 10px; }
+.ex-terminal { position: absolute; left: 300px; top: 300px; width: 1000px; background: #0c0c0c; border-radius: 8px; box-shadow: 0 12px 30px rgba(0,0,0,.5); overflow: hidden; }
+.ex-terminal-titre { background: #2d2d2d; color: #ddd; font-size: 21px; padding: 8px 16px; }
+.ex-terminal pre { margin: 0; padding: 16px 20px; color: #39ff7a; font-family: var(--mono); font-size: 24px; line-height: 1.45; white-space: pre-wrap; }
+.curseur-texte { animation: clignote 1s steps(1) infinite; }
+@keyframes clignote { 50% { opacity: 0; } }
+.ex-curseur { position: absolute; font-size: 44px; color: #fff; text-shadow: 0 0 3px #000, 0 0 3px #000; transform: rotate(-135deg); z-index: 5; }
+.ex-contexte { width: 470px; flex: none; color: #fff; font-size: 28px; line-height: 1.45; }
+
+/* =====================================================================
+   ÉCRAN : RANÇON (fictive)
+   ===================================================================== */
+.rancon { height: 100%; background: radial-gradient(circle at 50% 30%, #6b0b0b, #1a0000 70%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 200px; font-family: var(--mono); }
+.rancon-cadenas { font-size: 120px; }
+.rancon h1 { font-size: 60px; margin: 10px 0 24px; color: #ff4d4d; letter-spacing: 2px; }
+.rancon-texte { font-size: 30px; line-height: 1.5; max-width: 1300px; }
+.rancon-compteur { margin-top: 30px; font-size: 64px; font-weight: 800; color: #ffd166; border: 4px solid #ffd166; padding: 8px 40px; border-radius: 10px; }
+.rancon-pied { margin-top: 26px; font-size: 24px; color: #e0a0a0; }
+
+/* =====================================================================
+   ÉCRAN : PHOTO (scène illustrée)
+   ===================================================================== */
+.photo { height: 100%; display: flex; gap: 50px; align-items: center; padding: 30px 60px; background: #222831; }
+.photo.seule { justify-content: center; }
+.photo-cadre { margin: 0; background: #fff; padding: 16px 16px 10px; border-radius: 6px; box-shadow: 0 20px 50px rgba(0,0,0,.5); transform: rotate(-1deg); }
+.photo-svg { display: block; width: 1180px; height: auto; }
+.photo.seule .photo-svg { width: 1400px; }
+.photo-cadre figcaption { font-size: 24px; color: #444; text-align: center; padding-top: 8px; }
+.photo-contexte { flex: 1; color: #fff; font-size: 28px; line-height: 1.45; }
+.photo-contexte .carte-claire { background: #fff; color: var(--encre); border-radius: 12px; padding: 20px 24px; margin-top: 16px; }
+
+/* =====================================================================
+   ÉCRAN : SÉQUENCE VIDÉO
+   ===================================================================== */
+.video { height: 100%; background: #000; position: relative; display: flex; align-items: center; justify-content: center; }
+.video-lecteur { width: 100%; height: 100%; object-fit: contain; }
+.video-substitut { display: none; }
+.video.absente .video-lecteur { display: none; }
+.video.absente .video-substitut { display: block; color: #fff; text-align: center; max-width: 1300px; }
+.video-num { font-size: 40px; font-weight: 800; color: #ffd166; margin-bottom: 20px; }
+.video-substitut p { font-size: 34px; line-height: 1.45; }
+.video-substitut small { font-size: 22px; color: #aaa; font-family: var(--mono); }
+.video-question { display: none; position: absolute; left: 50%; top: 40px; transform: translateX(-50%); background: #fff; color: var(--encre); font-size: 38px; font-weight: 700; padding: 16px 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.5); white-space: nowrap; }
+.video.fini .video-question { display: block; }
+
+/* =====================================================================
+   ÉCRAN : COMPARAISON
+   ===================================================================== */
+.comparaison { height: 100%; padding: 40px 70px; background: #f1f4f7; display: flex; flex-direction: column; }
+.comparaison h1 { font-size: 46px; margin: 0 0 30px; }
+.cmp-cartes { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.cmp-carte { background: #fff; border-radius: 18px; padding: 26px 34px; border-top: 14px solid; box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+.cmp-malveillant { border-color: var(--suspect); }
+.cmp-legitime { border-color: var(--rassurant); }
+.cmp-verdict { font-size: 26px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+.cmp-malveillant .cmp-verdict { color: var(--suspect); }
+.cmp-legitime .cmp-verdict { color: var(--rassurant); }
+.cmp-carte h2 { font-size: 30px; margin: 8px 0 18px; }
+.cmp-contenu { font-size: 26px; line-height: 1.5; }
+.cmp-contenu .cmp-message { background: #f4f6f8; border-radius: 12px; padding: 16px 20px; margin-bottom: 18px; }
+
+.mail-texte .signature img { height: 64px; width: auto; vertical-align: middle; margin-bottom: 6px; }
+.cmp-contenu ul { margin: 0; padding-left: 30px; }
+.cmp-contenu li { margin-bottom: 8px; }
+.cmp-contenu mark { background: #ffd9d9; color: #a00000; padding: 0 6px; border-radius: 4px; font-weight: 700; }
+.cmp-legitime .cmp-contenu b { color: var(--rassurant); }
+
+/* =====================================================================
+   ANIMATIONS LUDIQUES (communes)
+   ===================================================================== */
+@keyframes surgir { 0% { opacity: 0; transform: translateY(30px) scale(.9); } 70% { opacity: 1; transform: translateY(-6px) scale(1.02); } 100% { opacity: 1; transform: none; } }
+@keyframes basculer { 0% { opacity: 0; transform: rotateY(90deg); } 100% { opacity: 1; transform: none; } }
+@keyframes secouer { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-2deg); } 75% { transform: rotate(2deg); } }
+@keyframes flotter { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes poser { 0% { opacity: 0; transform: rotate(-8deg) scale(2.2); } 100% { opacity: 1; transform: rotate(-8deg) scale(1); } }
+
+/* =====================================================================
+   ÉCRAN : CHRONOLOGIE DES CONSÉQUENCES – bande dessinée
+   ===================================================================== */
+.chronologie { height: 100%; padding: 50px 70px; color: #fff; display: flex; flex-direction: column;
+  background: radial-gradient(circle at 20% 0%, #4b1d2b 0%, #1d1530 45%, #0f1424 100%); }
+.chronologie h1 { font-size: 56px; margin: 0 0 44px; display: flex; align-items: center; gap: 20px; }
+.chrono-clap { display: inline-block; animation: flotter 2.4s ease-in-out infinite; }
+.chrono-bande { list-style: none; margin: 0; padding: 0; display: flex; align-items: stretch; gap: 18px; flex: 1; max-height: 640px; }
+.chrono-carte { flex: 1; position: relative; background: #fff; color: var(--encre); border-radius: 26px; padding: 30px 32px;
+  border: 6px solid #1b1f24; box-shadow: 10px 10px 0 rgba(0,0,0,.45); opacity: 0;
+  animation: basculer .6s ease-out var(--retard, 0s) forwards; display: flex; flex-direction: column; }
+.chrono-carte.alerte { background: #fff1f1; border-color: var(--suspect); animation: basculer .6s ease-out var(--retard, 0s) forwards, secouer .4s ease-in-out calc(var(--retard, 0s) + .7s) 3; }
+.chrono-quand { align-self: flex-start; background: #ffd166; color: #3a2a00; font-weight: 800; font-size: 26px; padding: 6px 18px; border-radius: 999px; border: 3px solid #1b1f24; }
+.chrono-carte.alerte .chrono-quand { background: var(--suspect); color: #fff; }
+.chrono-icone { font-size: 96px; line-height: 1; margin: 26px 0 14px; }
+.chrono-carte h3 { font-size: 38px; margin: 0 0 12px; line-height: 1.15; }
+.chrono-carte.alerte h3 { color: var(--suspect); }
+.chrono-carte p { font-size: 29px; line-height: 1.4; margin: 0; color: #2c333b; }
+.chrono-fleche { align-self: center; font-size: 64px; color: #ffd166; opacity: 0; animation: surgir .4s ease-out var(--retard, 0s) forwards; }
+
+/* =====================================================================
+   ÉCRAN : DÉBRIEF – cartes, score, médaille
+   ===================================================================== */
+.ecran-debrief { height: 100%; padding: 28px 60px 22px; display: flex; flex-direction: column; gap: 18px;
+  background: linear-gradient(160deg, #eef3ff 0%, #f7f1ff 50%, #fff6ea 100%); }
+.db-haut { display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+.ecran-debrief h1 { font-size: 42px; margin: 0; }
+.db-scores { display: flex; gap: 16px; }
+.db-score { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 999px; padding: 8px 22px 8px 14px; font-size: 24px;
+  box-shadow: 0 6px 16px rgba(60,40,120,.12); opacity: 0; animation: surgir .5s ease-out .2s forwards; }
+.db-etoiles { color: #f4a300; font-size: 32px; letter-spacing: 2px; }
+.db-gros { font-size: 30px; }
+.debrief-colonnes { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; min-height: 0; }
+.debrief-droite { display: flex; flex-direction: column; gap: 14px; }
+.db-carte { display: flex; gap: 20px; background: #fff; border-radius: 22px; padding: 18px 26px; box-shadow: 0 8px 22px rgba(60,40,120,.10);
+  border-left: 10px solid var(--c, var(--accent)); opacity: 0; animation: surgir .55s ease-out var(--retard, 0s) forwards; }
+.db-icone { font-size: 46px; line-height: 1; flex: none; }
+.db-carte h2 { font-size: 23px; text-transform: uppercase; letter-spacing: 1px; color: var(--c, var(--accent)); margin: 2px 0 6px; }
+.db-carte h2 small { text-transform: none; letter-spacing: 0; font-size: 22px; color: var(--encre-2); margin-left: 8px; }
+.db-carte p { font-size: 26px; line-height: 1.38; margin: 0; }
+.db-indices { --c: #6a4cc2; }
+.db-attaquant { --c: #c2410c; }
+.db-impact { --c: var(--suspect); }
+.db-variante { --c: #0e7490; }
+.db-retenir { --c: #a16207; }
+.debrief-indices { list-style: none; margin: 4px 0 0; padding: 0; font-size: 25px; line-height: 1.3; }
+.debrief-indices li { display: flex; gap: 12px; align-items: flex-start; padding: 6px 0; }
+.db-puce { flex: none; width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; color: #fff; }
+.debrief-indices li.trouve.suspect .db-puce { background: var(--suspect); }
+.debrief-indices li.trouve.rassurant .db-puce { background: var(--rassurant); }
+.debrief-indices li.manque { color: var(--encre-2); }
+.debrief-indices li.manque .db-puce { background: #c3c9d1; }
+.debrief-reflexe { display: flex; align-items: center; gap: 26px; border-radius: 24px; padding: 16px 32px; color: #1b1f24;
+  background: linear-gradient(90deg, #ffd166, #ffe8a3); border: 4px solid #e0a800; box-shadow: 0 10px 26px rgba(224,168,0,.35);
+  opacity: 0; animation: surgir .6s ease-out 1s forwards; }
+.db-medaille { font-size: 70px; line-height: 1; animation: flotter 2.4s ease-in-out infinite; }
+.debrief-reflexe span:not(.db-medaille) { font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #7a5200; }
+.debrief-reflexe p { font-size: 31px; font-weight: 700; margin: 2px 0 0; line-height: 1.3; }
+.debrief-actions { display: flex; justify-content: flex-end; gap: 20px; }
+.debrief-actions .btn { font-size: 24px; padding: 12px 28px; }
+
+/* =====================================================================
+   ÉCRAN : RÉFLEXES DE CONCLUSION – cartes à collectionner
+   ===================================================================== */
+.ecran-conclusion { height: 100%; padding: 40px 80px 30px; display: flex; flex-direction: column; color: #fff;
+  background: radial-gradient(circle at 80% 10%, #3b5bdb 0%, #1f3a8a 40%, #13204d 100%); }
+.ecran-conclusion h1 { font-size: 60px; margin: 0 0 30px; }
+.cc-cartes { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; gap: 26px; position: relative; }
+.cc-carte { position: relative; background: #fff; color: var(--encre); border-radius: 26px; padding: 26px 30px; border-top: 14px solid var(--c);
+  box-shadow: 0 14px 30px rgba(0,0,0,.35); opacity: 0; animation: surgir .6s ease-out var(--retard, 0s) forwards; display: flex; flex-direction: column; }
+.cc-1 { --c: #e03131; } .cc-2 { --c: #f08c00; } .cc-3 { --c: #2f9e44; } .cc-4 { --c: #7048e8; } .cc-5 { --c: #1c7ed6; }
+.cc-num { position: absolute; top: 16px; right: 22px; font-size: 40px; font-weight: 900; color: var(--c); opacity: .25; }
+.cc-icone { font-size: 72px; line-height: 1; margin-bottom: 14px; }
+.cc-carte b { font-size: 31px; line-height: 1.2; color: var(--c); }
+.cc-carte p { font-size: 26px; line-height: 1.38; margin: 8px 0 0; }
+.cc-tampon { align-self: center; justify-self: center; font-size: 44px; font-weight: 900; text-align: center; color: #ffd166; line-height: 1.15;
+  border: 7px solid #ffd166; border-radius: 18px; padding: 18px 30px; opacity: 0; animation: poser .45s cubic-bezier(.2,1.6,.4,1) var(--retard, 0s) forwards; }
+.cc-menu { align-self: flex-start; margin-top: 18px; }
+
+/* =====================================================================
+   PANNEAU « COULISSES » (commentaires de l'animateur, touche C)
+   ===================================================================== */
+#coulisses { position: absolute; top: 52px; bottom: 56px; right: 0; z-index: 35; pointer-events: none; }
+#coulisses.cachee { display: none; }
+.cl-poignee { pointer-events: auto; position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  background: rgba(27,36,48,.55); color: #fff; border: 0; border-radius: 12px 0 0 12px; padding: 12px 6px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: .45; transition: opacity .2s, background .2s; }
+.cl-poignee:hover { opacity: 1; background: #3d2a6e; }
+.cl-poignee span { font-size: 22px; }
+.cl-poignee b { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 16px; letter-spacing: 2px; text-transform: uppercase; }
+#coulisses.ouverte .cl-poignee { display: none; }
+.cl-panneau { pointer-events: auto; position: absolute; top: 14px; right: 14px; bottom: 14px; width: 680px;
+  background: #1d1533; color: #f3efff; border-radius: 22px; box-shadow: -10px 10px 40px rgba(0,0,0,.45);
+  display: flex; flex-direction: column; overflow: hidden; transform: translateX(110%); transition: transform .35s cubic-bezier(.2,.9,.3,1.1); }
+#coulisses.ouverte .cl-panneau { transform: none; }
+.cl-entete { display: flex; justify-content: space-between; align-items: center; padding: 16px 22px;
+  background: repeating-linear-gradient(-45deg, #ffd166 0 22px, #1b1f24 22px 44px); }
+.cl-titre { background: #1b1f24; color: #ffd166; font-weight: 900; font-size: 28px; letter-spacing: 1px; padding: 6px 16px; border-radius: 10px; }
+.cl-fermer { background: #1b1f24; color: #fff; border: 0; border-radius: 50%; width: 46px; height: 46px; font-size: 24px; cursor: pointer; }
+.cl-onglets { display: flex; gap: 8px; padding: 16px 18px 0; }
+.cl-onglet { flex: 1; background: #2e2450; color: #cfc6ee; border: 0; border-radius: 12px 12px 0 0; padding: 12px 8px; font-size: 21px; font-weight: 700; cursor: pointer; }
+.cl-onglet.actif { background: #3d2f6b; color: #fff; box-shadow: inset 0 4px 0 #ffd166; }
+.cl-corps { flex: 1; background: #3d2f6b; margin: 0 18px 18px; border-radius: 0 0 16px 16px; padding: 24px 28px; font-size: 27px; line-height: 1.5; overflow: hidden; }
+.cl-corps p { margin: 0 0 16px; }
+.cl-corps b { color: #ffd166; }
+.cl-etape { display: inline-block; background: #ffd166; color: #3a2a00; font-weight: 800; font-size: 22px; padding: 4px 16px; border-radius: 999px; margin-bottom: 14px; }
+.cl-fiches { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.cl-fiche { background: #2e2450; border-radius: 999px; padding: 6px 16px; font-size: 21px; }
+.cl-fiche.ko { background: #6b1d2b; }
+.cl-fiche.ok { background: #1d5b33; }
+.cl-source { font-size: 21px; color: #cfc6ee; }
+
+/* Chronologie : perte bénigne (parcours légitimes), en orange plutôt qu'en alerte rouge */
+.chrono-carte.attention { background: #fff7e6; border-color: #e08a00; }
+.chrono-carte.attention .chrono-quand { background: #e08a00; color: #fff; }
+.chrono-carte.attention h3 { color: #b86e00; }
+/* Parcours 1 : compteur géant de l'inondation */
+.compteur-geant { font-size: 260px; font-weight: 900; line-height: 1; color: var(--suspect); text-align: center; animation: flotter 1.6s ease-in-out infinite; }
+.mail-vide { flex-direction: column; font-size: 40px; font-weight: 700; }
+
+/* Parcours 1 : fenêtre de blocage du poste et SMS reçu, dans le contexte d'un appel */
+.fenetre-alerte { background: #fff; border: 2px solid #9aa5b1; border-top: 10px solid #1f6feb; border-radius: 8px; padding: 14px 20px; font-size: 26px; line-height: 1.4; margin-bottom: 16px; box-shadow: 0 6px 16px rgba(0,0,0,.12); }
+.sms-recu { background: #e9e9eb; border-radius: 22px; padding: 12px 22px; font-size: 26px; line-height: 1.4; display: inline-block; }

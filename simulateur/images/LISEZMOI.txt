@@ -1,0 +1,13 @@
+IMAGES DE LA COLLECTIVITÉ
+=========================
+
+Déposez ici les fichiers suivants, avec exactement ces noms :
+
+  logo-collectivite.png   Logo officiel, fond transparent     -> signatures, intranet, mail DSI
+  photo-dgs.jpg           Photo du DGS (AVEC SON ACCORD)      -> avatar WhatsApp / Teams, parcours 3 et 4
+  photo-maire.jpg         Photo publique du maire             -> visio truquée, parcours 4
+  signature-mail.png      Signature mail type                 -> mails internes 1, 3, 7
+  facture-fournisseur.pdf Modèle de facture du fournisseur fictif -> parcours 2
+
+Si un fichier manque, le simulateur affiche un visuel générique : aucun parcours ne casse.
+Le dossier est indiqué par « dossierImages » dans config/collectivite.js.
