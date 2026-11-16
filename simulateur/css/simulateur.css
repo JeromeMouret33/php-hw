@@ -653,3 +653,9 @@ svg .indice.revele.indice-rassurant { filter: drop-shadow(0 0 5px var(--rassuran
 .fo-titre { background: #2b6cb0; color: #fff; font-size: 24px; font-weight: 700; padding: 10px 20px; }
 .fo-ligne { display: flex; justify-content: space-between; gap: 30px; padding: 12px 20px; font-size: 26px; border-top: 1px solid #e3e7eb; }
 .fo-ligne b { font-family: var(--mono); letter-spacing: 2px; }
+
+/* Débrief : quand la colonne de droite a 4 cartes, on les resserre pour qu'elles tiennent */
+.debrief-droite:has(.db-carte:nth-child(4)) { gap: 10px; }
+.debrief-droite:has(.db-carte:nth-child(4)) .db-carte { padding: 10px 24px; }
+.debrief-droite:has(.db-carte:nth-child(4)) .db-carte p { font-size: 24px; line-height: 1.32; }
+.debrief-droite:has(.db-carte:nth-child(4)) .db-icone { font-size: 40px; }

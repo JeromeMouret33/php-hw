@@ -55,7 +55,7 @@ SIMU.enregistrerParcours({
       donnees: {
         statut: 'entrant',
         appelant: 'Numéro inconnu',
-        numero: '0262 00 55 17',
+        numero: '{{NUMERO_FAUX_SUPPORT}}',
         contexte: '[[non-sollicite|Appel entrant : vous n\'avez ouvert aucun ticket.]]',
         repliques: [
           { qui: 'appelant', texte: 'Bonjour, ici le support informatique de {{PRESTATAIRE_INFO}}. [[provoque|On a détecté une attaque sur votre poste, c\'est pour ça que vous recevez tous ces mails.]]' },
@@ -76,7 +76,7 @@ SIMU.enregistrerParcours({
       composant: 'appel',
       donnees: {
         appelant: 'Numéro inconnu',
-        numero: '0262 00 55 17',
+        numero: '{{NUMERO_FAUX_SUPPORT}}',
         duree: '02:14',
         contexte: '<div class="fenetre-outil"><div class="fo-titre">{{OUTIL_PRISE_EN_MAIN}} – Assistance à distance</div>' +
           '[[identifiants|<div class="fo-ligne"><span>Votre identifiant</span><b>1 284 553 907</b></div><div class="fo-ligne"><span>Mot de passe</span><b>k7x9q2</b></div>]]</div>',
@@ -130,22 +130,22 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
-      coulisses: 'L\'attaquant voit l\'écran de l\'agent et pilote la souris, avec ses droits : RH et paie lui sont refusés, mais il copie ce qui est accessible. Et il tombe sur un fichier de mots de passe laissé dans le dossier commun. Problème pour lui : dès que l\'agent raccroche, la session se ferme.',
+      coulisses: 'L\'attaquant voit l\'écran de l\'agent et pilote la souris, avec ses droits : les dossiers des autres services lui sont refusés, mais il copie ce qui est accessible. Et il tombe sur un fichier de mots de passe laissé dans le dossier commun. Problème pour lui : dès que l\'agent raccroche, la session se ferme.',
       etape: 'É4',
       composant: 'explorateur',
       donnees: {
-        titre: 'Commun',
+        titre: '{{SERVEUR_FICHIERS}}',
         chemin: '{{SERVEUR_FICHIERS}}',
         fichiers: [
-          { nom: 'Urbanisme – Permis de construire', type: 'dossier', date: '03/11/2026', selectionne: true },
-          { nom: 'Annuaire et organigramme', type: 'dossier', date: '28/10/2026', selectionne: true },
-          { nom: '🔒 Ressources humaines', type: 'dossier', libelleType: 'Accès refusé', date: '' },
-          { nom: '🔒 Paie', type: 'dossier', libelleType: 'Accès refusé', date: '' },
+          { nom: '{{DOSSIER_SERVICE}}', type: 'dossier', date: '03/11/2026', selectionne: true },
+          { nom: '{{DOSSIER_COMMUN}}', type: 'dossier', date: '28/10/2026', selectionne: true },
+          { nom: '🔒 {{DOSSIER_REFUSE_1}}', type: 'dossier', libelleType: 'Accès refusé', date: '' },
+          { nom: '🔒 {{DOSSIER_REFUSE_2}}', type: 'dossier', libelleType: 'Accès refusé', date: '' },
           { nom: 'Mots de passe serveurs.xlsx', type: 'xlsx', libelleType: 'Feuille Excel', date: '12/03/2024', taille: '18 Ko', selectionne: true }
         ],
-        copie: { titre: 'Copie vers un serveur distant…', progression: 68, detail: 'Urbanisme, annuaire, Mots de passe serveurs.xlsx' },
+        copie: { titre: 'Copie vers un serveur distant…', progression: 68, detail: 'Dossiers accessibles + Mots de passe serveurs.xlsx' },
         curseur: { x: 640, y: 260 },
-        contexte: '<p>Le curseur bouge <b>tout seul</b>.</p><p>RH et paie lui sont refusés…</p><p>… mais un fichier de <b>mots de passe</b> traîne dans le dossier commun.</p>'
+        contexte: '<p>Le curseur bouge <b>tout seul</b>.</p><p>Les dossiers des autres services lui sont refusés…</p><p>… mais un fichier de <b>mots de passe</b> traîne dans le dossier commun.</p>'
       },
       motsCles: ['PRISE DE CONTRÔLE', 'EXFILTRATION'],
       suivant: 'e5'
@@ -157,7 +157,7 @@ SIMU.enregistrerParcours({
       composant: 'appel',
       donnees: {
         appelant: 'Numéro inconnu',
-        numero: '0262 00 55 17',
+        numero: '{{NUMERO_FAUX_SUPPORT}}',
         duree: '09:41',
         contexte: '<div class="sms-recu">📱 SMS · [[sms|Votre code de vérification : <b>482 917</b>. Ne le communiquez à personne.]]</div>',
         repliques: [
@@ -195,7 +195,7 @@ SIMU.enregistrerParcours({
       composant: 'rancon',
       donnees: {
         titre: 'VOS FICHIERS SONT CHIFFRÉS',
-        texte: 'Tous les postes et serveurs de {{COLLECTIVITE}} sont chiffrés.<br>Vos données (urbanisme, annuaire, documents partagés) ont été copiées.<br>Sans paiement, elles seront publiées.',
+        texte: '{{COLLECTIVITE}} : tous les postes et serveurs sont chiffrés.<br>Vos données (urbanisme, documents partagés) ont été copiées.<br>Sans paiement, elles seront publiées.',
         compteur: '71:59:42',
         pied: 'Quelques jours plus tard, un lundi à 8 h – sur tous les postes'
       },
@@ -253,7 +253,7 @@ SIMU.enregistrerParcours({
       etape: 'Séq. 4',
       composant: 'video',
       donnees: { sequence: 4, fichier: 'videos/parcours1-seq4.mp4', question: 'Quelles données sont parties ? Et pourquoi ce code ?',
-        description: 'Ouverture de {{SERVEUR_FICHIERS}} : Urbanisme, annuaire, « Accès refusé » sur RH et paie… et un fichier « Mots de passe serveurs ». Une barre de copie progresse. « Pour finir, lisez-moi le code reçu par SMS. »' },
+        description: 'Ouverture de {{SERVEUR_FICHIERS}} : le dossier du service, le dossier commun, « Accès refusé » sur ceux des autres services… et un fichier « Mots de passe serveurs ». Une barre de copie progresse. « Pour finir, lisez-moi le code reçu par SMS. »' },
       motsCles: ['EXFILTRATION', 'CODE DONNÉ'],
       suivant: 'f5'
     },

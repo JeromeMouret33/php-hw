@@ -1,18 +1,25 @@
 # SUIVI – état actuel
 
-*Mis à jour le 2026-11-04 (décisions validées, spécification v2, fusion dans master).*
+*Mis à jour le 2026-11-16 (configuration du premier client).*
 
 ## Où en est-on ?
 
 **Développement terminé : 12 parcours, coulisses, style ludique, plausibilité revue, formats court et standard recomposés. Tout est sur master.**
 
 - Prochaine action : **⛔ point d'arrêt n°2.** L'animateur teste les séances courte (20 min) et standard (30 min) sur le vrai vidéoprojecteur, chronomètre en main, puis valide ou envoie ses retours.
-- En parallèle : réponses de la collectivité au mail (variables, photos, procédure RIB), puis mise à jour de `config/collectivite.js`.
+- **Premier client : configuration prête, hors dépôt** (fichier `config/collectivite-<client>.js` et logo, remis à l'animateur sous forme d'archive ; ils ne sont pas dans git). Vérifiée avec `node outils/verifier.js --config <client>`.
+- En attente de l'animateur ou du client :
+  - quel prestataire assure le support des postes, et confirmation de l'outil de prise en main ;
+  - messagerie Microsoft 365 ou serveur local, et méthode de double authentification (SMS ou application) ;
+  - existence d'un stationnement payant avec horodateurs dans la commune (parcours 9) ;
+  - nom exact du dossier de la direction de l'urbanisme (tronqué sur la capture) ;
+  - photos du DGS (avec son accord) et du maire.
 - Reporté : le film du parcours 1 (facultatif).
 
 ## Comment tester
 
 1. Ouvrir `simulateur/index.html` dans Chrome, Edge ou Firefox, par double-clic, sans serveur ni connexion.
+   Pour un client : décompresser son archive à la racine du dépôt, puis ouvrir `simulateur/seance-<client>.html`.
 2. Choisir un format de séance (Tous, Court, Standard, Complet), puis cliquer sur un parcours. F passe en plein écran.
 3. Touches :
    - → : suite, sur le chemin malveillant ;

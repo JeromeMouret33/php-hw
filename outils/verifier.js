@@ -11,7 +11,7 @@
  *      boutons morts (le clic doit mener à l'écran annoncé), flèche → et touche R ;
  *   4. capture chaque écran en 1920×1080 (brut, puis indices révélés) dans captures/.
  *
- * Usage : node outils/verifier.js [--sans-captures] [--parcours 2]
+ * Usage : node outils/verifier.js [--sans-captures] [--parcours 2] [--config nom-du-client]
  */
 const path = require('path');
 const fs = require('fs');
@@ -23,6 +23,8 @@ const CAPTURES = path.join(RACINE, 'captures');
 const args = process.argv.slice(2);
 const SANS_CAPTURES = args.includes('--sans-captures');
 const SEUL = args.includes('--parcours') ? +args[args.indexOf('--parcours') + 1] : null;
+// --config nom : vérifie avec la configuration d'un client (simulateur/config/collectivite-nom.js)
+const CONFIG = args.includes('--config') ? args[args.indexOf('--config') + 1] : null;
 
 const problemes = [];
 const signaler = (ou, msg) => { problemes.push(`[${ou}] ${msg}`); };
@@ -109,7 +111,8 @@ async function main() {
   page.on('pageerror', e => erreursConsole.push(e.message));
   page.on('request', r => { if (!r.url().startsWith('file:') && !r.url().startsWith('data:')) signaler('réseau', `requête externe interdite : ${r.url()}`); });
 
-  await page.goto(URL);
+  await page.goto(URL + (CONFIG ? '?config=' + CONFIG : ''));
+  if (CONFIG) console.log('Configuration : ' + await page.evaluate(() => CONFIG_COLLECTIVITE.variables.COLLECTIVITE));
   await page.waitForFunction(() => window.SIMU && document.querySelector('#scene').dataset.ecran === 'menu');
 
   if (!SANS_CAPTURES) fs.mkdirSync(CAPTURES, { recursive: true });

@@ -15,8 +15,15 @@
     <footer id="commandes"></footer>
   </div>
 
-  <!-- 1. Configuration de la collectivité (le seul fichier à modifier) -->
+  <!-- 1. Configuration : collectivité fictive par défaut, puis, avec index.html?config=nom,
+       le fichier config/collectivite-nom.js d'un client (jamais publié : ignoré par git). -->
   <script src="config/collectivite.js"></script>
+  <script>
+    (function () {
+      var m = /[?&]config=([a-z0-9-]+)/i.exec(location.search);
+      if (m) document.write('<script src="config/collectivite-' + m[1] + '.js"><\/script>');
+    })();
+  </script>
   <!-- 2. Moteur et composants -->
   <script src="js/moteur.js"></script>
   <script src="js/composants.js"></script>
