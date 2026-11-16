@@ -75,6 +75,12 @@ Critères d'acceptation communs, vérifiés le 2026-11-04 par `outils/verifier.j
 - [x] Ordres de passage suggérés (court, standard, complet) sélectionnables depuis le menu ; « Parcours suivant » suit l'ordre choisi *(ordre « complet » proposé, à valider : voir SUIVI)*
 - [x] Style plus ludique pour l'écran de conséquence (cartes de bande dessinée animées), le débrief (score en étoiles, votes, cartes illustrées, médaille du réflexe) et les réflexes de conclusion (cartes à collectionner, tampon final)
 
+### Configuration du premier client (2026-11-16)
+- [x] Mécanisme de configuration client hors dépôt : `index.html?config=<client>`, fichier `collectivite-<client>.js` et dossier `images/<client>/` ignorés par git, raccourci `seance-<client>.html`, option `--config` du vérificateur, modèle `collectivite-exemple-client.txt`
+- [x] Nouvelles variables de localisation, avec valeurs fictives par défaut : DOSSIER_SERVICE, DOSSIER_COMMUN, DOSSIER_REFUSE_1 et 2 (parcours 1), NUMERO_FAUX_SUPPORT, NUMERO_FAUX_DGS (parcours 1 et 3), PROCEDURE_RIB (débrief du parcours 2)
+- [x] Configuration du premier client rédigée à partir de ses réponses, vérifiée (`--config`), captures relues ; remise à l'animateur en archive
+- [ ] Réponses en attente (voir SUIVI) : prestataire du support, Microsoft 365 et double authentification, horodateurs, nom exact d'un dossier, photos
+
 ### Retours de l'animateur (2026-11-04, soir)
 - [x] Mots-clés masqués par défaut sur chaque écran ; l'animateur les affiche (bouton « Afficher les mots-clés (n) » ou touche K), et le bouton n'existe que s'il y en a (contrôlé par le vérificateur)
 - [x] Toutes les décisions en attente validées ; spécification passée en version 2

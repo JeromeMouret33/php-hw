@@ -1,0 +1,44 @@
+MODÈLE DE CONFIGURATION POUR UN CLIENT
+======================================
+
+1. Copiez le bloc ci-dessous dans un nouveau fichier  config/collectivite-<client>.js
+   (par exemple collectivite-saint-paul.js). Ce fichier est ignoré par git : il ne sera
+   jamais publié.
+2. N'y mettez que les valeurs à remplacer ; tout le reste garde la valeur fictive de
+   collectivite.js (fournisseur, banque, etc.).
+3. Déposez les images du client dans  images/<client>/  (logo-collectivite.png,
+   photo-dgs.jpg, photo-maire.jpg).
+4. Ouvrez la séance avec  index.html?config=<client>  ou créez un raccourci
+   seance-<client>.html  contenant :
+       <meta http-equiv="refresh" content="0; url=index.html?config=<client>">
+5. Vérifiez :  node outils/verifier.js --config <client>
+
+-------------------------------------------------------------------------------
+(function (c) {
+  Object.assign(c.variables, {
+    COLLECTIVITE:       "Ville de …",
+    COLLECTIVITE_COURT: "…",
+    DOMAINE_MAIL:       "….fr",
+    DOMAINE_PIEGE:      "…-fr.com",
+    FORMAT_ADRESSE:     "prenom.nom",      // ou p.nom, n.prenom (initiale du nom), nom.prenom…
+    OUTIL_MAIL:         "Outlook",         // Outlook, Gmail ou Zimbra
+    DGS_PRENOM:         "…",
+    DGS_NOM:            "…",
+    MAIRE_NOM:          "Prénom Nom",
+    DSI_NOM:            "Service informatique",
+    RESPONSABLE_INFO:   "Prénom Nom",
+    PRESTATAIRE_INFO:   "…",
+    NUMERO_SUPPORT:     "… (poste …)",
+    OUTIL_TICKET:       "GLPI",
+    OUTIL_PRISE_EN_MAIN:"TeamViewer",
+    SERVICE_FINANCES:   "Direction des finances",
+    SERVEUR_FICHIERS:   "Commun (P:)",
+    DOSSIER_SERVICE:    "…",
+    DOSSIER_COMMUN:     "…",
+    DOSSIER_REFUSE_1:   "…",
+    DOSSIER_REFUSE_2:   "…",
+    PARKING:            "Parking de …",
+    PROCEDURE_RIB:      "Chez nous, un changement de RIB …"
+  });
+  c.dossierImages = "images/<client>/";
+})(window.CONFIG_COLLECTIVITE);

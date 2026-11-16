@@ -22,7 +22,7 @@ SIMU.enregistrerParcours({
       composant: 'smartphone',
       donnees: {
         mode: 'whatsapp',
-        contact: '[[numero|+262 693 00 31 08]]',
+        contact: '[[numero|{{NUMERO_FAUX_DGS}}]]',
         avatar: 'photo-dgs.jpg',
         heure: '10:12',
         messages: [
@@ -46,7 +46,7 @@ SIMU.enregistrerParcours({
       composant: 'smartphone',
       donnees: {
         mode: 'whatsapp',
-        contact: '+262 693 00 31 08',
+        contact: '{{NUMERO_FAUX_DGS}}',
         avatar: 'photo-dgs.jpg',
         heure: '10:14',
         messages: [

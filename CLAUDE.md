@@ -28,7 +28,8 @@ Règles :
 ```
 simulateur/            dossier autonome, ouvert directement dans le navigateur (file://), sans serveur
   index.html           point d'entrée, charge les scripts dans l'ordre
-  config/collectivite.js  LE fichier de configuration (variables, parcours actifs, dossier images)
+  config/collectivite.js  configuration par défaut : collectivité FICTIVE (variables, parcours actifs, dossier images)
+  config/collectivite-<client>.js  valeurs d'un vrai client, IGNORÉ par git ; s'ouvre avec index.html?config=<client>
   images/              images de la collectivité (logo, photos) – visuel générique si absentes
   css/simulateur.css   habillage, scène 1920×1080 mise à l'échelle
   js/moteur.js         moteur : navigation, indices, votes, « voir la suite », débrief, clavier
@@ -46,6 +47,7 @@ Conventions des données de parcours, détaillées en tête de `simulateur/js/mo
 
 ## Règles non négociables
 
+- **Dépôt public : aucune donnée réelle d'un client dans un fichier suivi par git** (ni configuration, ni image, ni nom dans le suivi). Tout passe par `config/collectivite-<client>.js` et `images/<client>/`, ignorés.
 - Le simulateur fonctionne 100 % hors ligne : aucune ressource externe (police, script, image distante), aucun envoi réseau.
 - Les champs de saisie ne transmettent rien.
 - Aucune vraie marque d'attaquant ni vrai domaine malveillant. Les organismes imités ont un habillage évocateur, sans leurs logos.
@@ -57,6 +59,7 @@ Conventions des données de parcours, détaillées en tête de `simulateur/js/mo
 ```
 node outils/verifier.js          # toutes les branches, boutons, variables, indices + captures dans captures/
 node outils/verifier.js --sans-captures
+node outils/verifier.js --config <client>   # avec la configuration d'un client
 ```
 
 Il faut relire visuellement les captures (`captures/`), pas seulement le code.

@@ -37,6 +37,8 @@ Nov 4, 2026 · @Jerome
 
 ## Personnalisation par collectivité
 
+**Configuration d'un client, hors dépôt** : le dépôt étant public, les données réelles d'une collectivité ne vont jamais dans `config/collectivite.js` (collectivité fictive). Chaque client a son fichier `config/collectivite-<client>.js`, qui ne contient que les valeurs à remplacer, et son dossier `images/<client>/` ; tous deux sont ignorés par git. On ouvre la séance avec `index.html?config=<client>` (ou un raccourci `seance-<client>.html`), et on vérifie avec `node outils/verifier.js --config <client>`. Modèle : `config/collectivite-exemple-client.txt`.
+
 Toute la personnalisation passe par un seul fichier de configuration et un dossier d'images : on change les valeurs, et les 12 parcours se mettent à jour sans toucher au code. Compter 15 à 30 minutes par collectivité, collecte des informations comprise.
 
 **Variables textuelles**
@@ -60,6 +62,10 @@ Toute la personnalisation passe par un seul fichier de configuration et un dossi
 | {{FOURNISSEUR}} | Transports Lagon Bleu | 2 |
 | {{FOURNISSEUR\_DOMAINE}} / {{FOURNISSEUR\_DOMAINE\_PIEGE}} | transports-lagonbleu.re / transport-lagonbleu.re | 2 |
 | {{FOURNISSEUR\_TEL\_DOSSIER}} / {{FOURNISSEUR\_TEL\_PIEGE}} | 0262 00 41 10 / 0693 00 74 52 | 2 |
+| {{PROCEDURE\_RIB}} | La règle de la maison pour un changement de RIB | 2 (débrief) |
+| {{DOSSIER\_SERVICE}} / {{DOSSIER\_COMMUN}} | Urbanisme – Permis de construire / Commun à tous les services | 1 |
+| {{DOSSIER\_REFUSE\_1}} / {{DOSSIER\_REFUSE\_2}} | Ressources humaines / Paie | 1 |
+| {{NUMERO\_FAUX\_SUPPORT}} / {{NUMERO\_FAUX\_DGS}} | 0262 00 55 17 / +262 693 00 31 08 (indicatif local) | 1, 3 |
 | {{SERVICE\_FINANCES}} | Direction des finances | 2, 3 |
 | {{SERVEUR\_FICHIERS}} | \\\\SRV-FICHIERS\\Commun | 1 (film) |
 | {{PARKING}} | Parking de l'Hôtel de ville | 6 |
@@ -108,7 +114,7 @@ Cible : tout agent. Mode opératoire documenté (inondation de spams puis faux a
    - 🔴 Identifiant + mot de passe = les clés du poste : seulement pour un support qu'on a soi-même appelé
    - 🔴 Refus de passer par {{OUTIL\_TICKET}} (« pas le temps, c'est critique »)
 4. **❓ Vote 1** : on donne l'identifiant et le mot de passe / on raccroche et on rappelle {{NUMERO\_SUPPORT}}.
-5. **É4 — Prise de contrôle** : le curseur bouge seul ; sur {{SERVEUR\_FICHIERS}}, RH et paie sont refusés, mais l'attaquant copie ce qui est accessible et trouve un fichier « Mots de passe serveurs.xlsx ». Mots-clés : « PRISE DE CONTRÔLE », « EXFILTRATION ».
+5. **É4 — Prise de contrôle** : le curseur bouge seul ; sur {{SERVEUR\_FICHIERS}}, les dossiers des autres services ({{DOSSIER\_REFUSE\_1}}, {{DOSSIER\_REFUSE\_2}}) sont refusés, mais l'attaquant copie ce qui est accessible et trouve un fichier « Mots de passe serveurs.xlsx ». Mots-clés : « PRISE DE CONTRÔLE », « EXFILTRATION ».
 6. **É5 — Le code SMS** : « Pour valider la mise à jour de sécurité, lisez-moi le code que vous venez de recevoir par SMS. » Ce code lui donne le compte de l'agent, donc un accès après l'appel.
    - 🔴 Avec ce code, il garde votre compte après avoir raccroché
    - 🔴 Le SMS le dit lui-même : ce code ne se communique à personne, même au support
@@ -299,7 +305,7 @@ Personnage : « Nadia », agente au service urbanisme de {{COLLECTIVITE}}, devan
 | 1 | 20 s | La boîte {{OUTIL\_MAIL}} de Nadia se remplit : 200 newsletters en accéléré, compteur qui s'emballe | DIVERSION | Notifications en rafale | « À votre avis, c'est quoi ? » |
 | 2 | 25 s | Appel entrant d'un numéro inconnu : « Support informatique de {{PRESTATAIRE\_INFO}}. Ouvrez {{OUTIL\_PRISE\_EN\_MAIN}} comme d'habitude, et donnez-moi l'identifiant et le mot de passe. » | APPEL NON SOLLICITÉ · URGENCE · PEUR | Sonnerie | « Qu'est-ce qu'il lui dit, d'après vous ? », puis vote |
 | 3 | 25 s | Nadia ouvre {{OUTIL\_PRISE\_EN\_MAIN}}, comme d'habitude, et lit l'identifiant et le mot de passe. Le curseur se met à bouger tout seul | OUTIL HABITUEL · PORTE OUVERTE | Clic, silence | « Que fallait-il faire à ce moment ? » |
-| 4 | 35 s | Ouverture de {{SERVEUR\_FICHIERS}} : Urbanisme, annuaire, « Accès refusé » sur RH et paie, un fichier « Mots de passe serveurs ». Barre de copie qui progresse. « Pour finir, lisez-moi le code reçu par SMS. » | EXFILTRATION · CODE DONNÉ | Bruits de clics rapides, vibration du téléphone | « Quelles données sont parties ? Et pourquoi ce code ? » |
+| 4 | 35 s | Ouverture de {{SERVEUR\_FICHIERS}} : le dossier du service, le dossier commun, « Accès refusé » sur ceux des autres services, un fichier « Mots de passe serveurs ». Barre de copie qui progresse. « Pour finir, lisez-moi le code reçu par SMS. » | EXFILTRATION · CODE DONNÉ | Bruits de clics rapides, vibration du téléphone | « Quelles données sont parties ? Et pourquoi ce code ? » |
 | 5 | 20 s | Fin d'appel : « C'est réglé, bonne journée. » Nadia sourit, reprend son travail. Rien ne paraît anormal | TOUT SEMBLE NORMAL | Raccrocher | « Combien de temps avant qu'on s'en rende compte ? » |
 | 6 | 25 s | Quelques jours plus tard, un lundi à 8 h : écran de rançon sur tous les postes du service, puis plan large de la mairie aux fenêtres éteintes | RANÇONGICIEL · SERVICES À L'ARRÊT | Bourdonnement grave, puis silence | Débrief et réflexe |
 
@@ -390,6 +396,7 @@ Le contenu de ce document est validé : il sert de spécification figée, rien n
   - Parcours 6, 8, 9 : chiffres et consignes sourcés.
   - Écrans ajoutés : bonnes réponses (P1, P3, P7, P10) et « Et si on l'avait supprimé ? » (P7, P11, P12).
   - Mots-clés masqués par défaut, affichés par l'animateur.
+  - Configuration d'un client hors dépôt (`?config=<client>`), avec de nouvelles variables de localisation : dossiers du serveur de fichiers, numéros des escrocs, procédure RIB (16 novembre 2026).
   - Parcours 1 sur l'outil de prise en main habituel ({{OUTIL\_PRISE\_EN\_MAIN}}) : identifiant et mot de passe donnés (vote 1), puis code SMS pour garder le compte (vote 2).
   - Format « Finances et direction » (10 · 3 · 2 · 5 · 4 · 7).
   - Formats court (9 · 10 · 5 · 1 · 7) et standard (30 min : 9 · 5 · 10 · 11 · 6 · 8 · 12 · 1 · 7) recomposés pour des agents non spécialistes, sans les parcours 2, 3 et 4.

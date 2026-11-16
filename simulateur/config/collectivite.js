@@ -7,9 +7,10 @@
  *
  * Collectivité fictive par défaut : Commune de Saint-Exemple.
  *
- * ATTENTION, DÉPÔT PUBLIC : ne committez jamais ce fichier rempli avec les données
- * d'un vrai client. Gardez la version client dans collectivite-<client>.js (ignoré par git)
- * et copiez-la ici seulement sur le poste de l'animateur, le jour de la séance.
+ * ATTENTION, DÉPÔT PUBLIC : ne mettez jamais les données d'un vrai client dans ce fichier.
+ * Pour un client, créez config/collectivite-<client>.js (ignoré par git, voir
+ * collectivite-exemple-client.txt) : il ne contient que les valeurs à remplacer.
+ * On ouvre alors la séance avec index.html?config=<client>.
  */
 window.CONFIG_COLLECTIVITE = {
 
@@ -42,7 +43,19 @@ window.CONFIG_COLLECTIVITE = {
     FOURNISSEUR_DOMAINE:        "transports-lagonbleu.re",
     FOURNISSEUR_DOMAINE_PIEGE:  "transport-lagonbleu.re",
     FOURNISSEUR_TEL_DOSSIER:    "0262 00 41 10",
-    FOURNISSEUR_TEL_PIEGE:      "0693 00 74 52"
+    FOURNISSEUR_TEL_PIEGE:      "0693 00 74 52",
+
+    // --- Localisation (ajouts du 2026-11-16) ---
+    // Parcours 1 : ce que l'agent voit sur le serveur de fichiers
+    DOSSIER_SERVICE:    "Urbanisme – Permis de construire",   // dossier de son propre service
+    DOSSIER_COMMUN:     "Commun à tous les services",
+    DOSSIER_REFUSE_1:   "Ressources humaines",                // dossiers d'autres services, refusés
+    DOSSIER_REFUSE_2:   "Paie",
+    // Numéros fictifs des escrocs (indicatif local)
+    NUMERO_FAUX_SUPPORT:"0262 00 55 17",                       // parcours 1
+    NUMERO_FAUX_DGS:    "+262 693 00 31 08",                   // parcours 3
+    // Parcours 2 : la règle de la maison, affichée au débrief
+    PROCEDURE_RIB:      "Un changement de RIB ne se traite jamais sur un simple mail : contre-appel, puis circuit habituel de la dépense."
   },
 
   // Dossier des images de la collectivité (logo, photos). Si une image manque,

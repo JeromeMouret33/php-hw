@@ -170,6 +170,7 @@ SIMU.enregistrerParcours({
     attaquant: 'Les sommes partent souvent vers l\'étranger en quelques heures.',
     impact: 'Double paiement : le vrai fournisseur reste à payer, et les fonds versés à l\'escroc sont perdus.',
     variante: 'Plus difficile : le mail vient de la vraie boîte du fournisseur, piratée. Seul le contre-appel la déjoue.',
+    message: '{{PROCEDURE_RIB}}',
     reflexe: 'Contre-appel sur des coordonnées déjà connues, factures uniquement via Chorus Pro, alerte immédiate du comptable public et dépôt de plainte.'
   }
 });

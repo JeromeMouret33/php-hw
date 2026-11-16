@@ -2,6 +2,26 @@
 
 Journal daté, en ordre antichronologique.
 
+## 2026-11-16 – Configuration du premier client, hors dépôt
+
+**Contexte** : l'animateur transmet les réponses d'une première collectivité (variables, captures du serveur de fichiers, logo, procédure RIB). Le dépôt est public : aucune de ces données n'est dans git, ni dans ce journal.
+
+**Fait**
+- **Configuration client hors dépôt** : `index.html?config=<client>` charge `config/collectivite-<client>.js` par-dessus la collectivité fictive. Ce fichier ne contient que les valeurs à remplacer. Il est ignoré par git, comme `images/<client>/` et le raccourci `seance-<client>.html`. Modèle publié : `config/collectivite-exemple-client.txt`. Le vérificateur accepte `--config <client>`.
+- **Nouvelles variables**, avec des valeurs fictives par défaut :
+  - `DOSSIER_SERVICE`, `DOSSIER_COMMUN`, `DOSSIER_REFUSE_1`, `DOSSIER_REFUSE_2` : ce que l'agent voit sur le serveur de fichiers (parcours 1) ;
+  - `NUMERO_FAUX_SUPPORT`, `NUMERO_FAUX_DGS` : numéros des escrocs, à l'indicatif local (parcours 1 et 3) ;
+  - `PROCEDURE_RIB` : la règle de la maison, affichée dans « À retenir » au débrief du parcours 2.
+- Parcours 1 : formulations rendues indépendantes des noms de dossiers (« les dossiers des autres services lui sont refusés ») ; texte de la rançon reformulé (« {{COLLECTIVITE}} : tous les postes… »).
+- Débrief : cartes resserrées quand la colonne de droite en compte quatre (défaut vu en capture).
+- Configuration du premier client rédigée, logo installé, archive remise à l'animateur.
+
+**Détails de réalisme ajoutés** : valeurs fictives par défaut des nouvelles variables.
+
+**En attente** (voir SUIVI) : prestataire du support et outil de prise en main, Microsoft 365 et double authentification, horodateurs, nom exact d'un dossier, photos.
+
+**Résultat** : `node outils/verifier.js` → 97 écrans, 106 chemins, aucun problème, avec la configuration fictive comme avec celle du client ; captures du client relues.
+
 ## 2026-11-04 – Lien mort (issue #1) et protection du dépôt public
 
 **Contexte** : une issue GitHub, ouverte par un robot publicitaire de vérification de liens, signale que le lien du dépliant DGFiP sur les FOVI renvoie une erreur 404. Après vérification directe, c'est exact. Le lien « Replay » du robot n'a pas été ouvert.
