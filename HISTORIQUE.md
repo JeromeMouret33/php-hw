@@ -2,6 +2,34 @@
 
 Journal daté, en ordre antichronologique.
 
+## 2026-11-21 – Réponses du premier client, variante sans double authentification
+
+**Réponses de l'animateur** :
+- pas de prestataire pour le support des postes : c'est l'informatique interne ;
+- outil de prise en main confirmé ;
+- messagerie Microsoft 365 ;
+- pas de double authentification, à sa connaissance ;
+- parcours 9 laissé tel quel ;
+- nom du dossier confirmé ;
+- le nom du service informatique est féminin.
+
+**Fait**
+- **Option `doubleAuthentification`** (`true` par défaut). À `false` :
+  - parcours 1 : l'escroc demande le mot de passe de session au lieu du code SMS (écran É5, vote et « Bien vu » dédiés) ;
+  - parcours 5 : l'écran du code est remplacé par le vol du seul mot de passe (mot-clé « MOT DE PASSE VOLÉ ») ;
+  - coulisses, source et débrief suivent l'option.
+- **Moteur** : tout texte peut désormais dépendre d'une option, avec la même écriture que les cibles (`{ option, alors, sinon }`).
+- **Variable `DSI_AU`** (« au Service informatique », « à la DSI ») pour accorder l'article ; deux phrases du parcours 7 reformulées sans article.
+- **`PRESTATAIRE_INFO`** peut porter le service interne quand il n'y a pas de prestataire ; coulisses du parcours 1 reformulées en conséquence.
+- **Vérificateur** : les options sont remises à l'état de la configuration avant chaque parcours.
+- **Client** : configuration mise à jour hors dépôt, et dossier complet prêt à l'emploi remis à l'animateur (lanceur `OUVRIR-LA-SEANCE.html`, LISEZMOI). Ouverture testée depuis l'archive décompressée.
+
+**Détails de réalisme ajoutés** : répliques de la variante « mot de passe » du parcours 1, page « Connexion en cours… » du parcours 5.
+
+**Décisions à valider** : voir SUIVI (variante sans double authentification, faux support interne).
+
+**Résultat** : `node outils/verifier.js` → 101 écrans, 121 chemins, aucun problème, avec la configuration fictive comme avec celle du client ; captures du client relues.
+
 ## 2026-11-16 – Configuration du premier client, hors dépôt
 
 **Contexte** : l'animateur transmet les réponses d'une première collectivité (variables, captures du serveur de fichiers, logo, procédure RIB). Le dépôt est public : aucune de ces données n'est dans git, ni dans ce journal.

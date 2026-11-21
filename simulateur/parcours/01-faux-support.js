@@ -49,7 +49,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
-      coulisses: 'L\'attaquant sait que la boîte déborde : il l\'a provoqué. Le nom du prestataire est souvent public (marchés attribués, signatures de mails), le numéro de l\'agent aussi (annuaire, site). Il appelle d\'un numéro quelconque et se présente : c\'est l\'histoire qui convainc. Variante fréquente : un message ou un appel <b>Teams</b> venant d\'un compte extérieur nommé « Support informatique ».',
+      coulisses: 'L\'attaquant sait que la boîte déborde : il l\'a provoqué. Le nom du service informatique ou de son prestataire est souvent public (organigramme, marchés attribués, signatures de mails), le numéro de l\'agent aussi (annuaire, site). Il appelle d\'un numéro quelconque et se présente : c\'est l\'histoire qui convainc. Variante fréquente : un message ou un appel <b>Teams</b> venant d\'un compte extérieur nommé « Support informatique ».',
       etape: 'É2',
       composant: 'appel',
       donnees: {
@@ -148,7 +148,7 @@ SIMU.enregistrerParcours({
         contexte: '<p>Le curseur bouge <b>tout seul</b>.</p><p>Les dossiers des autres services lui sont refusés…</p><p>… mais un fichier de <b>mots de passe</b> traîne dans le dossier commun.</p>'
       },
       motsCles: ['PRISE DE CONTRÔLE', 'EXFILTRATION'],
-      suivant: 'e5'
+      suivant: { option: 'doubleAuthentification', alors: 'e5', sinon: 'e5mdp' }
     },
 
     e5: {
@@ -189,6 +189,48 @@ SIMU.enregistrerParcours({
       suite: 'e6'
     },
 
+    // ----- Variante sans double authentification (options.doubleAuthentification = false)
+
+    e5mdp: {
+      coulisses: 'Pour revenir plus tard, sans l\'agent, il lui faut le <b>compte</b>. Sans double authentification, le mot de passe suffit : avec lui, il ouvre la messagerie et les outils en ligne de l\'agent depuis n\'importe où. D\'où le prétexte de la « mise à jour de sécurité ».',
+      etape: 'É5',
+      composant: 'appel',
+      donnees: {
+        appelant: 'Numéro inconnu',
+        numero: '{{NUMERO_FAUX_SUPPORT}}',
+        duree: '09:41',
+        contexte: 'L\'appelant a toujours la main sur le poste.',
+        repliques: [
+          { qui: 'appelant', texte: 'C\'est presque fini. [[mdp|Pour valider la mise à jour de sécurité, donnez-moi le mot de passe de votre session.]]' },
+          { qui: 'agent', texte: 'Mon mot de passe ? Vous êtes sûr ?' },
+          { qui: 'appelant', texte: '[[rassure|Oui, c\'est la procédure. Vous pourrez le changer juste après.]]' }
+        ]
+      },
+      indices: {
+        mdp:     { type: 'suspect', etiquette: 'Un mot de passe ne se donne jamais, à personne : le vrai support n\'en a pas besoin' },
+        rassure: { type: 'suspect', etiquette: 'Il rassure pour l\'obtenir : avec ce mot de passe, il garde votre compte après avoir raccroché' }
+      },
+      suivant: 'vote2mdp'
+    },
+
+    vote2mdp: {
+      coulisses: 'Relance : « Votre support a-t-il déjà eu besoin de votre mot de passe ? » Quel que soit le vote, la suite reste visible.',
+      type: 'vote',
+      question: 'Il demande votre mot de passe. Que fait-on ?',
+      options: [
+        { libelle: 'On donne le mot de passe', suivant: 'e6', bon: false },
+        { libelle: 'On raccroche et on prévient le support<br><span class="vote-detail">{{NUMERO_SUPPORT}}</span>', suivant: 'bienvu2mdp', bon: true }
+      ],
+      suiteQuandMeme: 'e6'
+    },
+
+    bienvu2mdp: {
+      coulisses: 'Sans le mot de passe, l\'attaquant perd l\'accès en raccrochant. Mais il a déjà copié des fichiers, dont les mots de passe des serveurs : il faut prévenir le support tout de suite pour les changer. Mieux vaut un signalement tardif que pas de signalement.',
+      type: 'bienvu',
+      texte: 'Sans le mot de passe, il perd l\'accès en raccrochant. Mais des fichiers sont partis : on prévient tout de suite le support, qui change les mots de passe.',
+      suite: 'e6'
+    },
+
     e6: {
       coulisses: 'Avec le compte, l\'attaquant revient depuis chez lui (messagerie, accès de télétravail). Les mots de passe volés le rendent administrateur. Quelques jours plus tard, il lance le chiffrement, souvent la nuit ou le week-end. C\'est la <b>double extorsion</b> : payer pour récupérer les fichiers, et payer pour que les données volées ne soient pas publiées. Payer ne garantit ni l\'un ni l\'autre.',
       etape: 'É6',
@@ -215,7 +257,7 @@ SIMU.enregistrerParcours({
       suivant: 'f2'
     },
     f2: {
-      coulisses: 'L\'attaquant sait que la boîte de Nadia déborde : il l\'a provoqué. Il connaît le prestataire et l\'outil habituel du support. Il appelle d\'un numéro quelconque et se présente : c\'est l\'histoire qui convainc.',
+      coulisses: 'L\'attaquant sait que la boîte de Nadia déborde : il l\'a provoqué. Il connaît le nom du support et son outil habituel. Il appelle d\'un numéro quelconque et se présente : c\'est l\'histoire qui convainc.',
       etape: 'Séq. 2',
       composant: 'video',
       donnees: { sequence: 2, fichier: 'videos/parcours1-seq2.mp4', question: 'Qu\'est-ce qu\'il lui dit, d\'après vous ?',
@@ -249,12 +291,12 @@ SIMU.enregistrerParcours({
       suivant: 'f4'
     },
     f4: {
-      coulisses: 'L\'attaquant copie ce que Nadia peut ouvrir et trouve un fichier de mots de passe. Pour revenir sans elle, il lui faut son compte : d\'où le code SMS.',
+      coulisses: { option: 'doubleAuthentification', alors: 'L\'attaquant copie ce que Nadia peut ouvrir et trouve un fichier de mots de passe. Pour revenir sans elle, il lui faut son compte : d\'où le code SMS.', sinon: 'L\'attaquant copie ce que Nadia peut ouvrir et trouve un fichier de mots de passe. Pour revenir sans elle, il lui faut son compte : d\'où la demande du mot de passe.' },
       etape: 'Séq. 4',
       composant: 'video',
       donnees: { sequence: 4, fichier: 'videos/parcours1-seq4.mp4', question: 'Quelles données sont parties ? Et pourquoi ce code ?',
-        description: 'Ouverture de {{SERVEUR_FICHIERS}} : le dossier du service, le dossier commun, « Accès refusé » sur ceux des autres services… et un fichier « Mots de passe serveurs ». Une barre de copie progresse. « Pour finir, lisez-moi le code reçu par SMS. »' },
-      motsCles: ['EXFILTRATION', 'CODE DONNÉ'],
+        description: 'Ouverture de {{SERVEUR_FICHIERS}} : le dossier du service, le dossier commun, « Accès refusé » sur ceux des autres services… et un fichier « Mots de passe serveurs ». Une barre de copie progresse. Puis l\'appelant demande à Nadia de quoi garder son compte : le code reçu par SMS, ou son mot de passe s\'il n\'y a pas de double authentification.' },
+      motsCles: ['EXFILTRATION', 'COMPTE VOLÉ'],
       suivant: 'f5'
     },
     f5: {
@@ -279,13 +321,13 @@ SIMU.enregistrerParcours({
 
   coulisses: {
     scenario: 'Un agent de {{COLLECTIVITE_COURT}} voit sa boîte mail exploser, puis reçoit l\'appel d\'un faux support qui connaît l\'outil habituel, <b>{{OUTIL_PRISE_EN_MAIN}}</b>. L\'attaquant veut la main sur le poste, puis le compte de l\'agent, pour entrer durablement dans le réseau.',
-    modeOperatoire: 'Schéma décrit par Microsoft en 2024 : inondation de la boîte (<b>« email bombing »</b>), puis appel d\'un faux support qui fait ouvrir un outil de prise en main <b>légitime</b>, souvent celui que la collectivité utilise déjà. Avec l\'identifiant et le mot de passe, il pilote le poste. Avec le code reçu par SMS, il garde le compte après l\'appel. Il revient ensuite, devient administrateur, puis déploie le <b>rançongiciel</b>.'
+    modeOperatoire: 'Schéma décrit par Microsoft en 2024 : inondation de la boîte (<b>« email bombing »</b>), puis appel d\'un faux support qui fait ouvrir un outil de prise en main <b>légitime</b>, souvent celui que la collectivité utilise déjà. Avec l\'identifiant et le mot de passe de l\'outil, il pilote le poste. Puis il se fait donner de quoi garder le compte après l\'appel : le code reçu par SMS, ou le mot de passe de l\'agent quand il n\'y a pas de double authentification. Il revient ensuite, devient administrateur, puis déploie le <b>rançongiciel</b>.'
   },
 
   debrief: {
-    attaquant: 'Avec l\'identifiant de l\'outil, il pilote le poste et copie ce que l\'agent peut ouvrir, dont un fichier de mots de passe. Avec le code SMS, il garde le compte, revient quelques jours plus tard, devient administrateur et chiffre les serveurs.',
+    attaquant: { option: 'doubleAuthentification', alors: 'Avec l\'identifiant de l\'outil, il pilote le poste et copie ce que l\'agent peut ouvrir, dont un fichier de mots de passe. Avec le code SMS, il garde le compte, revient quelques jours plus tard, devient administrateur et chiffre les serveurs.', sinon: 'Avec l\'identifiant de l\'outil, il pilote le poste et copie ce que l\'agent peut ouvrir, dont un fichier de mots de passe. Avec le mot de passe de l\'agent, il garde le compte, revient quelques jours plus tard, devient administrateur et chiffre les serveurs.' },
     impact: 'Les services (état civil, paie, urbanisme) peuvent s\'arrêter plusieurs semaines.',
     message: 'C\'est le bon outil, mais pas le bon interlocuteur : un outil familier ne protège pas d\'un faux support.',
-    reflexe: 'Raccrocher, rappeler le support sur le numéro connu {{NUMERO_SUPPORT}} ; ne donner l\'identifiant de {{OUTIL_PRISE_EN_MAIN}} qu\'au support qu\'on a soi-même appelé, et ne jamais lire un code reçu par SMS.'
+    reflexe: 'Raccrocher, rappeler le support sur le numéro connu {{NUMERO_SUPPORT}} ; ne donner l\'identifiant de {{OUTIL_PRISE_EN_MAIN}} qu\'au support qu\'on a soi-même appelé ; ne jamais donner son mot de passe ni lire un code reçu par SMS.'
   }
 });

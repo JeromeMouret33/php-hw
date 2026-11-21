@@ -40,14 +40,14 @@ SIMU.enregistrerParcours({
       question: 'Que fait-on de cette clé ?',
       options: [
         { libelle: 'On la branche pour retrouver son propriétaire', suivant: 'e2', bon: false },
-        { libelle: 'On la remet au {{DSI_NOM}}', suivant: 'bienvu', bon: true }
+        { libelle: 'On la remet {{DSI_AU}}', suivant: 'bienvu', bon: true }
       ],
       suiteQuandMeme: 'e2'
     },
 
     bienvu: {
       type: 'bienvu',
-      texte: 'Remise au {{DSI_NOM}} sans être branchée : elle sera analysée sur un poste isolé.',
+      texte: 'Remise {{DSI_AU}} sans être branchée : elle sera analysée sur un poste isolé.',
       suite: 'e2'
     },
 
@@ -85,6 +85,6 @@ SIMU.enregistrerParcours({
   debrief: {
     attaquant: 'Dès le branchement, un programme s\'exécute ou la clé tape elle-même des commandes : l\'attaquant obtient un accès au réseau.',
     message: 'En 2016, des chercheurs américains ont abandonné 297 clés USB sur leur campus : des fichiers ont été ouverts sur 135 d\'entre elles, soit 45 %, souvent pour retrouver le propriétaire.',
-    reflexe: 'Ne jamais brancher un support inconnu, le remettre au {{DSI_NOM}}.'
+    reflexe: 'Ne jamais brancher un support inconnu, le remettre {{DSI_AU}}.'
   }
 });

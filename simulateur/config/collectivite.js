@@ -26,8 +26,9 @@ window.CONFIG_COLLECTIVITE = {
     DGS_NOM:            "Payet",
     MAIRE_NOM:          "Jean Hoarau",
     DSI_NOM:            "Service informatique",
+    DSI_AU:             "au Service informatique",  // le même avec sa préposition : « à la DSI », « au service informatique »
     RESPONSABLE_INFO:   "Paul Grondin",
-    PRESTATAIRE_INFO:   "InfoRéunion Services",
+    PRESTATAIRE_INFO:   "InfoRéunion Services",   // ou le service interne, avec son article (« la DSI »), s'il n'y a pas de prestataire
     NUMERO_SUPPORT:     "0262 00 00 00 (poste 1234)",
     OUTIL_TICKET:       "GLPI",
     OUTIL_PRISE_EN_MAIN:"TeamViewer",       // outil de prise en main à distance utilisé par le vrai support
@@ -65,7 +66,10 @@ window.CONFIG_COLLECTIVITE = {
   // Options de séance
   options: {
     // true : le parcours 1 joue le film (6 séquences, dossier videos/) à la place des écrans É1 à É5
-    filmParcours1: false
+    filmParcours1: false,
+    // true : les agents ont une double authentification (code SMS ou application).
+    // false : un mot de passe suffit ; les parcours 1 et 5 jouent alors leur variante « mot de passe ».
+    doubleAuthentification: true
   },
 
   // Parcours de la séance : true = proposé dans le menu, false = masqué.

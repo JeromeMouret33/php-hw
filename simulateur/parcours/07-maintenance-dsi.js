@@ -90,7 +90,7 @@ SIMU.enregistrerParcours({
     signale: {
       type: 'bienvu',
       titre: 'Prudent, mais pas nécessaire',
-      texte: 'Le {{DSI_NOM}} confirmera que le message est légitime. Vérifier, c\'est bien ; ici, tous les signes étaient rassurants.',
+      texte: 'Le support ({{DSI_NOM}}) confirmera que le message est légitime. Vérifier, c\'est bien ; ici, tous les signes étaient rassurants.',
       suite: 'perte',
       libelleSuite: 'Et si on l\'avait supprimé ?'
     },
@@ -111,7 +111,7 @@ SIMU.enregistrerParcours({
   },
 
   coulisses: {
-    scenario: 'Aucun attaquant ici : le {{DSI_NOM}} prévient simplement tous les agents d\'une coupure prévue. Son seul but : que personne ne s\'inquiète samedi matin, et que personne n\'appelle le support pour rien.',
+    scenario: 'Aucun attaquant ici : l\'informatique interne ({{DSI_NOM}}) prévient simplement tous les agents d\'une coupure prévue. Son seul but : que personne ne s\'inquiète samedi matin, et que personne n\'appelle le support pour rien.',
     modeOperatoire: 'Les faux mails « informatiques » sont un grand classique : « votre boîte est pleine », « maintenance en cours, reconnectez-vous ». L\'imitation contiendrait un <b>lien de connexion</b>, une demande de mot de passe, une urgence (« sous 24 h ou votre compte sera supprimé ») et souvent une adresse d\'expéditeur extérieure à {{DOMAINE_MAIL}}. Ici, rien de tout ça.'
   },
 

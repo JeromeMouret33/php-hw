@@ -13,7 +13,7 @@ SIMU.enregistrerParcours({
   nature: 'malveillant',
   cible: 'Tout agent',
   duree: '3 min',
-  source: 'Hameçonnage d\'identifiants Microsoft 365 avec contournement de la double authentification',
+  source: { option: 'doubleAuthentification', alors: 'Hameçonnage d\'identifiants Microsoft 365 avec contournement de la double authentification', sinon: 'Hameçonnage d\'identifiants Microsoft 365' },
   debut: 'e1',
 
   ecrans: {
@@ -51,7 +51,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
-      coulisses: 'Derrière cette page, le serveur de l\'attaquant affiche en direct la vraie page de connexion Microsoft, qu\'il relaie. C\'est pour ça qu\'elle est si réaliste : ce sont les vrais écrans, parfois avec l\'habillage de la collectivité. Seule l\'adresse dans la barre trahit le relais (on y arrive après une redirection depuis le lien du mail).',
+      coulisses: { option: 'doubleAuthentification', alors: 'Derrière cette page, le serveur de l\'attaquant affiche en direct la vraie page de connexion Microsoft, qu\'il relaie. C\'est pour ça qu\'elle est si réaliste : ce sont les vrais écrans, parfois avec l\'habillage de la collectivité. Seule l\'adresse dans la barre trahit le relais (on y arrive après une redirection depuis le lien du mail).', sinon: 'Cette page est une copie de la page de connexion Microsoft, hébergée chez l\'attaquant : tout ce qu\'on y tape lui est envoyé. Seule l\'adresse dans la barre la trahit (on y arrive après une redirection depuis le lien du mail).' },
       etape: 'É2',
       composant: 'navigateur',
       donnees: {
@@ -76,16 +76,16 @@ SIMU.enregistrerParcours({
       type: 'vote',
       question: 'Que fait-on ?',
       options: [
-        { libelle: 'On se connecte', suivant: 'e3', bon: false },
+        { libelle: 'On se connecte', suivant: { option: 'doubleAuthentification', alors: 'e3', sinon: 'e3mdp' }, bon: false },
         { libelle: 'On ferme, et on ouvre OneDrive directement', suivant: 'bienvu', bon: true }
       ],
-      suiteQuandMeme: 'e3'
+      suiteQuandMeme: { option: 'doubleAuthentification', alors: 'e3', sinon: 'e3mdp' }
     },
 
     bienvu: {
       type: 'bienvu',
       texte: 'En ouvrant OneDrive soi-même, on constate qu\'aucun document n\'a été partagé. Le mot de passe reste à l\'abri.',
-      suite: 'e3'
+      suite: { option: 'doubleAuthentification', alors: 'e3', sinon: 'e3mdp' }
     },
 
     e3: {
@@ -104,6 +104,26 @@ SIMU.enregistrerParcours({
           '<h2>Pendant ce temps…</h2><p>L\'attaquant saisit <b>ce même code</b> sur la vraie page de connexion.</p><p>Il est connecté à votre compte.</p></div></div>'
       },
       motsCles: ['SESSION VOLÉE'],
+      suivant: 'e4'
+    },
+
+    // Variante sans double authentification (options.doubleAuthentification = false)
+    e3mdp: {
+      coulisses: 'La fausse page enregistre l\'adresse et le mot de passe, puis affiche une attente ou une erreur pour ne pas éveiller les soupçons. <b>Sans double authentification</b>, rien d\'autre ne protège le compte. Une seconde vérification sur le téléphone aurait obligé l\'attaquant à piéger aussi le code : possible, mais plus difficile.',
+      etape: 'É3',
+      composant: 'navigateur',
+      donnees: {
+        onglet: 'Connexion en cours…',
+        url: 'login-microsoftonline.docs-securise.app/common/login',
+        page:
+          '<div class="theme-connexion"><div class="site-carte">' +
+          '<h2>Connexion en cours…</h2><p>Votre document va s\'ouvrir dans quelques instants.</p>' +
+          '<div class="site-champ"><label>Adresse e-mail</label><div>{{FORMAT_ADRESSE}}@{{DOMAINE_MAIL}}</div></div>' +
+          '<div class="site-champ"><label>Mot de passe</label><div>••••••••••</div></div></div>' +
+          '<div class="site-carte" style="width:560px;margin-left:40px;border-top:10px solid #d7191c">' +
+          '<h2>Pendant ce temps…</h2><p>L\'attaquant a reçu <b>votre adresse et votre mot de passe</b>.</p><p>Cela lui suffit : il ouvre votre messagerie depuis chez lui.</p></div></div>'
+      },
+      motsCles: ['MOT DE PASSE VOLÉ'],
       suivant: 'e4'
     },
 
@@ -137,13 +157,13 @@ SIMU.enregistrerParcours({
   },
 
   coulisses: {
-    scenario: 'Un agent reçoit un faux partage de document au nom du DGS. L\'attaquant veut prendre le contrôle de son compte Microsoft 365, malgré la double authentification, pour s\'en servir contre la collectivité et ses contacts.',
-    modeOperatoire: 'C\'est un hameçonnage <b>« adversary-in-the-middle »</b> (l\'attaquant au milieu). La fausse page n\'est pas une simple copie : c\'est un <b>relais</b> placé entre l\'agent et la vraie page Microsoft. Tout ce que l\'agent saisit (identifiant, mot de passe, puis code) est transmis en direct à Microsoft, qui renvoie un <b>cookie de session</b>. L\'attaquant garde ce cookie et ouvre la boîte mail sans plus avoir besoin ni du mot de passe ni du code.'
+    scenario: { option: 'doubleAuthentification', alors: 'Un agent reçoit un faux partage de document au nom du DGS. L\'attaquant veut prendre le contrôle de son compte Microsoft 365, malgré la double authentification, pour s\'en servir contre la collectivité et ses contacts.', sinon: 'Un agent reçoit un faux partage de document au nom du DGS. L\'attaquant veut son mot de passe Microsoft 365, pour ouvrir sa messagerie et s\'en servir contre la collectivité et ses contacts.' },
+    modeOperatoire: { option: 'doubleAuthentification', alors: 'C\'est un hameçonnage <b>« adversary-in-the-middle »</b> (l\'attaquant au milieu). La fausse page n\'est pas une simple copie : c\'est un <b>relais</b> placé entre l\'agent et la vraie page Microsoft. Tout ce que l\'agent saisit (identifiant, mot de passe, puis code) est transmis en direct à Microsoft, qui renvoie un <b>cookie de session</b>. L\'attaquant garde ce cookie et ouvre la boîte mail sans plus avoir besoin ni du mot de passe ni du code.', sinon: 'C\'est un hameçonnage d\'identifiants. Le mail imite une notification de partage ; le lien mène à une copie de la page de connexion Microsoft. L\'agent y tape son adresse et son mot de passe, qui partent chez l\'attaquant. <b>Sans double authentification</b>, ce mot de passe suffit pour ouvrir la boîte mail depuis n\'importe où. Avec elle, l\'attaquant devrait en plus piéger le code reçu sur le téléphone : possible, mais plus difficile.' }
   },
 
   debrief: {
-    attaquant: 'L\'attaquant rejoue le code en direct, crée une règle de transfert en silence, puis envoie le même faux partage à tous les contacts, depuis le vrai compte de l\'agent.',
-    message: 'La double authentification ne protège pas si on saisit le code sur une fausse page.',
-    reflexe: 'Ouvrir les documents depuis l\'application ou l\'intranet, jamais via le lien d\'un mail inattendu ; en cas de doute, signaler au {{DSI_NOM}}.'
+    attaquant: { option: 'doubleAuthentification', alors: 'L\'attaquant rejoue le code en direct, crée une règle de transfert en silence, puis envoie le même faux partage à tous les contacts, depuis le vrai compte de l\'agent.', sinon: 'Avec le mot de passe, l\'attaquant ouvre la messagerie, crée une règle de transfert en silence, puis envoie le même faux partage à tous les contacts, depuis le vrai compte de l\'agent.' },
+    message: { option: 'doubleAuthentification', alors: 'La double authentification ne protège pas si on saisit le code sur une fausse page.', sinon: 'Sans double authentification, un mot de passe tapé sur une fausse page suffit à perdre son compte.' },
+    reflexe: 'Ouvrir les documents depuis l\'application ou l\'intranet, jamais via le lien d\'un mail inattendu ; en cas de doute, signaler {{DSI_AU}}.'
   }
 });
