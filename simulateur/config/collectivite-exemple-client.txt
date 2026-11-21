@@ -26,8 +26,9 @@ MODÈLE DE CONFIGURATION POUR UN CLIENT
     DGS_NOM:            "…",
     MAIRE_NOM:          "Prénom Nom",
     DSI_NOM:            "Service informatique",
+    DSI_AU:             "au Service informatique",   // ou « à la DSI »
     RESPONSABLE_INFO:   "Prénom Nom",
-    PRESTATAIRE_INFO:   "…",
+    PRESTATAIRE_INFO:   "…",               // ou « la DSI » si le support est interne
     NUMERO_SUPPORT:     "… (poste …)",
     OUTIL_TICKET:       "GLPI",
     OUTIL_PRISE_EN_MAIN:"TeamViewer",
@@ -41,4 +42,5 @@ MODÈLE DE CONFIGURATION POUR UN CLIENT
     PROCEDURE_RIB:      "Chez nous, un changement de RIB …"
   });
   c.dossierImages = "images/<client>/";
+  c.options.doubleAuthentification = true;   // false si un mot de passe suffit (pas de code SMS ni d'application)
 })(window.CONFIG_COLLECTIVITE);

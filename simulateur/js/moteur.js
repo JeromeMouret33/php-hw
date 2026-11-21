@@ -44,6 +44,8 @@
  *   {{VARIABLE}}        -> valeur de config/collectivite.js (rouge si absente)
  *   {{img:fichier.png}} -> image du dossier images/, visuel générique si absente
  *   [[id|texte]]        -> indice cliquable, défini dans « indices » de l'écran
+ *   { option: 'nom', alors: …, sinon: … } -> à la place d'un texte ou d'une cible, valeur choisie
+ *                          selon options.nom de la configuration (ex. doubleAuthentification)
  *   <span class="cle">…</span> -> élément essentiel, que les étiquettes d'indices évitent de recouvrir
  */
 (function () {
@@ -76,6 +78,7 @@
 
   /** Transforme un texte de parcours en HTML : variables, images, indices. */
   function texte(s) {
+    s = resoudre(s); // un texte peut dépendre d'une option : { option, alors, sinon }
     if (s == null) return '';
     let r = String(s);
     r = r.replace(/\{\{img:([^}|]+?)(?:\|(\w+))?\}\}/g, (m, nom, gen) => image(nom.trim(), { generique: gen || 'logo' }));
@@ -112,6 +115,7 @@
 
   /** Version texte brut (pour attributs, titres) : variables seulement. */
   function brut(s) {
+    s = resoudre(s);
     if (s == null) return '';
     return String(s)
       .replace(/\{\{\s*([A-Z0-9_]+)\s*\}\}/g, (m, nom) => { const v = valeur(nom); return v == null ? m : v; })
@@ -745,7 +749,7 @@
     ['📞', 'Vérifier par un autre canal,', 'sur des coordonnées déjà connues (contre-appel, ancien numéro, numéro au dos de la carte).'],
     ['🧭', 'Aller soi-même sur le site ou l\'application officiels,', 'jamais via le lien reçu.'],
     ['🔐', 'Ne jamais donner un code, un mot de passe ou la main sur son poste', 'à quelqu\'un qui vous contacte.'],
-    ['📣', 'Signaler sans honte', 'au {{DSI_NOM}}, au {{NUMERO_SUPPORT}} : un signalement rapide limite les dégâts.']
+    ['📣', 'Signaler sans honte', '{{DSI_AU}}, au {{NUMERO_SUPPORT}} : un signalement rapide limite les dégâts.']
   ];
 
   function conclusion() {

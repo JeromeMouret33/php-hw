@@ -79,7 +79,10 @@ Critères d'acceptation communs, vérifiés le 2026-11-04 par `outils/verifier.j
 - [x] Mécanisme de configuration client hors dépôt : `index.html?config=<client>`, fichier `collectivite-<client>.js` et dossier `images/<client>/` ignorés par git, raccourci `seance-<client>.html`, option `--config` du vérificateur, modèle `collectivite-exemple-client.txt`
 - [x] Nouvelles variables de localisation, avec valeurs fictives par défaut : DOSSIER_SERVICE, DOSSIER_COMMUN, DOSSIER_REFUSE_1 et 2 (parcours 1), NUMERO_FAUX_SUPPORT, NUMERO_FAUX_DGS (parcours 1 et 3), PROCEDURE_RIB (débrief du parcours 2)
 - [x] Configuration du premier client rédigée à partir de ses réponses, vérifiée (`--config`), captures relues ; remise à l'animateur en archive
-- [ ] Réponses en attente (voir SUIVI) : prestataire du support, Microsoft 365 et double authentification, horodateurs, nom exact d'un dossier, photos
+- [x] Réponses du client intégrées (2026-11-21) : support interne, outil de prise en main, Microsoft 365, dossier confirmé, article du service informatique (variable DSI_AU)
+- [x] Variante « sans double authentification » des parcours 1 et 5 (option `doubleAuthentification`) : vérificateur passé avec les deux configurations (101 écrans, 121 chemins), captures relues *(à valider par l'animateur, voir SUIVI)*
+- [x] Dossier complet prêt à l'emploi remis à l'animateur (simulateur + configuration du client) : ouverture testée depuis l'archive décompressée (redirection, configuration, logo, 12 parcours, aucune variable manquante)
+- [ ] Photos : DGS (déposée par l'animateur sur son PC), maire (attendue)
 
 ### Retours de l'animateur (2026-11-04, soir)
 - [x] Mots-clés masqués par défaut sur chaque écran ; l'animateur les affiche (bouton « Afficher les mots-clés (n) » ou touche K), et le bouton n'existe que s'il y en a (contrôlé par le vérificateur)

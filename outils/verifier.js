@@ -153,11 +153,14 @@ async function main() {
   await capture('00-conclusion');
 
   const parcours = await page.evaluate(() => SIMU.parcours.map(p => JSON.parse(JSON.stringify(p))));
+  const optionsInitiales = await page.evaluate(() => Object.assign({}, CONFIG_COLLECTIVITE.options));
   let nbChemins = 0, nbEcrans = 0;
 
   for (const p of parcours) {
     if (SEUL && p.numero !== SEUL) continue;
     const nn = String(p.numero).padStart(2, '0');
+    // les chemins joués modifient les options : on repart de celles de la configuration
+    await page.evaluate(o => { CONFIG_COLLECTIVITE.options = Object.assign({}, o); }, optionsInitiales);
     controleStructure(p);
 
     // --- Chaque écran : rendu, indices, boutons, flèche →, capture

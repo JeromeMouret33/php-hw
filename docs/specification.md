@@ -54,8 +54,9 @@ Toute la personnalisation passe par un seul fichier de configuration et un dossi
 | {{DGS\_NOM}} / {{DGS\_PRENOM}} | Marie Payet | 3, 4 |
 | {{MAIRE\_NOM}} | Jean Hoarau | 4 |
 | {{DSI\_NOM}} | Service informatique / DSI | 1, 7 |
+| {{DSI\_AU}} | au Service informatique / à la DSI (le même, avec sa préposition) | 5, 6, réflexes |
 | {{RESPONSABLE\_INFO}} | Paul Grondin | 1, 7 |
-| {{PRESTATAIRE\_INFO}} | InfoRéunion Services | 1 |
+| {{PRESTATAIRE\_INFO}} | InfoRéunion Services (ou le service interne, « la DSI », si le support n'est pas confié à un prestataire) | 1 |
 | {{NUMERO\_SUPPORT}} | 0262 00 00 00 (poste 1234) | 1, 7 |
 | {{OUTIL\_TICKET}} | GLPI | 1, 7 |
 | {{OUTIL\_PRISE\_EN\_MAIN}} | TeamViewer | 1 (et film) |
@@ -118,6 +119,7 @@ Cible : tout agent. Mode opératoire documenté (inondation de spams puis faux a
 6. **É5 — Le code SMS** : « Pour valider la mise à jour de sécurité, lisez-moi le code que vous venez de recevoir par SMS. » Ce code lui donne le compte de l'agent, donc un accès après l'appel.
    - 🔴 Avec ce code, il garde votre compte après avoir raccroché
    - 🔴 Le SMS le dit lui-même : ce code ne se communique à personne, même au support
+   - *Variante sans double authentification* (option `doubleAuthentification` à `false`) : « Pour valider la mise à jour de sécurité, donnez-moi le mot de passe de votre session. » Indices : un mot de passe ne se donne jamais ; l'escroc rassure pour l'obtenir. Le vote 2 porte alors sur le mot de passe.
 7. **❓ Vote 2** : on lit le code / on raccroche et on prévient le support. Bonne réponse : il perd l'accès en raccrochant, mais des fichiers sont partis, donc on prévient le support tout de suite.
 8. **É6 — Écran de rançon** sur tous les postes, quelques jours plus tard. Mot-clé : « RANÇONGICIEL ».
 
@@ -184,6 +186,7 @@ Cible : tout agent. Hameçonnage d'identifiants Microsoft 365 avec contournement
    - 🔴 On redemande le mot de passe alors qu'on est déjà connecté
 3. **❓ Vote** : on se connecte / on ferme et on ouvre OneDrive directement.
 4. **É3 — Code de double authentification** saisi sur la fausse page : l'attaquant le rejoue en direct. Mot-clé : « SESSION VOLÉE ».
+   - *Variante sans double authentification* : pas d'écran de code ; l'attaquant reçoit l'adresse et le mot de passe, et cela lui suffit. Mot-clé : « MOT DE PASSE VOLÉ ». Message du débrief : « Sans double authentification, un mot de passe tapé sur une fausse page suffit à perdre son compte. »
 5. **É4 — Conséquence** : règle de transfert créée en silence, puis le même faux partage part à tous les contacts depuis le vrai compte de l'agent. Mots-clés : « REBOND », « VOTRE NOM ».
 
 **Débrief** : la double authentification ne protège pas si on saisit le code sur une fausse page. **Réflexe** : ouvrir les documents depuis l'application ou l'intranet, jamais via le lien d'un mail inattendu ; en cas de doute, signaler à {{DSI\_NOM}}.
@@ -396,6 +399,7 @@ Le contenu de ce document est validé : il sert de spécification figée, rien n
   - Parcours 6, 8, 9 : chiffres et consignes sourcés.
   - Écrans ajoutés : bonnes réponses (P1, P3, P7, P10) et « Et si on l'avait supprimé ? » (P7, P11, P12).
   - Mots-clés masqués par défaut, affichés par l'animateur.
+  - Option `doubleAuthentification` (21 novembre 2026) : quand les agents n'ont pas de double authentification, le parcours 1 remplace le code SMS par la demande du mot de passe de session, et le parcours 5 remplace l'écran du code par le vol du seul mot de passe ; les coulisses et les débriefs suivent.
   - Configuration d'un client hors dépôt (`?config=<client>`), avec de nouvelles variables de localisation : dossiers du serveur de fichiers, numéros des escrocs, procédure RIB (16 novembre 2026).
   - Parcours 1 sur l'outil de prise en main habituel ({{OUTIL\_PRISE\_EN\_MAIN}}) : identifiant et mot de passe donnés (vote 1), puis code SMS pour garder le compte (vote 2).
   - Format « Finances et direction » (10 · 3 · 2 · 5 · 4 · 7).
