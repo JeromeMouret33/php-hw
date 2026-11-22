@@ -48,6 +48,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      situation: 'Il est 14 h. Vous rejoignez la réunion : le maire et le DGS sont déjà connectés.',
       coulisses: 'L\'imitation est fragile en direct : elle supporte mal les gestes imprévus et les questions inattendues. D\'où un maire qui parle peu, une demande écrite dans la conversation et une coupure réseau invoquée au bon moment. Les « conseillers » meublent l\'écran pour rendre la réunion crédible.',
       etape: 'É2',
       composant: 'visio',
@@ -110,6 +111,13 @@ SIMU.enregistrerParcours({
       motsCles: ['IMITATION PAR IA'],
       suivant: 'debrief'
     }
+  },
+
+  situation: {
+    ou: 'Au bureau, {{SERVICE_FINANCES}}',
+    quand: 'Un matin, 11 h',
+    qui: 'Vous préparez les paiements de la collectivité',
+    texte: 'Un dossier d\'acquisition foncière est en cours : la collectivité doit bientôt payer le notaire. Une invitation arrive dans votre messagerie.'
   },
 
   coulisses: {

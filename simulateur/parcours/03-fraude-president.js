@@ -98,6 +98,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
+      situation: 'Quelques minutes plus tard, votre téléphone sonne.',
       coulisses: 'Le faux avocat sert à relancer un agent qui hésite, ou à réclamer un second virement. Il invoque l\'urgence et menace l\'agent d\'en porter la responsabilité. Un titre d\'avocat annoncé au téléphone ne prouve rien.',
       etape: 'É3',
       composant: 'appel',
@@ -114,6 +115,13 @@ SIMU.enregistrerParcours({
       motsCles: ['PRESSION'],
       suivant: 'debrief'
     }
+  },
+
+  situation: {
+    ou: 'Au bureau',
+    quand: 'Un matin, 10 h 12',
+    qui: 'Vous travaillez aux finances de la collectivité',
+    texte: 'Ce matin, vous n\'avez pas encore croisé le DGS, {{DGS_PRENOM}} {{DGS_NOM}}. Votre téléphone vibre : un message WhatsApp, d\'un numéro que vous n\'avez pas enregistré.'
   },
 
   coulisses: {

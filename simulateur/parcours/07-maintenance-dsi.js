@@ -110,6 +110,12 @@ SIMU.enregistrerParcours({
     }
   },
 
+  situation: {
+    ou: 'Au bureau, à votre poste',
+    quand: 'Un lundi matin, 10 h 05',
+    texte: 'Début de semaine. Vous parcourez les messages arrivés depuis vendredi. Parmi eux, un mail du service informatique.'
+  },
+
   coulisses: {
     scenario: 'Aucun attaquant ici : l\'informatique interne ({{DSI_NOM}}) prévient simplement tous les agents d\'une coupure prévue. Son seul but : que personne ne s\'inquiète samedi matin, et que personne n\'appelle le support pour rien.',
     modeOperatoire: 'Les faux mails « informatiques » sont un grand classique : « votre boîte est pleine », « maintenance en cours, reconnectez-vous ». L\'imitation contiendrait un <b>lien de connexion</b>, une demande de mot de passe, une urgence (« sous 24 h ou votre compte sera supprimé ») et souvent une adresse d\'expéditeur extérieure à {{DOMAINE_MAIL}}. Ici, rien de tout ça.'

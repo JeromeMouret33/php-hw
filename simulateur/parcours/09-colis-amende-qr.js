@@ -49,6 +49,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      situation: 'Deuxième moment : fin d\'après-midi, vous rentrez du travail. Vous prenez la voiture tous les jours. Un SMS arrive.',
       coulisses: 'Même mécanique, avec la peur en plus : la majoration. Le lien mène à un site qui imite un paiement d\'amende officiel. Une vraie amende se vérifie sur le site officiel tapé soi-même, avec les références de l\'avis reçu.',
       etape: 'É2',
       composant: 'smartphone',
@@ -79,6 +80,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
+      situation: 'Troisième moment : samedi matin, vous vous garez en centre-ville de {{COLLECTIVITE_COURT}}. Vous êtes pressé, et vous n\'avez pas de monnaie.',
       coulisses: 'Un autocollant collé par-dessus le QR code officiel : il suffit de quelques secondes. Ce type d\'arnaque (« quishing ») a été signalé dans plusieurs villes françaises. Le QR code cache l\'adresse : on ne voit le site qu\'une fois ouvert.',
       etape: 'É3',
       composant: 'photo',
@@ -114,6 +116,7 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
+      situation: 'La semaine suivante, vous consultez vos comptes sur votre téléphone.',
       coulisses: 'La carte a été copiée lors d\'un de ces petits paiements : 1,99 € de colis, 35 € d\'amende ou un stationnement. Les débits arrivent ensuite, souvent à l\'étranger, en plusieurs fois. Le réflexe : faire opposition auprès de sa banque et signaler le SMS au <b>33700</b>.',
       etape: 'É4',
       composant: 'smartphone',
@@ -134,6 +137,12 @@ SIMU.enregistrerParcours({
       motsCles: ['CARTE COPIÉE'],
       suivant: 'debrief'
     }
+  },
+
+  situation: {
+    ou: 'Chez vous, puis en ville',
+    quand: 'Trois moments d\'une même semaine',
+    texte: 'Premier moment : il est midi, vous êtes à table. Comme tout le monde, vous commandez parfois sur Internet. Un SMS arrive.'
   },
 
   coulisses: {

@@ -111,6 +111,12 @@ SIMU.enregistrerParcours({
     }
   },
 
+  situation: {
+    ou: 'Chez vous',
+    quand: 'Fin juillet',
+    texte: 'C\'est l\'été. Vous avez déclaré vos revenus au printemps, comme chaque année. En ouvrant votre messagerie personnelle, vous trouvez ce message.'
+  },
+
   coulisses: {
     scenario: 'Message légitime : l\'administration fiscale prévient que l\'avis d\'impôt est disponible dans l\'espace particulier. Elle ne demande ni paiement, ni carte, ni saisie.',
     modeOperatoire: 'Les impôts sont parmi les organismes les plus imités, surtout aux moments clés de l\'année : déclaration, avis, remboursements. L\'imitation (voir le parcours 8) annonce un remboursement ou une dette, donne un lien vers une adresse qui n\'est pas impots.gouv.fr et demande une carte bancaire. Un nom d\'expéditeur se copie facilement : le bon réflexe reste de taper soi-même impots.gouv.fr.'

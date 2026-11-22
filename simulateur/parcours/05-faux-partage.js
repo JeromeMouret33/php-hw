@@ -128,6 +128,7 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
+      situation: 'Un quart d\'heure plus tard, dans votre messagerie.',
       coulisses: 'L\'attaquant crée une règle de transfert discrète, nommée « . » pour passer inaperçue dans la liste : il continue de lire les mails, même si l\'agent change de mot de passe. Puis il renvoie le piège depuis le vrai compte, car les contacts font confiance à un expéditeur connu. Il faut changer le mot de passe, fermer les sessions et supprimer la règle.',
       etape: 'É4',
       composant: 'mail',
@@ -154,6 +155,12 @@ SIMU.enregistrerParcours({
       motsCles: ['REBOND', 'VOTRE NOM'],
       suivant: 'debrief'
     }
+  },
+
+  situation: {
+    ou: 'Au bureau, à votre poste',
+    quand: 'Un après-midi, 15 h 47',
+    texte: 'La journée touche à sa fin, il vous reste quelques mails à traiter. Des documents partagés, vous en recevez toutes les semaines. En voici un nouveau.'
   },
 
   coulisses: {

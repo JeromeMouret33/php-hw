@@ -52,6 +52,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      situation: 'Arrivé à votre poste, vous branchez la clé pour voir à qui elle appartient.',
       coulisses: 'Un ordinateur accepte tout clavier branché, sans rien demander. La clé tape en quelques secondes des commandes préparées, qui installent un outil de contrôle à distance. C\'est ensuite le poste qui se connecte à l\'attaquant, depuis l\'intérieur du réseau : la porte est ouverte de dedans. Si le poste bloque les programmes inconnus, le faux fichier échoue ; la clé-clavier, elle, tape des commandes avec les droits de l\'agent.',
       etape: 'É2',
       composant: 'explorateur',
@@ -75,6 +76,12 @@ SIMU.enregistrerParcours({
       motsCles: ['CLAVIER FANTÔME', 'PORTE OUVERTE'],
       suivant: 'debrief'
     }
+  },
+
+  situation: {
+    ou: '{{PARKING}}',
+    quand: 'Un matin, en arrivant au travail',
+    texte: 'Vous venez de vous garer. En marchant vers l\'entrée, vous remarquez un petit objet par terre, entre deux voitures.'
   },
 
   coulisses: {

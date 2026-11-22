@@ -49,6 +49,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      situation: 'Vous essayez de trier tous ces messages quand le téléphone du bureau sonne.',
       coulisses: 'L\'attaquant sait que la boîte déborde : il l\'a provoqué. Le nom du service informatique ou de son prestataire est souvent public (organigramme, marchés attribués, signatures de mails), le numéro de l\'agent aussi (annuaire, site). Il appelle d\'un numéro quelconque et se présente : c\'est l\'histoire qui convainc. Variante fréquente : un message ou un appel <b>Teams</b> venant d\'un compte extérieur nommé « Support informatique ».',
       etape: 'É2',
       composant: 'appel',
@@ -152,6 +153,7 @@ SIMU.enregistrerParcours({
     },
 
     e5: {
+      situation: 'L\'appel dure depuis près de dix minutes. Vous avez hâte de reprendre votre travail.',
       coulisses: 'Pour revenir plus tard, sans l\'agent, il lui faut le <b>compte</b>. Il lance « mot de passe oublié » sur ce compte : le code reçu par SMS lui permet de le réinitialiser et de valider la double authentification. Si la collectivité utilise une application de validation, il demande d\'« accepter la demande qui s\'affiche ».',
       etape: 'É5',
       composant: 'appel',
@@ -192,6 +194,7 @@ SIMU.enregistrerParcours({
     // ----- Variante sans double authentification (options.doubleAuthentification = false)
 
     e5mdp: {
+      situation: 'L\'appel dure depuis près de dix minutes. Vous avez hâte de reprendre votre travail.',
       coulisses: 'Pour revenir plus tard, sans l\'agent, il lui faut le <b>compte</b>. Sans double authentification, le mot de passe suffit : avec lui, il ouvre la messagerie et les outils en ligne de l\'agent depuis n\'importe où. D\'où le prétexte de la « mise à jour de sécurité ».',
       etape: 'É5',
       composant: 'appel',
@@ -232,6 +235,7 @@ SIMU.enregistrerParcours({
     },
 
     e6: {
+      situation: 'Quelques jours plus tard, un lundi à 8 h. Vous allumez votre poste, comme tous vos collègues.',
       coulisses: 'Avec le compte, l\'attaquant revient depuis chez lui (messagerie, accès de télétravail). Les mots de passe volés le rendent administrateur. Quelques jours plus tard, il lance le chiffrement, souvent la nuit ou le week-end. C\'est la <b>double extorsion</b> : payer pour récupérer les fichiers, et payer pour que les données volées ne soient pas publiées. Payer ne garantit ni l\'un ni l\'autre.',
       etape: 'É6',
       composant: 'rancon',
@@ -317,6 +321,13 @@ SIMU.enregistrerParcours({
       motsCles: ['RANÇONGICIEL', 'SERVICES À L\'ARRÊT'],
       suivant: 'debrief'
     }
+  },
+
+  situation: {
+    ou: 'Au bureau, à votre poste',
+    quand: 'Un mardi matin, 9 h 40',
+    qui: 'Vous êtes agent au service urbanisme',
+    texte: 'La matinée commence normalement : un dossier de permis à instruire, un café à côté du clavier. Vous ouvrez votre messagerie…'
   },
 
   coulisses: {

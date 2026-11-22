@@ -69,7 +69,10 @@ window.CONFIG_COLLECTIVITE = {
     filmParcours1: false,
     // true : les agents ont une double authentification (code SMS ou application).
     // false : un mot de passe suffit ; les parcours 1 et 5 jouent alors leur variante « mot de passe ».
-    doubleAuthentification: true
+    doubleAuthentification: true,
+    // true : au lancement d'un parcours, le volet « Mise en situation » (à gauche) s'ouvre de lui-même.
+    // false : il reste fermé ; l'animateur l'ouvre avec la touche S ou l'onglet de gauche.
+    situationAuDemarrage: true
   },
 
   // Parcours de la séance : true = proposé dans le menu, false = masqué.

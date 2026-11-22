@@ -161,6 +161,13 @@ SIMU.enregistrerParcours({
     }
   },
 
+  situation: {
+    ou: 'Au bureau, {{SERVICE_FINANCES}}',
+    quand: 'Un mardi matin, 9 h 12',
+    qui: 'Vous traitez les factures des fournisseurs',
+    texte: 'Des mandats à préparer avant la fin de la semaine. {{FOURNISSEUR}} est un fournisseur habituel : vous réglez ses factures tous les mois. Un nouveau message arrive.'
+  },
+
   coulisses: {
     scenario: 'Un agent des finances reçoit un mail de « {{FOURNISSEUR}} » qui annonce un changement de banque. L\'attaquant veut que la prochaine facture soit payée sur son compte à lui.',
     modeOperatoire: 'C\'est une <b>fraude aux faux ordres de virement (FOVI)</b>, contre laquelle la DGFiP met en garde les collectivités. L\'attaquant repère un vrai marché (avis publiés, ou boîte mail du fournisseur piratée), puis imite le fournisseur avec un domaine presque identique. Il fournit un RIB vers un compte qu\'il contrôle et un numéro de téléphone tenu par un complice. Dès le virement reçu, l\'argent est retransféré ailleurs.'

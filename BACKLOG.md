@@ -75,6 +75,12 @@ Critères d'acceptation communs, vérifiés le 2026-11-04 par `outils/verifier.j
 - [x] Ordres de passage suggérés (court, standard, complet) sélectionnables depuis le menu ; « Parcours suivant » suit l'ordre choisi *(ordre « complet » proposé, à valider : voir SUIVI)*
 - [x] Style plus ludique pour l'écran de conséquence (cartes de bande dessinée animées), le débrief (score en étoiles, votes, cartes illustrées, médaille du réflexe) et les réflexes de conclusion (cartes à collectionner, tampon final)
 
+### Volet « Mise en situation » (demande de l'animateur, 2026-11-22)
+- [ ] Moteur : volet à gauche (onglet et touche S), ouverture automatique au lancement d'un parcours, fermeture dès qu'on avance, onglet qui signale un contexte nouveau
+- [ ] Textes : situation de départ des 12 parcours (où, quand, qui, texte) et 13 évolutions en cours de parcours
+- [ ] Vérificateur : situation présente pour chaque parcours, touche S, ouverture au lancement depuis le menu
+- [ ] Nouveau dossier complet remis à l'animateur
+
 ### Gestes naturels (demande de l'animateur, 2026-11-22)
 - [x] Moteur : marqueur `((geste|contenu))` (`suite` ou `choix:N`), indices à geste (1er clic : indice, 2e clic : geste), « Suite ▸ » et → inchangés
 - [x] Gestes posés dans les parcours 1, 3, 4, 5, 6, 8 et 9 (12 gestes)

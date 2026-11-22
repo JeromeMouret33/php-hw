@@ -76,6 +76,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
+      situation: 'Dix minutes plus tard, votre téléphone sonne. Le nom de votre banque s\'affiche.',
       coulisses: 'L\'escroc a saisi la carte sur un site marchand ; la banque envoie une demande de validation. Il appelle avec le <b>numéro de la banque affiché</b> : malgré les contrôles imposés aux opérateurs depuis fin 2024, l\'usurpation reste fréquente (plus de 19 000 signalements à l\'Arcep en 2025). Il cite les infos du faux site, donc il paraît crédible. « Valider pour annuler » est un mensonge : valider, c\'est payer.',
       etape: 'É3',
       composant: 'appel',
@@ -114,6 +115,7 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
+      situation: 'Le soir même, vous ouvrez l\'application de votre banque.',
       coulisses: 'Chaque paiement porte la mention « validé par vous » : techniquement, c\'est vrai. La banque peut donc invoquer une négligence et contester le remboursement. Pourtant, on fait opposition, on conteste et on porte plainte : c\'est à la banque de prouver une négligence grave.',
       etape: 'É4',
       composant: 'smartphone',
@@ -133,6 +135,12 @@ SIMU.enregistrerParcours({
       motsCles: ['VALIDÉ PAR VOUS', 'REMBOURSEMENT REFUSÉ ?'],
       suivant: 'debrief'
     }
+  },
+
+  situation: {
+    ou: 'Chez vous',
+    quand: 'Un soir, 18 h 42',
+    texte: 'La journée de travail est finie, vous préparez le dîner. Votre téléphone vibre sur la table : un SMS.'
   },
 
   coulisses: {

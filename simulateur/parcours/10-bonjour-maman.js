@@ -112,6 +112,13 @@ SIMU.enregistrerParcours({
     }
   },
 
+  situation: {
+    ou: 'Chez vous',
+    quand: 'Un soir, 20 h 14',
+    qui: 'Vous avez un grand enfant, qui ne vit plus à la maison',
+    texte: 'Soirée tranquille devant la télévision. Votre téléphone vibre : un message WhatsApp, d\'un numéro que vous ne connaissez pas.'
+  },
+
   coulisses: {
     scenario: 'Un parent reçoit un message d\'un « enfant » qui aurait changé de numéro. L\'escroc veut obtenir un <b>virement rapide</b>, avant toute vérification.',
     modeOperatoire: 'Le message « Coucou maman » est envoyé <b>en masse</b> : l\'escroc ne sait pas si vous avez des enfants, il attend que quelqu\'un réponde. Il refuse tout appel vocal pour ne pas être démasqué. Le RIB fourni appartient à un tiers, souvent un intermédiaire qui fait suivre l\'argent. Une fois le virement parti, le récupérer est très difficile.'
