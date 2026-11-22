@@ -80,7 +80,7 @@ SIMU.enregistrerParcours({
     },
 
     e3: {
-      situation: 'Troisième moment : samedi matin, vous vous garez en centre-ville de {{COLLECTIVITE_COURT}}. Vous êtes pressé, et vous n\'avez pas de monnaie.',
+      situation: 'Troisième moment : samedi matin, vous vous garez en centre-ville de {{COLLECTIVITE_COURT}}. Vous avez peu de temps, et pas de monnaie.',
       coulisses: 'Un autocollant collé par-dessus le QR code officiel : il suffit de quelques secondes. Ce type d\'arnaque (« quishing ») a été signalé dans plusieurs villes françaises. Le QR code cache l\'adresse : on ne voit le site qu\'une fois ouvert.',
       etape: 'É3',
       composant: 'photo',
@@ -111,7 +111,7 @@ SIMU.enregistrerParcours({
 
     bienvu: {
       type: 'bienvu',
-      texte: 'On paie avec l\'application ou sur le site officiel, en le tapant soi-même : la carte reste à l\'abri.',
+      texte: 'Pour le stationnement, on paie avec l\'application ou sur le site officiel tapé soi-même : cette fois, la carte reste à l\'abri.',
       suite: 'e4'
     },
 
@@ -142,7 +142,7 @@ SIMU.enregistrerParcours({
   situation: {
     ou: 'Chez vous, puis en ville',
     quand: 'Trois moments d\'une même semaine',
-    texte: 'Premier moment : il est midi, vous êtes à table. Comme tout le monde, vous commandez parfois sur Internet. Un SMS arrive.'
+    texte: 'Premier moment : il est midi, vous êtes à table. Votre téléphone vibre : un SMS.'
   },
 
   coulisses: {

@@ -86,7 +86,7 @@ SIMU.enregistrerParcours({
         duree: '01:26',
         contexte: '10 minutes plus tard, l\'écran affiche le vrai numéro de votre banque.',
         repliques: [
-          { qui: 'appelant', texte: 'Service fraude de {{BANQUE_PERSO}} : une opération de 1 450 € est en cours sur votre carte.' },
+          { qui: 'appelant', texte: '{{BANQUE_PERSO}}, service fraude : une opération de 1 450 € est en cours sur votre carte.' },
           { qui: 'appelant', texte: '[[valider|Pour l\'annuler, validez-la dans votre application.]]' }
         ]
       },
@@ -110,12 +110,12 @@ SIMU.enregistrerParcours({
 
     bienvu2: {
       type: 'bienvu',
-      texte: 'Au numéro au dos de la carte, la vraie banque confirme : personne ne vous a appelé.',
+      texte: 'Au numéro au dos de la carte, la vraie banque confirme que personne ne vous a appelé, et fait opposition sur la carte : son numéro a été saisi sur le faux site.',
       suite: 'e4'
     },
 
     e4: {
-      situation: 'Le soir même, vous ouvrez l\'application de votre banque.',
+      situation: 'Quelques minutes après avoir raccroché, vous regardez vos opérations.',
       coulisses: 'Chaque paiement porte la mention « validé par vous » : techniquement, c\'est vrai. La banque peut donc invoquer une négligence et contester le remboursement. Pourtant, on fait opposition, on conteste et on porte plainte : c\'est à la banque de prouver une négligence grave.',
       etape: 'É4',
       composant: 'smartphone',

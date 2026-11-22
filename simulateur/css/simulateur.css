@@ -386,7 +386,7 @@ svg .indice.revele.indice-rassurant { filter: drop-shadow(0 0 5px var(--rassuran
 .site-btn { display: inline-block; color: #fff; font-weight: 700; padding: 14px 34px; border-radius: 6px; font-size: 25px; margin-top: 6px; }
 .site-btn.bleu { background: #000091; }
 .site-btn.neutre { background: #2b6cb0; }
-.site-note { font-size: 21px; color: #666; }
+.site-note { font-size: 22px; color: #666; }
 .theme-fisc .site-entete { background: #000091; }
 .theme-fisc .site-bandeau { height: 8px; background: linear-gradient(90deg, #000091 33%, #fff 33% 66%, #e1000f 66%); }
 .theme-fisc { background: #f5f5fe; height: 100%; }

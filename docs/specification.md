@@ -194,6 +194,7 @@ Cible : tout agent. Hameçonnage d'identifiants Microsoft 365 avec contournement
 1. **É1 — Mail** : « {{DGS\_PRENOM}} {{DGS\_NOM}} vous a partagé Deliberation\_budget\_2027.pdf ».
    - 🔴 Au survol, le lien pointe vers un domaine sans rapport avec Microsoft ni {{DOMAINE\_MAIL}}
    - 🔴 Document « urgent à consulter avant 17 h »
+   - 🔴 Adresse d'expédition sur {{DOMAINE\_PIEGE}} : ce n'est pas {{DOMAINE\_MAIL}}
 2. **É2 — Page de connexion** très réaliste, adresse du type login-microsoftonline.docs-securise.app.
    - 🔴 Adresse de la page dans la barre du navigateur
    - 🔴 On redemande le mot de passe alors qu'on est déjà connecté
@@ -216,7 +217,7 @@ Cible : tout agent. Durée : 2 min.
 
 **Débrief** : en 2016, des chercheurs américains ont abandonné 297 clés USB sur leur campus : des fichiers ont été ouverts sur 135 d'entre elles, soit 45 % (Tischer et al., IEEE S&P 2016). **Réflexe** : ne jamais brancher un support inconnu, le remettre à {{DSI\_NOM}}.
 
-### 7. Le mail de maintenance de la DSI — légitime
+### 7. Le mail de maintenance du service informatique — légitime
 
 Cible : tout agent. Objectif : montrer qu'un bon réflexe n'est pas de tout supprimer. Durée : 2 min.
 
@@ -412,6 +413,7 @@ Le contenu de ce document est validé : il sert de spécification figée, rien n
   - Parcours 6, 8, 9 : chiffres et consignes sourcés.
   - Écrans ajoutés : bonnes réponses (P1, P3, P7, P10) et « Et si on l'avait supprimé ? » (P7, P11, P12).
   - Mots-clés masqués par défaut, affichés par l'animateur.
+  - Relecture de cohérence (22 novembre 2026) : adresse d'expédition du faux partage ajoutée aux indices du parcours 5 ; titre du parcours 7 ; lignes « Impact » aux débriefs des parcours 3 et 4.
   - Volet « Mise en situation » (22 novembre 2026) : contexte de départ de chaque parcours et évolutions en cours de route, à gauche de l'écran.
   - Gestes naturels (22 novembre 2026) : boutons et liens des fausses interfaces cliquables pour avancer.
   - Option `doubleAuthentification` (21 novembre 2026) : quand les agents n'ont pas de double authentification, le parcours 1 remplace le code SMS par la demande du mot de passe de session, et le parcours 5 remplace l'écran du code par le vol du seul mot de passe ; les coulisses et les débriefs suivent.

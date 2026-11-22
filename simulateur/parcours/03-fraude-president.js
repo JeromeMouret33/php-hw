@@ -75,7 +75,7 @@ SIMU.enregistrerParcours({
     },
 
     e2b: {
-      coulisses: 'Le DGS est dans son bureau : un contre-appel sur le numéro de l\'annuaire suffit. Il faut aussi prévenir les finances : d\'autres collègues ont peut-être reçu le même message.',
+      coulisses: 'Le DGS est dans son bureau : un contre-appel sur le numéro de l\'annuaire suffit. Il faut aussi prévenir son chef de service et ses collègues : d\'autres ont peut-être reçu le même message.',
       etape: 'É2 bis',
       composant: 'appel',
       donnees: {
@@ -84,8 +84,8 @@ SIMU.enregistrerParcours({
         duree: '00:38',
         contexte: 'Vous appelez le DGS sur son <b>numéro connu</b>.',
         repliques: [
-          { qui: 'agent', texte: 'Vous m\'avez demandé de faire passer un acompte de 24 800 € sur WhatsApp ?' },
-          { qui: 'appelant', texte: 'Pas du tout, je suis dans mon bureau ! C\'est une arnaque : ne payez rien et prévenez les finances.' }
+          { qui: 'agent', texte: 'C\'est bien vous qui m\'avez demandé, par WhatsApp, de faire passer un acompte de 24 800 € ?' },
+          { qui: 'appelant', texte: 'Pas du tout, je suis dans mon bureau ! C\'est une arnaque : ne payez rien, prévenez votre chef de service et vos collègues.' }
         ]
       },
       suivant: 'bienvu'
@@ -104,9 +104,9 @@ SIMU.enregistrerParcours({
       composant: 'appel',
       donnees: {
         statut: 'entrant',
-        appelant: 'Maître Lebon – Avocat',
+        appelant: 'Numéro inconnu',
         numero: '01 99 00 27 41',
-        contexte: 'Quelques minutes plus tard, un appel arrive.',
+        contexte: 'Vous commencez à préparer le paiement. Quelques minutes plus tard, un appel arrive.',
         repliques: [
           { qui: 'appelant', texte: 'Maître Lebon, l\'avocat chargé de l\'opération. Le DGS vous a prévenu ?' },
           { qui: 'appelant', texte: 'Le paiement doit passer avant midi, sinon l\'opération est perdue, et c\'est vous qui en porterez la responsabilité.' }
@@ -130,7 +130,8 @@ SIMU.enregistrerParcours({
   },
 
   debrief: {
-    attaquant: 'L\'escroc s\'appuie sur l\'organigramme et l\'agenda publics de la collectivité. Si l\'agent hésite, un faux avocat rappelle pour mettre la pression.',
+    attaquant: 'L\'escroc s\'appuie sur l\'organigramme et l\'agenda publics de la collectivité. Si l\'agent hésite, un faux avocat appelle pour mettre la pression.',
+    impact: 'Si le paiement part, les 24 800 € sont perdus : le vrai DGS n\'a jamais rien demandé.',
     reflexe: 'Rappeler la personne sur son numéro connu, aucune dérogation au circuit de validation, même pour un élu ou le DGS.'
   }
 });

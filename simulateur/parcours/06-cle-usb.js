@@ -25,7 +25,7 @@ SIMU.enregistrerParcours({
         texteEtiquette2: 'CONFIDENTIEL RH',
         panneau: '{{PARKING}}',
         zones: { etiquette: 'curiosite', lieu: 'lieu' },
-        legende: 'Trouvée ce matin sur le {{PARKING}}'
+        legende: 'Trouvée ce matin · {{PARKING}}'
       },
       indices: {
         curiosite: { type: 'suspect', etiquette: 'Étiquette qui pique la curiosité', geste: 'choix:0' },
@@ -52,7 +52,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
-      situation: 'Arrivé à votre poste, vous branchez la clé pour voir à qui elle appartient.',
+      situation: 'Une fois à votre poste, vous branchez la clé pour voir à qui elle appartient.',
       coulisses: 'Un ordinateur accepte tout clavier branché, sans rien demander. La clé tape en quelques secondes des commandes préparées, qui installent un outil de contrôle à distance. C\'est ensuite le poste qui se connecte à l\'attaquant, depuis l\'intérieur du réseau : la porte est ouverte de dedans. Si le poste bloque les programmes inconnus, le faux fichier échoue ; la clé-clavier, elle, tape des commandes avec les droits de l\'agent.',
       etape: 'É2',
       composant: 'explorateur',
@@ -85,7 +85,7 @@ SIMU.enregistrerParcours({
   },
 
   coulisses: {
-    scenario: 'Un agent trouve une clé USB « Primes 2026 – CONFIDENTIEL RH » sur le {{PARKING}}. L\'attaquant compte sur la curiosité ou la bonne volonté pour qu\'elle soit branchée sur un poste de la collectivité.',
+    scenario: 'Un agent trouve une clé USB « Primes 2026 – CONFIDENTIEL RH » par terre ({{PARKING}}). L\'attaquant compte sur la curiosité ou la bonne volonté pour qu\'elle soit branchée sur un poste de la collectivité.',
     modeOperatoire: 'L\'attaquant dépose des clés piégées là où passent les agents, avec une étiquette qui donne envie de regarder. Deux techniques existent : un fichier qui ressemble à un document mais qui est en réalité un programme, ou une clé modifiée qui se présente à l\'ordinateur comme un <b>clavier</b> et tape des commandes toute seule. Dans les deux cas, l\'attaquant obtient un accès au poste, puis au réseau.'
   },
 

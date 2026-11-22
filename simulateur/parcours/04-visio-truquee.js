@@ -127,7 +127,8 @@ SIMU.enregistrerParcours({
 
   debrief: {
     attaquant: 'Quelques minutes de vidéo publique (conseil municipal en ligne) suffisent pour imiter un visage et une voix.',
+    impact: 'Si le RIB est modifié, les 480 000 € sont payés sur le compte de l\'escroc. Le vrai maire n\'a jamais organisé cette réunion.',
     message: 'En 2024 à Hong Kong, un employé du groupe Arup a fait 15 virements, environ 200 millions de dollars de Hong Kong (près de 25 millions de dollars américains), après une visio où le directeur financier et des collègues étaient des imitations générées par IA. Arup l\'a confirmé en mai 2024.',
-    reflexe: 'Rappeler par un autre canal, double validation pour tout virement inhabituel, mot de passe convenu en interne pour les demandes sensibles.'
+    reflexe: 'Rappeler par un autre canal, double validation pour tout changement de RIB ou paiement inhabituel, mot de code convenu en interne pour les demandes sensibles.'
   }
 });

@@ -32,7 +32,7 @@ SIMU.enregistrerParcours({
         message: {
           objet: '{{DGS_PRENOM}} {{DGS_NOM}} vous a partagé « Deliberation_budget_2027.pdf »',
           deNom: '{{DGS_PRENOM}} {{DGS_NOM}} (via partage)',
-          deAdresse: 'partage@{{DOMAINE_PIEGE}}',
+          deAdresse: '[[expediteur|partage@{{DOMAINE_PIEGE}}]]',
           a: '{{FORMAT_ADRESSE}}@{{DOMAINE_MAIL}}',
           date: '15:47',
           corps:
@@ -44,6 +44,7 @@ SIMU.enregistrerParcours({
         barreEtat: '[[lien|https://partage-docs.cloud-securise.app/d/8f3k2x]]'
       },
       indices: {
+        expediteur: { type: 'suspect', etiquette: 'Adresse d\'expédition sur {{DOMAINE_PIEGE}} : ce n\'est pas {{DOMAINE_MAIL}}' },
         lien:    { type: 'suspect', etiquette: 'Au survol, le lien pointe vers un domaine sans rapport avec Microsoft ni {{DOMAINE_MAIL}}' },
         urgence: { type: 'suspect', etiquette: 'Document « urgent à consulter avant 17 h »' }
       },
@@ -145,7 +146,7 @@ SIMU.enregistrerParcours({
         ],
         message: {
           objet: 'Règle créée sur votre boîte, en silence',
-          deNom: 'Paramètres › Règles de la boîte de réception',
+          deNom: 'Règles de la boîte de réception (Paramètres)',
           deAdresse: '{{FORMAT_ADRESSE}}@{{DOMAINE_MAIL}}',
           a: '—',
           date: '16:00',

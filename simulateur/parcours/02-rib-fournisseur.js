@@ -165,7 +165,7 @@ SIMU.enregistrerParcours({
     ou: 'Au bureau, {{SERVICE_FINANCES}}',
     quand: 'Un mardi matin, 9 h 12',
     qui: 'Vous traitez les factures des fournisseurs',
-    texte: 'Des mandats à préparer avant la fin de la semaine. {{FOURNISSEUR}} est un fournisseur habituel : vous réglez ses factures tous les mois. Un nouveau message arrive.'
+    texte: 'Des mandats à préparer avant la fin de la semaine. {{FOURNISSEUR}} est un fournisseur habituel : vous traitez ses factures tous les mois. Un nouveau message arrive.'
   },
 
   coulisses: {

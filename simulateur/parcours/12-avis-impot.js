@@ -94,7 +94,7 @@ SIMU.enregistrerParcours({
         titre: 'Le faux et le vrai, côte à côte',
         gauche: {
           verdict: 'malveillant',
-          titre: 'Le SMS du parcours 8',
+          titre: 'Le faux SMS des impôts',
           contenu:
             '<div class="cmp-message">DGFiP : un remboursement de 312,40 € est en attente. Confirmez vos informations <mark>avant 48 h</mark> : <mark>rmb-fisc.link/x7Kq</mark></div>' +
             '<ul><li>Expéditeur : <mark>un numéro de mobile</mark></li><li>Lien : <mark>raccourci, puis impots-gouv-remboursement.fr</mark></li><li>Demande : <mark>carte bancaire</mark></li><li>Ton : <mark>urgence</mark></li></ul>'
@@ -123,7 +123,7 @@ SIMU.enregistrerParcours({
   },
 
   debrief: {
-    message: 'Même un mail légitime se consulte au mieux en tapant soi-même impots.gouv.fr.',
+    message: 'Un vrai message n\'exige rien : ni carte bancaire, ni urgence.',
     reflexe: 'Taper soi-même impots.gouv.fr : c\'est le geste qui protège dans tous les cas.'
   }
 });

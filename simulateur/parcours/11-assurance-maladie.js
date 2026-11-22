@@ -93,7 +93,7 @@ SIMU.enregistrerParcours({
   situation: {
     ou: 'Chez vous',
     quand: 'Un matin, 11 h 40',
-    texte: 'Vous êtes allé chez le médecin la semaine dernière. Ce matin, votre téléphone vibre : un SMS.'
+    texte: 'Une matinée tranquille à la maison. Votre téléphone vibre : un SMS.'
   },
 
   coulisses: {
@@ -102,7 +102,7 @@ SIMU.enregistrerParcours({
   },
 
   debrief: {
-    message: 'Ce sont précisément les organismes les plus imités.',
+    message: 'L\'Assurance Maladie fait partie des organismes les plus imités : ce n\'est pas le nom de l\'expéditeur qui rassure, c\'est ce que le message demande.',
     reflexe: 'Légitime ou non, la bonne pratique reste la même : passer par l\'application ou le site tapé soi-même.'
   }
 });

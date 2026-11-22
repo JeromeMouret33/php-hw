@@ -135,7 +135,8 @@
   }
 
   function initiales(s) {
-    const mots = String(s || '').replace(/<[^>]*>|\[\[[^|]*\||\]\]/g, '').split(/[\s'’-]+/).filter(m => /^\p{L}/u.test(m));
+    const mots = String(s || '').replace(/<[^>]*>|\[\[[^|]*\||\]\]/g, '').split(/[\s'’-]+/)
+      .filter(m => /^\p{L}/u.test(m) && !/^(de|des|du|d|la|le|les|l|et|à|au|aux|en)$/i.test(m));   // « Direction des Finances » -> DF
     return mots.length ? mots.slice(0, 2).map(m => m[0].toUpperCase()).join('') : '👤';
   }
 

@@ -2,6 +2,42 @@
 
 Journal daté, en ordre antichronologique.
 
+## 2026-11-22 – Mise en situation, puis relecture de cohérence
+
+**Demandes de l'animateur** :
+1. un volet à gauche, affichable ou masquable, qui pose le contexte au début de chaque parcours (« vous êtes chez vous… », « vous êtes au bureau… ») ;
+2. ensuite, tout relire, rejouer et vérifier, puis dire quelle séance dérouler pour le premier client.
+
+**Fait – volet « Mise en situation »**
+- Volet à gauche (onglet, touche S), sur le modèle des Coulisses mais sans rien dévoiler : où, quand, qui, et ce qui précède le message.
+- Il s'ouvre de lui-même au lancement d'un parcours (menu ou « Parcours suivant ») et se referme dès qu'on avance ; option `situationAuDemarrage`.
+- En cours de parcours, 13 écrans portent une évolution du contexte (« Dix minutes plus tard… ») : l'onglet bat, et le volet affiche un encadré « Maintenant ».
+- Sur les écrans à indices, le volet se termine par la question de lancement de la chasse aux indices.
+- **Détails de réalisme ajoutés** : tous les textes de mise en situation (12 situations de départ, 13 évolutions).
+
+**Fait – relecture de cohérence**
+- Déroulé complet des 12 parcours généré tel qu'il s'affiche avec la configuration du client, relu par un agent séparé : 20 remarques, dont 4 bloquantes.
+- Corrigé :
+  - parcours 1 : fichier de mots de passe « à la racine du lecteur partagé » (et non dans le dossier commun) ; l'escroc perd la main quand l'outil de prise en main est fermé ; réflexe sans code SMS quand il n'y a pas de double authentification ;
+  - parcours 3 : le vrai DGS ne dit plus « prévenez les finances » à un agent des finances ; l'appel du faux avocat arrive pendant qu'on prépare le paiement ; appelant affiché « Numéro inconnu » ; impact ajouté au débrief ;
+  - parcours 4 : impact ajouté au débrief ; réflexe reformulé ;
+  - parcours 5 : l'adresse d'expédition devient un indice ;
+  - parcours 6 : légende sans faute d'accord ;
+  - parcours 7 : titre sans « DSI » ;
+  - parcours 8 : la banque fait opposition sur la carte ; formulations ;
+  - parcours 9 : mise en situation neutre ; « Bien vu » exact même si la salle a payé avant ;
+  - parcours 10 : « le lendemain » au lieu de « le soir » ; réplique manquante ajoutée ;
+  - parcours 11 et 12 : « À retenir » réécrit ; mise en situation du 11 sans lien avec un médecin ;
+  - moteur : initiales des avatars sans les mots-outils (« DF » pour une direction des finances) ; note de bas de page à 22 px ;
+  - mise en situation du parcours 3 : elle disait le DGS « en déplacement », alors qu'il répond ensuite de son bureau.
+- Laissé : expéditeur des impôts (décision déjà validée), titre « Bonjour maman » (spécification).
+- Vérifié à part : le compte ameli est accessible aux assurés de Mayotte (page de la caisse locale sur Services Publics+).
+- Les quatre séances rejouées de bout en bout depuis le menu, sans erreur.
+
+**Décisions à valider** : voir SUIVI, points 4 à 6.
+
+**Résultat** : `node outils/verifier.js` → 101 écrans, 121 chemins, 12 gestes, 3 survols, aucun problème, avec les deux configurations ; captures des écrans modifiés relues.
+
 ## 2026-11-22 – Gestes et survol naturels
 
 **Demande de l'animateur** : des parcours naturels. Quand la salle dit « on clique », il doit pouvoir cliquer sur le bouton de l'écran, et non sur « Suite ». De même, l'adresse d'un lien doit apparaître au passage de la souris. Réalisation en autonomie, sans rien casser.

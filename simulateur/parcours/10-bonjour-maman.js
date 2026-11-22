@@ -79,7 +79,8 @@ SIMU.enregistrerParcours({
         duree: '00:21',
         contexte: 'Vous appelez votre enfant sur son <b>ancien numéro</b>.',
         repliques: [
-          { qui: 'appelant', texte: 'Allô ? Non, je n\'ai rien cassé, mon téléphone marche très bien ! Pourquoi ?' }
+          { qui: 'agent', texte: 'Tu as cassé ton téléphone ? Tu as changé de numéro ?' },
+          { qui: 'appelant', texte: 'Non, je n\'ai rien cassé, mon téléphone marche très bien ! Pourquoi ?' }
         ]
       },
       motsCles: ['USURPATION'],
@@ -101,7 +102,7 @@ SIMU.enregistrerParcours({
         appelant: 'Mon enfant',
         numero: 'Ancien numéro (contact enregistré)',
         duree: '00:34',
-        contexte: 'Le virement de 980 € est parti. Le soir, vous appelez votre enfant sur son <b>ancien numéro</b>.',
+        contexte: 'Le virement de 980 € est parti. Le lendemain, sans nouvelles du remboursement, vous appelez votre enfant sur son <b>ancien numéro</b>.',
         repliques: [
           { qui: 'agent', texte: 'Tu as bien reçu les 980 € ?' },
           { qui: 'appelant', texte: 'Quels 980 € ? Je n\'ai rien cassé, et je ne t\'ai rien demandé !' }

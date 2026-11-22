@@ -131,7 +131,7 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
-      coulisses: 'L\'attaquant voit l\'écran de l\'agent et pilote la souris, avec ses droits : les dossiers des autres services lui sont refusés, mais il copie ce qui est accessible. Et il tombe sur un fichier de mots de passe laissé dans le dossier commun. Problème pour lui : dès que l\'agent raccroche, la session se ferme.',
+      coulisses: 'L\'attaquant voit l\'écran de l\'agent et pilote la souris, avec ses droits : les dossiers des autres services lui sont refusés, mais il copie ce qui est accessible. Et il tombe sur un fichier de mots de passe laissé à la racine du lecteur partagé. Problème pour lui : dès que l\'agent ferme {{OUTIL_PRISE_EN_MAIN}}, il perd la main.',
       etape: 'É4',
       composant: 'explorateur',
       donnees: {
@@ -146,7 +146,7 @@ SIMU.enregistrerParcours({
         ],
         copie: { titre: 'Copie vers un serveur distant…', progression: 68, detail: 'Dossiers accessibles + Mots de passe serveurs.xlsx' },
         curseur: { x: 640, y: 260 },
-        contexte: '<p>Le curseur bouge <b>tout seul</b>.</p><p>Les dossiers des autres services lui sont refusés…</p><p>… mais un fichier de <b>mots de passe</b> traîne dans le dossier commun.</p>'
+        contexte: '<p>Le curseur bouge <b>tout seul</b>.</p><p>Les dossiers des autres services lui sont refusés…</p><p>… mais un fichier de <b>mots de passe</b> traîne à la racine du lecteur partagé.</p>'
       },
       motsCles: ['PRISE DE CONTRÔLE', 'EXFILTRATION'],
       suivant: { option: 'doubleAuthentification', alors: 'e5', sinon: 'e5mdp' }
@@ -185,9 +185,9 @@ SIMU.enregistrerParcours({
     },
 
     bienvu2: {
-      coulisses: 'Sans le code, l\'attaquant perd l\'accès en raccrochant. Mais il a déjà copié des fichiers, dont les mots de passe : il faut prévenir le support tout de suite pour les changer. Mieux vaut un signalement tardif que pas de signalement.',
+      coulisses: 'Sans le code, l\'attaquant perd l\'accès dès que {{OUTIL_PRISE_EN_MAIN}} est fermé. Mais il a déjà copié des fichiers, dont les mots de passe : il faut prévenir le support tout de suite pour les changer. Mieux vaut un signalement tardif que pas de signalement.',
       type: 'bienvu',
-      texte: 'Sans le code, il perd l\'accès en raccrochant. Mais des fichiers sont partis : on prévient tout de suite le support, qui change les mots de passe.',
+      texte: 'Sans le code, il perd l\'accès dès que {{OUTIL_PRISE_EN_MAIN}} est fermé. On raccroche, on ferme {{OUTIL_PRISE_EN_MAIN}}, et on prévient tout de suite le support, qui change les mots de passe : des fichiers sont déjà partis.',
       suite: 'e6'
     },
 
@@ -228,9 +228,9 @@ SIMU.enregistrerParcours({
     },
 
     bienvu2mdp: {
-      coulisses: 'Sans le mot de passe, l\'attaquant perd l\'accès en raccrochant. Mais il a déjà copié des fichiers, dont les mots de passe des serveurs : il faut prévenir le support tout de suite pour les changer. Mieux vaut un signalement tardif que pas de signalement.',
+      coulisses: 'Sans le mot de passe, l\'attaquant perd l\'accès dès que {{OUTIL_PRISE_EN_MAIN}} est fermé. Mais il a déjà copié des fichiers, dont les mots de passe des serveurs : il faut prévenir le support tout de suite pour les changer. Mieux vaut un signalement tardif que pas de signalement.',
       type: 'bienvu',
-      texte: 'Sans le mot de passe, il perd l\'accès en raccrochant. Mais des fichiers sont partis : on prévient tout de suite le support, qui change les mots de passe.',
+      texte: 'Sans le mot de passe, il perd l\'accès dès que {{OUTIL_PRISE_EN_MAIN}} est fermé. On raccroche, on ferme {{OUTIL_PRISE_EN_MAIN}}, et on prévient tout de suite le support, qui change les mots de passe : des fichiers sont déjà partis.',
       suite: 'e6'
     },
 
@@ -339,6 +339,8 @@ SIMU.enregistrerParcours({
     attaquant: { option: 'doubleAuthentification', alors: 'Avec l\'identifiant de l\'outil, il pilote le poste et copie ce que l\'agent peut ouvrir, dont un fichier de mots de passe. Avec le code SMS, il garde le compte, revient quelques jours plus tard, devient administrateur et chiffre les serveurs.', sinon: 'Avec l\'identifiant de l\'outil, il pilote le poste et copie ce que l\'agent peut ouvrir, dont un fichier de mots de passe. Avec le mot de passe de l\'agent, il garde le compte, revient quelques jours plus tard, devient administrateur et chiffre les serveurs.' },
     impact: 'Les services (état civil, paie, urbanisme) peuvent s\'arrêter plusieurs semaines.',
     message: 'C\'est le bon outil, mais pas le bon interlocuteur : un outil familier ne protège pas d\'un faux support.',
-    reflexe: 'Raccrocher, rappeler le support sur le numéro connu {{NUMERO_SUPPORT}} ; ne donner l\'identifiant de {{OUTIL_PRISE_EN_MAIN}} qu\'au support qu\'on a soi-même appelé ; ne jamais donner son mot de passe ni lire un code reçu par SMS.'
+    reflexe: { option: 'doubleAuthentification',
+      alors: 'Raccrocher, rappeler le support sur le numéro connu {{NUMERO_SUPPORT}} ; ne donner l\'identifiant de {{OUTIL_PRISE_EN_MAIN}} qu\'au support qu\'on a soi-même appelé ; ne jamais donner son mot de passe ni lire un code reçu par SMS.',
+      sinon: 'Raccrocher, rappeler le support sur le numéro connu {{NUMERO_SUPPORT}} ; ne donner l\'identifiant de {{OUTIL_PRISE_EN_MAIN}} qu\'au support qu\'on a soi-même appelé ; ne jamais donner son mot de passe, à personne, pas même au support.' }
   }
 });
