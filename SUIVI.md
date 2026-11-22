@@ -1,11 +1,12 @@
 # SUIVI – état actuel
 
-*Mis à jour le 2026-11-21 (réponses du premier client, variante sans double authentification).*
+*Mis à jour le 2026-11-22 (gestes et survol naturels livrés).*
 
 ## Où en est-on ?
 
 **Développement terminé : 12 parcours, coulisses, style ludique, plausibilité revue, formats court et standard recomposés. Tout est sur master.**
 
+- **Livré le 2026-11-22 : gestes et survol naturels.** Cliquer sur un bouton, un lien ou « décrocher » dans les fausses interfaces fait avancer le parcours ; l'adresse d'un lien apparaît au passage de la souris. « Suite ▸ » et → restent disponibles. Nouveau dossier complet remis à l'animateur.
 - Prochaine action : **⛔ point d'arrêt n°2.** L'animateur teste les séances courte (20 min) et standard (30 min) sur le vrai vidéoprojecteur, chronomètre en main, puis valide ou envoie ses retours.
 - **Premier client : configuration à jour avec ses réponses, hors dépôt.** L'animateur reçoit un dossier complet prêt à l'emploi (simulateur, configuration et logo), à décompresser sur son PC. Vérifiée avec `node outils/verifier.js --config <client>`.
 - Réponses reçues le 2026-11-21 : support des postes assuré en interne (pas de prestataire), outil de prise en main confirmé, messagerie Microsoft 365, pas de double authentification (à confirmer auprès de leur service informatique), parcours 9 laissé tel quel, nom du dossier confirmé.
@@ -35,6 +36,12 @@
    - parcours 5 : l'écran du code est remplacé par le vol du seul mot de passe (mot-clé « MOT DE PASSE VOLÉ »), et le débrief dit qu'un mot de passe suffit sans double authentification.
    Ces écrans ne figuraient pas dans la spécification ; ils y sont ajoutés comme variante. **À valider par l'animateur.**
 2. **Faux support interne** : quand il n'y a pas de prestataire, le faux support du parcours 1 se présente au nom du service informatique interne (variable `PRESTATAIRE_INFO`). **À valider.**
+3. **Gestes naturels** (demande de l'animateur du 2026-11-22). Les boutons et liens des fausses interfaces font avancer le parcours. Choix faits sans l'animateur, **à valider à l'essai** :
+   - sur un écran suivi d'un vote, le geste joue directement le « mauvais » choix (la salle vient de dire « on clique ») ; « Suite ▸ » mène toujours au vote à main levée ;
+   - sur un élément qui est aussi un indice, le 1er clic révèle l'indice, le 2e fait le geste ;
+   - les appels en cours et les conversations n'ont pas de geste : « Suite ▸ » y reste le seul moyen ;
+   - survol : sur les mails des parcours 4, 5 et 12, l'adresse du lien n'apparaît en bas à gauche qu'au passage de la souris sur le bouton ou le lien, puis reste affichée ; au parcours 4, cette adresse est un ajout (même domaine extérieur que l'expéditeur) ;
+   - gestes en place : P1 et P3 (décrocher), P4 (rejoindre la réunion), P5 (ouvrir le document, se connecter, vérifier), P6 (la clé USB), P8 (lien du SMS, bouton du faux site), P9 (liens des deux SMS, autocollant du QR code).
 
 ## Blocages
 

@@ -17,7 +17,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
-      coulisses: 'L\'expéditeur et le lien pointent vers impots.gouv.fr, ce qui se vérifie en survolant le lien. Le mail n\'annonce rien d\'alarmant et ne demande rien : il renvoie vers l\'espace particulier. Il arrive au moment de l\'année où les avis sont publiés.',
+      coulisses: 'L\'expéditeur et le lien pointent vers impots.gouv.fr, ce qui se vérifie en survolant le lien : <b>passez la souris dessus</b>, l\'adresse apparaît en bas à gauche. Le mail n\'annonce rien d\'alarmant et ne demande rien : il renvoie vers l\'espace particulier. Il arrive au moment de l\'année où les avis sont publiés.',
       etape: 'É1',
       composant: 'mail',
       donnees: {

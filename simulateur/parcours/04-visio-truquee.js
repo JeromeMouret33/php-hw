@@ -19,7 +19,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
-      coulisses: 'L\'adresse est extérieure, mais l\'attaquant y affiche le nom du maire : c\'est ce que l\'œil lit en premier. Le prétexte « acquisition foncière confidentielle » justifie le secret, et le paiement au notaire un gros montant. La réunion est fixée le jour même, pour laisser peu de temps à la réflexion.',
+      coulisses: 'L\'adresse est extérieure, mais l\'attaquant y affiche le nom du maire : c\'est ce que l\'œil lit en premier. Le prétexte « acquisition foncière confidentielle » justifie le secret, et le paiement au notaire un gros montant. La réunion est fixée le jour même, pour laisser peu de temps à la réflexion. Au survol du bouton, l\'adresse de la réunion apparaît en bas : elle est sur le même domaine extérieur.',
       etape: 'É1',
       composant: 'mail',
       donnees: {
@@ -38,7 +38,8 @@ SIMU.enregistrerParcours({
           date: '11:02',
           invitation: { jour: 'AUJ.', titre: 'Réunion confidentielle – acquisition foncière', quand: 'Aujourd\'hui, 14 h 00 – 14 h 30', organisateur: 'Organisateur : {{MAIRE_NOM}}' },
           corps: '<p>Merci de vous connecter à 14 h. Le sujet est strictement confidentiel jusqu\'au prochain conseil.</p><p>{{MAIRE_NOM}}</p>'
-        }
+        },
+        barreEtat: 'https://reunion-visio.net/j/482-117-906'
       },
       indices: {
         adresse: { type: 'suspect', etiquette: 'Invitation depuis une adresse extérieure à {{DOMAINE_MAIL}}' }

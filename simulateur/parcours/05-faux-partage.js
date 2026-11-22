@@ -18,7 +18,7 @@ SIMU.enregistrerParcours({
 
   ecrans: {
     e1: {
-      coulisses: 'L\'attaquant a choisi un expéditeur crédible (le DGS) et un document tentant (le budget). Le mail imite une notification de partage, comme les agents en reçoivent tous les jours : on clique par habitude. Le lien mène vers un domaine que l\'attaquant a enregistré.',
+      coulisses: 'L\'attaquant a choisi un expéditeur crédible (le DGS) et un document tentant (le budget). Le mail imite une notification de partage, comme les agents en reçoivent tous les jours : on clique par habitude. Le lien mène vers un domaine que l\'attaquant a enregistré : <b>passez la souris sur le bouton</b>, l\'adresse apparaît en bas à gauche.',
       etape: 'É1',
       composant: 'mail',
       donnees: {
@@ -39,7 +39,7 @@ SIMU.enregistrerParcours({
             '<p>{{DGS_PRENOM}} {{DGS_NOM}} a partagé un fichier avec vous.</p>' +
             '<p style="font-size:30px">📄 <b>Deliberation_budget_2027.pdf</b></p>' +
             '<p>[[urgence|Document urgent à consulter avant 17 h.]]</p>' +
-            '<p><span class="btn-mail">Ouvrir le document</span></p>'
+            '<p>((suite|<span class="btn-mail">Ouvrir le document</span>))</p>'
         },
         barreEtat: '[[lien|https://partage-docs.cloud-securise.app/d/8f3k2x]]'
       },
@@ -62,7 +62,7 @@ SIMU.enregistrerParcours({
           '<h2>Connexion</h2><p>Pour consulter « Deliberation_budget_2027.pdf », confirmez votre identité.</p>' +
           '<div class="site-champ"><label>Adresse e-mail</label><div>{{FORMAT_ADRESSE}}@{{DOMAINE_MAIL}}</div></div>' +
           '<div class="site-champ">[[motdepasse|<label>Mot de passe</label><div class="vide">••••••••</div>]]</div>' +
-          '<span class="site-btn neutre">Se connecter</span></div></div>'
+          '((choix:0|<span class="site-btn neutre">Se connecter</span>))</div></div>'
       },
       indices: {
         adresse:    { type: 'suspect', etiquette: 'Adresse de la page dans la barre du navigateur' },
@@ -99,7 +99,7 @@ SIMU.enregistrerParcours({
           '<div class="theme-connexion"><div class="site-carte">' +
           '<h2>Vérification en deux étapes</h2><p>Saisissez le code reçu sur votre téléphone.</p>' +
           '<div class="site-champ"><label>Code</label><div style="letter-spacing:12px;font-size:34px">482 917</div></div>' +
-          '<span class="site-btn neutre">Vérifier</span></div>' +
+          '((suite|<span class="site-btn neutre">Vérifier</span>))</div>' +
           '<div class="site-carte" style="width:560px;margin-left:40px;border-top:10px solid #d7191c">' +
           '<h2>Pendant ce temps…</h2><p>L\'attaquant saisit <b>ce même code</b> sur la vraie page de connexion.</p><p>Il est connecté à votre compte.</p></div></div>'
       },

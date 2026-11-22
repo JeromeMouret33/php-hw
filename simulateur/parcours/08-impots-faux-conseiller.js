@@ -31,7 +31,7 @@ SIMU.enregistrerParcours({
       },
       indices: {
         montant: { type: 'suspect', etiquette: 'Montant précis et urgence' },
-        lien:    { type: 'suspect', etiquette: 'Lien raccourci, expéditeur au format numéro mobile' }
+        lien:    { type: 'suspect', etiquette: 'Lien raccourci, expéditeur au format numéro mobile', geste: 'suite' }
       },
       suivant: 'e2'
     },
@@ -49,7 +49,7 @@ SIMU.enregistrerParcours({
           '<div style="display:flex;gap:20px"><div class="site-champ" style="flex:1"><label>Nom</label><div></div></div><div class="site-champ" style="flex:1"><label>Prénom</label><div></div></div></div>' +
           '[[carte|<div class="site-champ"><label>Numéro de carte bancaire</label><div class="vide">0000 0000 0000 0000</div></div>' +
           '<div style="display:flex;gap:20px"><div class="site-champ" style="flex:1"><label>Date d\'expiration</label><div class="vide">MM/AA</div></div><div class="site-champ" style="flex:1"><label>Cryptogramme</label><div class="vide">123</div></div></div>]]' +
-          '<span class="site-btn bleu">Recevoir mon remboursement</span></div></div></div>'
+          '((choix:0|<span class="site-btn bleu">Recevoir mon remboursement</span>))</div></div></div>'
       },
       indices: {
         adresse: { type: 'suspect', etiquette: 'Adresse du site, qui n\'est pas impots.gouv.fr' },

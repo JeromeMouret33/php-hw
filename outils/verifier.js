@@ -9,6 +9,7 @@
  *      (choix de vote, « Voir la suite quand même », « Et si on avait continué ? ») ;
  *   3. sur chaque écran : variables non remplacées, indices sans définition,
  *      boutons morts (le clic doit mener à l'écran annoncé), flèche → et touche R ;
+ *      gestes naturels (boutons et liens cliquables des fausses interfaces) ;
  *   4. capture chaque écran en 1920×1080 (brut, puis indices révélés) dans captures/.
  *
  * Usage : node outils/verifier.js [--sans-captures] [--parcours 2] [--config nom-du-client]
@@ -154,7 +155,7 @@ async function main() {
 
   const parcours = await page.evaluate(() => SIMU.parcours.map(p => JSON.parse(JSON.stringify(p))));
   const optionsInitiales = await page.evaluate(() => Object.assign({}, CONFIG_COLLECTIVITE.options));
-  let nbChemins = 0, nbEcrans = 0;
+  let nbChemins = 0, nbEcrans = 0, nbGestes = 0, nbSurvols = 0;
 
   for (const p of parcours) {
     if (SEUL && p.numero !== SEUL) continue;
@@ -167,10 +168,32 @@ async function main() {
     for (const id of Object.keys(p.ecrans).concat('debrief')) {
       const ou = `parcours ${p.numero} / ${id}`;
       const e = p.ecrans[id] || { type: 'debrief' };
-      const ouvrir = async () => {
-        await page.evaluate(([n, i]) => { SIMU.demarrer(n); if (i !== SIMU.etat.ecranId) SIMU.aller(i); }, [p.numero, id]);
+      // survoler = false : écran tel qu'il s'ouvre ; sinon on passe la souris sur un lien,
+      // ce qui affiche la barre d'état (adresse du lien) s'il y en a une
+      const SURVOLABLES = '#ecran .lien:not(.barre-etat *), #ecran .btn-mail, #ecran .inv-btn';
+      const survol = async () => {
+        if (!(await page.locator('#ecran .barre-etat').count())) return;
+        await page.mouse.move(3, 3);
+        await page.locator(SURVOLABLES).first().hover();
       };
-      await ouvrir();
+      const ouvrir = async (survoler = true) => {
+        await page.evaluate(([n, i]) => { SIMU.demarrer(n); if (i !== SIMU.etat.ecranId) SIMU.aller(i); }, [p.numero, id]);
+        if (survoler) await survol();
+      };
+      await page.mouse.move(3, 3);
+      await ouvrir(false);
+      if (await page.locator('#ecran .barre-etat').count()) {
+        // survol naturel : l'adresse du lien est masquée à l'ouverture, visible après le passage de la souris
+        if (!(await page.locator(SURVOLABLES).count())) signaler(ou, 'barre d\'état sans lien ni bouton à survoler');
+        if (await page.locator('#ecran .barre-etat.vue').count()) signaler(ou, 'barre d\'état visible avant tout survol');
+        await ouvrir();
+        if (!(await page.locator('#ecran .barre-etat.vue').count())) signaler(ou, 'barre d\'état absente après le survol du lien');
+        else nbSurvols++;
+        await page.waitForTimeout(300); // fin du fondu d'apparition
+        await capture(`${nn}-${id}-survol`);
+        await page.mouse.move(3, 3);
+        await ouvrir(false);
+      }
       nbEcrans++;
       await verifierRendu(ou);
       await page.waitForTimeout(e.composant === 'chronologie' || e.type === 'debrief' ? 2600 : 150); // images génériques, animations d'apparition
@@ -182,6 +205,7 @@ async function main() {
 
       // indices : chaque élément cliquable doit afficher une étiquette
       const indices = Object.keys(e.indices || {});
+      if (indices.length) await survol();
       for (const ind of indices) {
         const el = page.locator(`#ecran [data-indice="${ind}"]`).first();
         if (!(await el.count())) { signaler(ou, `indice « ${ind} » absent de l'écran`); continue; }
@@ -215,6 +239,47 @@ async function main() {
         else await capture(`${nn}-${id}-motscles`);
         await page.keyboard.press('k');
         if (!(await page.locator('#couche-motscles.masque').count())) signaler(ou, 'touche K : les mots-clés ne se masquent pas');
+      }
+
+      // gestes naturels : chaque bouton ou lien cliquable de la fausse interface mène au bon écran
+      if (e.type !== 'vote' && e.type !== 'bienvu' && e.type !== 'debrief') {
+        const cibleDuGeste = geste => page.evaluate(([n, i, g]) => {
+          const p = SIMU.parcours.find(x => x.numero === n), ec = p.ecrans[i];
+          if (g === 'suite') return SIMU.resoudre(ec.suivant);
+          const v = p.ecrans[SIMU.resoudre(ec.suivant)], o = v && v.type === 'vote' && v.options[+g.split(':')[1]];
+          return o ? SIMU.resoudre(o.suivant) : null;
+        }, [p.numero, id, geste]);
+        const verifierArrivee = async (quoi, geste) => {
+          const attendue = await cibleDuGeste(geste), obtenue = await ecranActuel();
+          if (!attendue) signaler(ou, `${quoi} : geste « ${geste} » sans cible valide`);
+          else if (obtenue !== attendue) signaler(ou, `${quoi} : attendu « ${attendue} », obtenu « ${obtenue} »`);
+          else if (geste !== 'suite') {
+            // un choix joué par geste est enregistré comme un vote : R doit y revenir
+            await page.keyboard.press('r');
+            const v = await ecranActuel();
+            if (!p.ecrans[v] || p.ecrans[v].type !== 'vote') signaler(ou, `${quoi} : R ne revient pas au vote (écran « ${v} »)`);
+          }
+          nbGestes++;
+        };
+        await ouvrir();
+        const gestes = await page.$$eval('#ecran [data-geste]', els => els.map(el => el.dataset.geste));
+        for (const [k, geste] of gestes.entries()) {
+          await ouvrir();
+          await page.locator('#ecran [data-geste]').nth(k).click();
+          await verifierArrivee(`geste n° ${k + 1}`, geste);
+        }
+        // indices à geste : le 1er clic révèle l'indice sans changer d'écran, le 2e fait le geste
+        for (const [ind, def] of Object.entries(e.indices || {})) {
+          if (!def.geste) continue;
+          await ouvrir();
+          const el = page.locator(`#ecran [data-indice="${ind}"]`).first();
+          await el.click();
+          if (await ecranActuel() !== id || !(await page.locator(`#couche-etiquettes [data-pour="${ind}"]`).count()))
+            signaler(ou, `indice à geste « ${ind} » : le 1er clic doit seulement révéler l'indice`);
+          await el.click();
+          await verifierArrivee(`indice à geste « ${ind} » (2e clic)`, def.geste);
+        }
+        await ouvrir();
       }
 
       // boutons : chaque bouton doit mener à sa cible
@@ -288,7 +353,7 @@ async function main() {
   erreursConsole.forEach(e => signaler('console', e));
   await navigateur.close();
 
-  console.log(`Écrans contrôlés : ${nbEcrans} · chemins complets joués : ${nbChemins}` + (SANS_CAPTURES ? '' : ` · captures : ${path.relative(RACINE, CAPTURES)}/`));
+  console.log(`Écrans contrôlés : ${nbEcrans} · chemins complets joués : ${nbChemins} · gestes naturels : ${nbGestes} · survols : ${nbSurvols}` + (SANS_CAPTURES ? '' : ` · captures : ${path.relative(RACINE, CAPTURES)}/`));
   if (problemes.length) {
     console.log(`\n✗ ${problemes.length} problème(s) :`);
     problemes.forEach(p => console.log('  - ' + p));

@@ -28,7 +28,7 @@ SIMU.enregistrerParcours({
         legende: 'Trouvée ce matin sur le {{PARKING}}'
       },
       indices: {
-        curiosite: { type: 'suspect', etiquette: 'Étiquette qui pique la curiosité' },
+        curiosite: { type: 'suspect', etiquette: 'Étiquette qui pique la curiosité', geste: 'choix:0' },
         lieu:      { type: 'suspect', etiquette: 'Objet trouvé dans un lieu de passage des agents' }
       },
       suivant: 'vote'

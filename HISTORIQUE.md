@@ -2,6 +2,32 @@
 
 Journal daté, en ordre antichronologique.
 
+## 2026-11-22 – Gestes et survol naturels
+
+**Demande de l'animateur** : des parcours naturels. Quand la salle dit « on clique », il doit pouvoir cliquer sur le bouton de l'écran, et non sur « Suite ». De même, l'adresse d'un lien doit apparaître au passage de la souris. Réalisation en autonomie, sans rien casser.
+
+**Fait**
+- **Gestes naturels** (moteur) :
+  - marqueur `((suite|…))` : le bouton ou le lien fait avancer, comme « Suite ▸ » ;
+  - marqueur `((choix:N|…))` : il joue directement l'option N du vote qui suit ; le choix est enregistré comme un vote, et R y revient ;
+  - indice à geste (`geste` dans la définition de l'indice) : le 1er clic révèle l'indice, le 2e fait le geste.
+- **Gestes posés** (12) :
+  - P1 et P3 : décrocher ;
+  - P4 : rejoindre la réunion ;
+  - P5 : ouvrir le document, se connecter, vérifier ;
+  - P6 : la clé USB ;
+  - P8 : lien du SMS, bouton du faux site ;
+  - P9 : liens des deux SMS, autocollant du QR code.
+- **Survol naturel** : la barre d'état (adresse du lien) est masquée à l'ouverture de l'écran ; elle apparaît quand la souris passe sur un lien ou un bouton de lien, puis reste visible. Concerne les mails des parcours 4, 5 et 12.
+- **Rien n'est retiré** : « Suite ▸ », → et l'écran de vote à main levée fonctionnent comme avant.
+- **Vérificateur** : chaque geste est cliqué et doit mener au bon écran ; la barre d'état doit être masquée avant le survol et visible après.
+
+**Détail de réalisme ajouté** : adresse de la réunion au survol du bouton du parcours 4 (même domaine extérieur que l'expéditeur).
+
+**Décisions à valider** : voir SUIVI, point 3.
+
+**Résultat** : `node outils/verifier.js` → 101 écrans, 121 chemins, 12 gestes, 3 survols, aucun problème, avec la configuration fictive comme avec celle du client ; captures relues ; parcours 5 et 8 rejoués uniquement au clic.
+
 ## 2026-11-21 – Réponses du premier client, variante sans double authentification
 
 **Réponses de l'animateur** :

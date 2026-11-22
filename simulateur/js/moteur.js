@@ -44,6 +44,13 @@
  *   {{VARIABLE}}        -> valeur de config/collectivite.js (rouge si absente)
  *   {{img:fichier.png}} -> image du dossier images/, visuel générique si absente
  *   [[id|texte]]        -> indice cliquable, défini dans « indices » de l'écran
+ *   ((geste|contenu))    -> geste naturel : un clic sur ce bouton ou ce lien fait avancer le parcours.
+ *                          geste = suite   : comme « Suite ▸ » (écran suivant) ;
+ *                          geste = choix:N : joue directement l'option N (à partir de 0) du vote qui suit.
+ *                          Un indice peut aussi porter un geste (indices: { id: { …, geste: 'suite' } }) :
+ *                          le 1er clic révèle l'indice, le 2e fait le geste.
+ *   Survol : sur un écran qui a une « barreEtat » (adresse d'un lien), celle-ci n'apparaît que lorsque
+ *                          la souris passe sur un lien ou un bouton de lien (.lien, .btn-mail, invitation).
  *   { option: 'nom', alors: …, sinon: … } -> à la place d'un texte ou d'une cible, valeur choisie
  *                          selon options.nom de la configuration (ex. doubleAuthentification)
  *   <span class="cle">…</span> -> élément essentiel, que les étiquettes d'indices évitent de recouvrir
@@ -81,6 +88,8 @@
     s = resoudre(s); // un texte peut dépendre d'une option : { option, alors, sinon }
     if (s == null) return '';
     let r = String(s);
+    r = r.replace(/\(\(([a-z]+(?::\d+)?)\|([\s\S]*?)\)\)/g,
+      (m, geste, contenu) => `<span class="geste" data-geste="${geste}">${contenu}</span>`);
     r = r.replace(/\{\{img:([^}|]+?)(?:\|(\w+))?\}\}/g, (m, nom, gen) => image(nom.trim(), { generique: gen || 'logo' }));
     r = r.replace(/\{\{ADRESSE:([A-Z0-9_]+)\}\}/g, (m, nom) => {
       const a = adresse(nom);
@@ -119,7 +128,8 @@
     if (s == null) return '';
     return String(s)
       .replace(/\{\{\s*([A-Z0-9_]+)\s*\}\}/g, (m, nom) => { const v = valeur(nom); return v == null ? m : v; })
-      .replace(/\[\[[a-z0-9_-]+\|([\s\S]*?)\]\]/gi, '$1');
+      .replace(/\[\[[a-z0-9_-]+\|([\s\S]*?)\]\]/gi, '$1')
+      .replace(/\(\([a-z]+(?::\d+)?\|([\s\S]*?)\)\)/g, '$1');
   }
 
   function initiales(s) {
@@ -166,6 +176,7 @@
     historique: [],
     votes: {},          // idVote -> { choix, decomptes, quandMeme }
     revele: {},         // "ecran.indice" -> true
+    barresVues: {},     // écrans dont la barre d'état a été affichée par un survol
     visites: [],        // ids d'écrans visités, dans l'ordre
     motsClesVisibles: false, // mots-clés masqués par défaut : l'animateur les affiche (bouton ou K)
     coulisses: false,        // panneau « Coulisses » ouvert ou non (reste ouvert d'un écran à l'autre)
@@ -197,6 +208,7 @@
     etat.historique = [];
     etat.votes = {};
     etat.revele = {};
+    etat.barresVues = {};
     etat.visites = [];
     etat.ecranId = null;
     aller(resoudre(p.debut));
@@ -332,7 +344,9 @@
       return erreur(`Écran « ${etat.ecranId} » : ${err.message}`);
     }
     zoneEcran.innerHTML = html;
+    brancherSurvol();
     brancherIndices(e);
+    brancherGestes();
     brancherBoutons();
     // Mots-clés : jamais automatiques. Masqués à chaque nouvel écran ; l'animateur les affiche s'il le souhaite.
     etat.motsClesVisibles = false;
@@ -417,7 +431,13 @@
       const id = el.dataset.indice;
       if (!defs[id]) { SIMU.erreurs.push(`Indice « ${id} » sans définition (écran ${etat.ecranId})`); return; }
       el.classList.add('indice-' + defs[id].type);
-      el.addEventListener('click', ev => { ev.stopPropagation(); basculerIndice(el, id, defs[id]); });
+      if (defs[id].geste) el.classList.add('indice-geste');
+      el.addEventListener('click', ev => {
+        ev.stopPropagation();
+        // indice à geste : le 1er clic révèle l'indice, le 2e fait le geste (on suit le lien, on scanne…)
+        if (defs[id].geste && etat.revele[cleIndice(id)]) return executerGeste(defs[id].geste);
+        basculerIndice(el, id, defs[id]);
+      });
       if (etat.revele[cleIndice(id)]) montrerIndice(el, id, defs[id]);
     });
     Object.keys(defs).forEach(id => {
@@ -426,6 +446,45 @@
   }
 
   const cleIndice = id => etat.ecranId + '.' + id;
+
+  // ----- Survol : l'adresse d'un lien n'apparaît en bas de l'écran qu'au passage de la souris
+
+  /*
+   * Comme dans une vraie messagerie : la barre d'état (donnée « barreEtat » de l'écran) est masquée,
+   * et s'affiche quand la souris passe sur un lien ou un bouton de lien. Elle reste ensuite visible,
+   * pour que l'animateur puisse cliquer dessus si elle porte un indice.
+   */
+  function brancherSurvol() {
+    const barre = zoneEcran.querySelector('.barre-etat');
+    if (!barre) return;
+    const montrer = () => { barre.classList.add('vue'); etat.barresVues[etat.ecranId] = true; };
+    if (etat.barresVues[etat.ecranId]) barre.classList.add('vue');
+    zoneEcran.querySelectorAll('.lien, .btn-mail, .inv-btn').forEach(el => {
+      if (!barre.contains(el)) el.addEventListener('mouseenter', montrer);
+    });
+  }
+
+  // ----- Gestes naturels : cliquer un bouton, un lien ou « décrocher » fait avancer le parcours
+
+  function brancherGestes() {
+    zoneEcran.querySelectorAll('[data-geste]').forEach(el => {
+      el.addEventListener('click', ev => { ev.stopPropagation(); executerGeste(el.dataset.geste); });
+    });
+  }
+
+  /** 'suite' : écran suivant, comme « Suite ▸ ». 'choix:N' : joue l'option N du vote qui suit, sans passer par son écran. */
+  function executerGeste(geste) {
+    const e = ecranCourant();
+    if (geste === 'suite') return avancer();
+    const m = /^choix:(\d+)$/.exec(geste || '');
+    const idVote = resoudre(e.suivant), vote = etat.parcours.ecrans[idVote];
+    if (!m || !vote || vote.type !== 'vote' || !vote.options[+m[1]]) {
+      SIMU.erreurs.push(`Geste « ${geste} » invalide sur l'écran ${etat.ecranId}`);
+      return avancer();
+    }
+    aller(idVote);   // le vote entre dans l'historique : la touche R y revient
+    choisir(+m[1]);
+  }
 
   function basculerIndice(el, id, def) {
     const k = cleIndice(id);
@@ -443,6 +502,8 @@
 
   function montrerIndice(el, id, def) {
     el.classList.add('revele');
+    const barre = el.closest('.barre-etat');   // un indice de la barre d'état révélé (touche I) la rend visible
+    if (barre) { barre.classList.add('vue'); etat.barresVues[etat.ecranId] = true; }
     const et = document.createElement('div');
     et.className = 'etiquette etiquette-' + def.type;
     et.dataset.pour = id;
@@ -737,7 +798,7 @@
       <div class="menu-formats"><span>Séance :</span>${formats}</div>
       <div class="menu-cartes">${cartes || '<p class="menu-vide">Aucun parcours actif : vérifiez « parcoursActifs » dans config/collectivite.js.</p>'}</div>
       <div class="menu-pied"><button class="btn btn-secondaire" data-action="conclusion">Réflexes de conclusion</button>
-      <span class="menu-aide">→ suite · ← retour · R dernier vote · I indices · K mots-clés · C coulisses · F plein écran · M menu</span></div>
+      <span class="menu-aide">Clic sur un bouton ou un lien de l'écran = suite · → suite · ← retour · R dernier vote · I indices · K mots-clés · C coulisses · F plein écran · M menu</span></div>
     </div>`;
     brancherBoutons();
     commandes.innerHTML = `<span class="cmd-espace"></span><button class="cmd" data-cmd="pleinecran" title="Plein écran (F)">⛶ Plein écran</button>`;
@@ -827,7 +888,7 @@
   }
 
   // API publique (utilisée aussi par outils/verifier.js)
-  Object.assign(SIMU, { resoudre, texte, brut, image, demarrer, aller, retour, avancer, revenirAuVote, menu, conclusion, ECRAN_DEBRIEF });
+  Object.assign(SIMU, { executerGeste, resoudre, texte, brut, image, demarrer, aller, retour, avancer, revenirAuVote, menu, conclusion, ECRAN_DEBRIEF });
 
   document.addEventListener('DOMContentLoaded', init);
 })();
