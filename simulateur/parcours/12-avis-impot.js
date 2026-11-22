@@ -94,7 +94,7 @@ SIMU.enregistrerParcours({
         titre: 'Le faux et le vrai, côte à côte',
         gauche: {
           verdict: 'malveillant',
-          titre: 'Le SMS du parcours 8',
+          titre: 'Le faux SMS des impôts',
           contenu:
             '<div class="cmp-message">DGFiP : un remboursement de 312,40 € est en attente. Confirmez vos informations <mark>avant 48 h</mark> : <mark>rmb-fisc.link/x7Kq</mark></div>' +
             '<ul><li>Expéditeur : <mark>un numéro de mobile</mark></li><li>Lien : <mark>raccourci, puis impots-gouv-remboursement.fr</mark></li><li>Demande : <mark>carte bancaire</mark></li><li>Ton : <mark>urgence</mark></li></ul>'
@@ -111,13 +111,19 @@ SIMU.enregistrerParcours({
     }
   },
 
+  situation: {
+    ou: 'Chez vous',
+    quand: 'Fin juillet',
+    texte: 'C\'est l\'été. Vous avez déclaré vos revenus au printemps, comme chaque année. En ouvrant votre messagerie personnelle, vous trouvez ce message.'
+  },
+
   coulisses: {
     scenario: 'Message légitime : l\'administration fiscale prévient que l\'avis d\'impôt est disponible dans l\'espace particulier. Elle ne demande ni paiement, ni carte, ni saisie.',
     modeOperatoire: 'Les impôts sont parmi les organismes les plus imités, surtout aux moments clés de l\'année : déclaration, avis, remboursements. L\'imitation (voir le parcours 8) annonce un remboursement ou une dette, donne un lien vers une adresse qui n\'est pas impots.gouv.fr et demande une carte bancaire. Un nom d\'expéditeur se copie facilement : le bon réflexe reste de taper soi-même impots.gouv.fr.'
   },
 
   debrief: {
-    message: 'Même un mail légitime se consulte au mieux en tapant soi-même impots.gouv.fr.',
+    message: 'Un vrai message n\'exige rien : ni carte bancaire, ni urgence.',
     reflexe: 'Taper soi-même impots.gouv.fr : c\'est le geste qui protège dans tous les cas.'
   }
 });

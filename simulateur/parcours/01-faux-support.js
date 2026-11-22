@@ -49,6 +49,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      situation: 'Vous essayez de trier tous ces messages quand le téléphone du bureau sonne.',
       coulisses: 'L\'attaquant sait que la boîte déborde : il l\'a provoqué. Le nom du service informatique ou de son prestataire est souvent public (organigramme, marchés attribués, signatures de mails), le numéro de l\'agent aussi (annuaire, site). Il appelle d\'un numéro quelconque et se présente : c\'est l\'histoire qui convainc. Variante fréquente : un message ou un appel <b>Teams</b> venant d\'un compte extérieur nommé « Support informatique ».',
       etape: 'É2',
       composant: 'appel',
@@ -130,7 +131,7 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
-      coulisses: 'L\'attaquant voit l\'écran de l\'agent et pilote la souris, avec ses droits : les dossiers des autres services lui sont refusés, mais il copie ce qui est accessible. Et il tombe sur un fichier de mots de passe laissé dans le dossier commun. Problème pour lui : dès que l\'agent raccroche, la session se ferme.',
+      coulisses: 'L\'attaquant voit l\'écran de l\'agent et pilote la souris, avec ses droits : les dossiers des autres services lui sont refusés, mais il copie ce qui est accessible. Et il tombe sur un fichier de mots de passe laissé à la racine du lecteur partagé. Problème pour lui : dès que l\'agent ferme {{OUTIL_PRISE_EN_MAIN}}, il perd la main.',
       etape: 'É4',
       composant: 'explorateur',
       donnees: {
@@ -145,13 +146,14 @@ SIMU.enregistrerParcours({
         ],
         copie: { titre: 'Copie vers un serveur distant…', progression: 68, detail: 'Dossiers accessibles + Mots de passe serveurs.xlsx' },
         curseur: { x: 640, y: 260 },
-        contexte: '<p>Le curseur bouge <b>tout seul</b>.</p><p>Les dossiers des autres services lui sont refusés…</p><p>… mais un fichier de <b>mots de passe</b> traîne dans le dossier commun.</p>'
+        contexte: '<p>Le curseur bouge <b>tout seul</b>.</p><p>Les dossiers des autres services lui sont refusés…</p><p>… mais un fichier de <b>mots de passe</b> traîne à la racine du lecteur partagé.</p>'
       },
       motsCles: ['PRISE DE CONTRÔLE', 'EXFILTRATION'],
       suivant: { option: 'doubleAuthentification', alors: 'e5', sinon: 'e5mdp' }
     },
 
     e5: {
+      situation: 'L\'appel dure depuis près de dix minutes. Vous avez hâte de reprendre votre travail.',
       coulisses: 'Pour revenir plus tard, sans l\'agent, il lui faut le <b>compte</b>. Il lance « mot de passe oublié » sur ce compte : le code reçu par SMS lui permet de le réinitialiser et de valider la double authentification. Si la collectivité utilise une application de validation, il demande d\'« accepter la demande qui s\'affiche ».',
       etape: 'É5',
       composant: 'appel',
@@ -183,15 +185,16 @@ SIMU.enregistrerParcours({
     },
 
     bienvu2: {
-      coulisses: 'Sans le code, l\'attaquant perd l\'accès en raccrochant. Mais il a déjà copié des fichiers, dont les mots de passe : il faut prévenir le support tout de suite pour les changer. Mieux vaut un signalement tardif que pas de signalement.',
+      coulisses: 'Sans le code, l\'attaquant perd l\'accès dès que {{OUTIL_PRISE_EN_MAIN}} est fermé. Mais il a déjà copié des fichiers, dont les mots de passe : il faut prévenir le support tout de suite pour les changer. Mieux vaut un signalement tardif que pas de signalement.',
       type: 'bienvu',
-      texte: 'Sans le code, il perd l\'accès en raccrochant. Mais des fichiers sont partis : on prévient tout de suite le support, qui change les mots de passe.',
+      texte: 'Sans le code, il perd l\'accès dès que {{OUTIL_PRISE_EN_MAIN}} est fermé. On raccroche, on ferme {{OUTIL_PRISE_EN_MAIN}}, et on prévient tout de suite le support, qui change les mots de passe : des fichiers sont déjà partis.',
       suite: 'e6'
     },
 
     // ----- Variante sans double authentification (options.doubleAuthentification = false)
 
     e5mdp: {
+      situation: 'L\'appel dure depuis près de dix minutes. Vous avez hâte de reprendre votre travail.',
       coulisses: 'Pour revenir plus tard, sans l\'agent, il lui faut le <b>compte</b>. Sans double authentification, le mot de passe suffit : avec lui, il ouvre la messagerie et les outils en ligne de l\'agent depuis n\'importe où. D\'où le prétexte de la « mise à jour de sécurité ».',
       etape: 'É5',
       composant: 'appel',
@@ -225,13 +228,14 @@ SIMU.enregistrerParcours({
     },
 
     bienvu2mdp: {
-      coulisses: 'Sans le mot de passe, l\'attaquant perd l\'accès en raccrochant. Mais il a déjà copié des fichiers, dont les mots de passe des serveurs : il faut prévenir le support tout de suite pour les changer. Mieux vaut un signalement tardif que pas de signalement.',
+      coulisses: 'Sans le mot de passe, l\'attaquant perd l\'accès dès que {{OUTIL_PRISE_EN_MAIN}} est fermé. Mais il a déjà copié des fichiers, dont les mots de passe des serveurs : il faut prévenir le support tout de suite pour les changer. Mieux vaut un signalement tardif que pas de signalement.',
       type: 'bienvu',
-      texte: 'Sans le mot de passe, il perd l\'accès en raccrochant. Mais des fichiers sont partis : on prévient tout de suite le support, qui change les mots de passe.',
+      texte: 'Sans le mot de passe, il perd l\'accès dès que {{OUTIL_PRISE_EN_MAIN}} est fermé. On raccroche, on ferme {{OUTIL_PRISE_EN_MAIN}}, et on prévient tout de suite le support, qui change les mots de passe : des fichiers sont déjà partis.',
       suite: 'e6'
     },
 
     e6: {
+      situation: 'Quelques jours plus tard, un lundi à 8 h. Vous allumez votre poste, comme tous vos collègues.',
       coulisses: 'Avec le compte, l\'attaquant revient depuis chez lui (messagerie, accès de télétravail). Les mots de passe volés le rendent administrateur. Quelques jours plus tard, il lance le chiffrement, souvent la nuit ou le week-end. C\'est la <b>double extorsion</b> : payer pour récupérer les fichiers, et payer pour que les données volées ne soient pas publiées. Payer ne garantit ni l\'un ni l\'autre.',
       etape: 'É6',
       composant: 'rancon',
@@ -319,6 +323,13 @@ SIMU.enregistrerParcours({
     }
   },
 
+  situation: {
+    ou: 'Au bureau, à votre poste',
+    quand: 'Un mardi matin, 9 h 40',
+    qui: 'Vous êtes agent au service urbanisme',
+    texte: 'La matinée commence normalement : un dossier de permis à instruire, un café à côté du clavier. Vous ouvrez votre messagerie…'
+  },
+
   coulisses: {
     scenario: 'Un agent de {{COLLECTIVITE_COURT}} voit sa boîte mail exploser, puis reçoit l\'appel d\'un faux support qui connaît l\'outil habituel, <b>{{OUTIL_PRISE_EN_MAIN}}</b>. L\'attaquant veut la main sur le poste, puis le compte de l\'agent, pour entrer durablement dans le réseau.',
     modeOperatoire: 'Schéma décrit par Microsoft en 2024 : inondation de la boîte (<b>« email bombing »</b>), puis appel d\'un faux support qui fait ouvrir un outil de prise en main <b>légitime</b>, souvent celui que la collectivité utilise déjà. Avec l\'identifiant et le mot de passe de l\'outil, il pilote le poste. Puis il se fait donner de quoi garder le compte après l\'appel : le code reçu par SMS, ou le mot de passe de l\'agent quand il n\'y a pas de double authentification. Il revient ensuite, devient administrateur, puis déploie le <b>rançongiciel</b>.'
@@ -328,6 +339,8 @@ SIMU.enregistrerParcours({
     attaquant: { option: 'doubleAuthentification', alors: 'Avec l\'identifiant de l\'outil, il pilote le poste et copie ce que l\'agent peut ouvrir, dont un fichier de mots de passe. Avec le code SMS, il garde le compte, revient quelques jours plus tard, devient administrateur et chiffre les serveurs.', sinon: 'Avec l\'identifiant de l\'outil, il pilote le poste et copie ce que l\'agent peut ouvrir, dont un fichier de mots de passe. Avec le mot de passe de l\'agent, il garde le compte, revient quelques jours plus tard, devient administrateur et chiffre les serveurs.' },
     impact: 'Les services (état civil, paie, urbanisme) peuvent s\'arrêter plusieurs semaines.',
     message: 'C\'est le bon outil, mais pas le bon interlocuteur : un outil familier ne protège pas d\'un faux support.',
-    reflexe: 'Raccrocher, rappeler le support sur le numéro connu {{NUMERO_SUPPORT}} ; ne donner l\'identifiant de {{OUTIL_PRISE_EN_MAIN}} qu\'au support qu\'on a soi-même appelé ; ne jamais donner son mot de passe ni lire un code reçu par SMS.'
+    reflexe: { option: 'doubleAuthentification',
+      alors: 'Raccrocher, rappeler le support sur le numéro connu {{NUMERO_SUPPORT}} ; ne donner l\'identifiant de {{OUTIL_PRISE_EN_MAIN}} qu\'au support qu\'on a soi-même appelé ; ne jamais donner son mot de passe ni lire un code reçu par SMS.',
+      sinon: 'Raccrocher, rappeler le support sur le numéro connu {{NUMERO_SUPPORT}} ; ne donner l\'identifiant de {{OUTIL_PRISE_EN_MAIN}} qu\'au support qu\'on a soi-même appelé ; ne jamais donner son mot de passe, à personne, pas même au support.' }
   }
 });

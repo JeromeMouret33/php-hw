@@ -90,13 +90,19 @@ SIMU.enregistrerParcours({
     }
   },
 
+  situation: {
+    ou: 'Chez vous',
+    quand: 'Un matin, 11 h 40',
+    texte: 'Une matinée tranquille à la maison. Votre téléphone vibre : un SMS.'
+  },
+
   coulisses: {
     scenario: 'Message légitime : l\'Assurance Maladie prévient qu\'un document est disponible. Elle ne demande rien d\'autre que d\'aller le consulter dans son compte.',
     modeOperatoire: 'L\'Assurance Maladie fait partie des organismes les plus imités : faux renouvellement de carte Vitale, faux remboursement. L\'imitation contiendrait un lien vers une page de saisie, une demande de carte bancaire ou de petits frais, et une urgence. Attention : un nom d\'expéditeur comme « Assurance Maladie » peut lui aussi être imité dans un SMS.'
   },
 
   debrief: {
-    message: 'Ce sont précisément les organismes les plus imités.',
+    message: 'L\'Assurance Maladie fait partie des organismes les plus imités : ce n\'est pas le nom de l\'expéditeur qui rassure, c\'est ce que le message demande.',
     reflexe: 'Légitime ou non, la bonne pratique reste la même : passer par l\'application ou le site tapé soi-même.'
   }
 });

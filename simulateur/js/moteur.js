@@ -37,7 +37,9 @@
  *     }
  *     // « debrief » est un écran réservé, généré à partir de parcours.debrief
  *   },
- *   debrief: { attaquant, impact, variante, reflexe }
+ *   debrief: { attaquant, impact, variante, reflexe },
+ *   situation: { ou, quand, qui, texte }        // mise en situation, lue à la salle (volet de gauche, touche S)
+ *   // un écran peut porter « situation: '…' » : ce qui a changé depuis le début (« Dix minutes plus tard… »)
  * }
  *
  * Dans tous les textes :
@@ -133,7 +135,8 @@
   }
 
   function initiales(s) {
-    const mots = String(s || '').replace(/<[^>]*>|\[\[[^|]*\||\]\]/g, '').split(/[\s'’-]+/).filter(m => /^\p{L}/u.test(m));
+    const mots = String(s || '').replace(/<[^>]*>|\[\[[^|]*\||\]\]/g, '').split(/[\s'’-]+/)
+      .filter(m => /^\p{L}/u.test(m) && !/^(de|des|du|d|la|le|les|l|et|à|au|aux|en)$/i.test(m));   // « Direction des Finances » -> DF
     return mots.length ? mots.slice(0, 2).map(m => m[0].toUpperCase()).join('') : '👤';
   }
 
@@ -180,13 +183,14 @@
     visites: [],        // ids d'écrans visités, dans l'ordre
     motsClesVisibles: false, // mots-clés masqués par défaut : l'animateur les affiche (bouton ou K)
     coulisses: false,        // panneau « Coulisses » ouvert ou non (reste ouvert d'un écran à l'autre)
+    situation: false,        // volet « Mise en situation » ouvert ou non (se referme quand on change d'écran)
     ongletCoulisses: 'ecran', // 'ecran' | 'scenario' | 'mode'
     minuteries: []
   };
   SIMU.etat = etat;
 
   const $ = sel => document.querySelector(sel);
-  let scene, zoneEcran, coucheEtiquettes, coucheMotsCles, bandeau, commandes, coulissesEl;
+  let scene, zoneEcran, coucheEtiquettes, coucheMotsCles, bandeau, commandes, coulissesEl, situationEl;
 
   function parcoursActifs() {
     const actifs = conf().parcoursActifs || {};
@@ -201,10 +205,12 @@
 
   // ---------------------------------------------------------------- Navigation
 
-  function demarrer(numero) {
+  /** intro = true (lancement depuis le menu ou « Parcours suivant ») : la mise en situation s'ouvre d'elle-même. */
+  function demarrer(numero, intro) {
     const p = SIMU.parcours.find(x => x.numero === numero);
     if (!p) return erreur(`Parcours ${numero} introuvable`);
     etat.parcours = p;
+    etat.situation = !!intro && !!p.situation && (conf().options || {}).situationAuDemarrage !== false;
     etat.historique = [];
     etat.votes = {};
     etat.revele = {};
@@ -227,7 +233,7 @@
     if (!etat.parcours) return;
     id = resoudre(id);
     if (id !== ECRAN_DEBRIEF && !etat.parcours.ecrans[id]) return erreur(`Écran « ${id} » introuvable dans le parcours ${etat.parcours.numero}`);
-    if (etat.ecranId) etat.historique.push(etat.ecranId);
+    if (etat.ecranId) { etat.historique.push(etat.ecranId); etat.situation = false; }   // le volet de situation se referme quand on avance
     etat.ecranId = id;
     afficher();
   }
@@ -236,6 +242,7 @@
     if (!etat.parcours) return;
     if (!etat.historique.length) return menu();
     etat.ecranId = etat.historique.pop();
+    etat.situation = false;
     afficher();
   }
 
@@ -247,6 +254,7 @@
       if (e && e.type === 'vote' && pile[i] !== etat.ecranId) {
         etat.historique = pile.slice(0, i);
         etat.ecranId = pile[i];
+        etat.situation = false;
         return afficher();
       }
     }
@@ -300,7 +308,7 @@
   function parcoursSuivant() {
     const liste = seance();
     const i = liste.indexOf(etat.parcours);
-    if (i >= 0 && i < liste.length - 1) demarrer(liste[i + 1].numero);
+    if (i >= 0 && i < liste.length - 1) demarrer(liste[i + 1].numero, true);
     else conclusion();
   }
 
@@ -313,6 +321,7 @@
     coucheMotsCles.innerHTML = '';
     zoneEcran.className = '';
     if (coulissesEl && !etat.parcours) coulissesEl.className = 'cachee';
+    if (situationEl && !etat.parcours) situationEl.className = 'cachee';
   }
 
   function afficher() {
@@ -353,6 +362,7 @@
     coucheMotsCles.classList.add('masque');
     rendreCommandes(e);
     rendreCoulisses();
+    rendreSituation();
   }
 
   // ----- Coulisses : panneau dépliable, commentaires de l'animateur
@@ -404,6 +414,44 @@
       if (a === 'basculer') basculerCoulisses();
       else { etat.ongletCoulisses = a; rendreCoulisses(); }
     }));
+  }
+
+  // ----- Mise en situation : volet de gauche, lu à la salle pour introduire le parcours
+
+  /*
+   * Données : parcours.situation = { ou, quand, qui, texte } ; un écran peut porter situation: '…'
+   * (ce qui a changé : « Dix minutes plus tard… »). Le volet s'ouvre par l'onglet de gauche ou la touche S.
+   * Il s'ouvre de lui-même au lancement d'un parcours (option situationAuDemarrage) et se referme dès qu'on avance.
+   * Contrairement aux Coulisses, il ne dévoile rien : il plante le décor.
+   */
+  function rendreSituation() {
+    const boite = situationEl;
+    if (!etat.parcours) { boite.className = 'cachee'; return; }
+    const p = etat.parcours, e = ecranCourant(), s = p.situation || {};
+    // dernière évolution de la situation sur le chemin parcouru (« Dix minutes plus tard… »)
+    const chemin = etat.historique.concat(etat.ecranId).map(id => p.ecrans[id]).filter(Boolean);
+    const dernier = chemin.slice().reverse().find(x => x.situation);
+    const nouveau = !!(e && e.situation);
+    boite.className = (etat.situation ? 'ouverte' : '') + (nouveau ? ' nouveau' : '');
+    const fiche = (icone, v) => v ? `<span class="st-fiche">${icone} ${texte(v)}</span>` : '';
+    boite.innerHTML = `
+      <button class="st-poignee" data-st="basculer" title="Mise en situation (S)"><span>📍</span><b>Situation</b></button>
+      <div class="st-panneau">
+        <div class="st-entete"><span class="st-titre">📍 Mise en situation</span><button class="st-fermer" data-st="basculer" title="Fermer (S)">✕</button></div>
+        <div class="st-corps">
+          <div class="st-fiches">${fiche('📍', s.ou)}${fiche('🕘', s.quand)}${fiche('👤', s.qui)}</div>
+          ${dernier ? `<div class="st-maintenant"><span>${nouveau ? 'Maintenant' : 'Depuis'}</span><p>${texte(dernier.situation)}</p></div>
+            <p class="st-depart"><b>Au départ :</b> ${texte(s.texte)}</p>` : `<p class="st-texte">${texte(s.texte || 'Pas de mise en situation pour ce parcours.')}</p>`}
+          ${e && e.composant && Object.keys(e.indices || {}).length ? '<div class="st-accroche">👀 Regardez bien l\'écran : qu\'est-ce qui vous interpelle ?</div>' : ''}
+        </div>
+      </div>`;
+    boite.querySelectorAll('[data-st]').forEach(b => b.addEventListener('click', ev => { ev.stopPropagation(); basculerSituation(); }));
+  }
+
+  function basculerSituation() {
+    if (!etat.parcours) return;
+    etat.situation = !etat.situation;
+    rendreSituation();
   }
 
   function basculerCoulisses() {
@@ -731,7 +779,7 @@
         else if (a === 'aller') aller(b.dataset.cible);
         else if (a === 'menu') menu();
         else if (a === 'suivant-parcours') parcoursSuivant();
-        else if (a === 'demarrer') demarrer(+b.dataset.parcours);
+        else if (a === 'demarrer') demarrer(+b.dataset.parcours, true);
         else if (a === 'conclusion') conclusion();
         else if (a === 'format') { etat.format = b.dataset.format; menu(); }
       });
@@ -780,6 +828,7 @@
     etat.ecranId = null;
     scene.dataset.mode = 'menu';
     coulissesEl.className = 'cachee';
+    situationEl.className = 'cachee';
     delete scene.dataset.parcours;
     scene.dataset.ecran = 'menu';
     bandeau.innerHTML = `<span class="bandeau-parcours">${texte('{{COLLECTIVITE}}')}</span>`;
@@ -798,7 +847,7 @@
       <div class="menu-formats"><span>Séance :</span>${formats}</div>
       <div class="menu-cartes">${cartes || '<p class="menu-vide">Aucun parcours actif : vérifiez « parcoursActifs » dans config/collectivite.js.</p>'}</div>
       <div class="menu-pied"><button class="btn btn-secondaire" data-action="conclusion">Réflexes de conclusion</button>
-      <span class="menu-aide">Clic sur un bouton ou un lien de l'écran = suite · → suite · ← retour · R dernier vote · I indices · K mots-clés · C coulisses · F plein écran · M menu</span></div>
+      <span class="menu-aide">Clic sur un bouton ou un lien de l'écran = suite · → suite · ← retour · R dernier vote · S situation · I indices · K mots-clés · C coulisses · F plein écran · M menu</span></div>
     </div>`;
     brancherBoutons();
     commandes.innerHTML = `<span class="cmd-espace"></span><button class="cmd" data-cmd="pleinecran" title="Plein écran (F)">⛶ Plein écran</button>`;
@@ -818,6 +867,7 @@
     etat.parcours = null;
     scene.dataset.mode = 'conclusion';
     coulissesEl.className = 'cachee';
+    situationEl.className = 'cachee';
     scene.dataset.ecran = 'conclusion';
     bandeau.innerHTML = `<span class="bandeau-parcours">${texte('{{COLLECTIVITE}}')}</span>`;
     zoneEcran.innerHTML = `<div class="ecran-conclusion">
@@ -866,6 +916,7 @@
     else if (k === 'i' || k === 'I') { if (etat.parcours) basculerTousIndices(); }
     else if (k === 'm' || k === 'M') menu();
     else if (k === 'c' || k === 'C') basculerCoulisses();
+    else if (k === 's' || k === 'S') basculerSituation();
     else return;
     ev.preventDefault();
   }
@@ -880,6 +931,9 @@
     coulissesEl = document.createElement('aside');
     coulissesEl.id = 'coulisses';
     scene.appendChild(coulissesEl);
+    situationEl = document.createElement('aside');
+    situationEl.id = 'situation';
+    scene.appendChild(situationEl);
     ajuster();
     window.addEventListener('resize', ajuster);
     document.addEventListener('keydown', clavier);
@@ -888,7 +942,7 @@
   }
 
   // API publique (utilisée aussi par outils/verifier.js)
-  Object.assign(SIMU, { executerGeste, resoudre, texte, brut, image, demarrer, aller, retour, avancer, revenirAuVote, menu, conclusion, ECRAN_DEBRIEF });
+  Object.assign(SIMU, { basculerSituation, executerGeste, resoudre, texte, brut, image, demarrer, aller, retour, avancer, revenirAuVote, menu, conclusion, ECRAN_DEBRIEF });
 
   document.addEventListener('DOMContentLoaded', init);
 })();

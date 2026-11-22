@@ -32,7 +32,7 @@ SIMU.enregistrerParcours({
         message: {
           objet: '{{DGS_PRENOM}} {{DGS_NOM}} vous a partagé « Deliberation_budget_2027.pdf »',
           deNom: '{{DGS_PRENOM}} {{DGS_NOM}} (via partage)',
-          deAdresse: 'partage@{{DOMAINE_PIEGE}}',
+          deAdresse: '[[expediteur|partage@{{DOMAINE_PIEGE}}]]',
           a: '{{FORMAT_ADRESSE}}@{{DOMAINE_MAIL}}',
           date: '15:47',
           corps:
@@ -44,6 +44,7 @@ SIMU.enregistrerParcours({
         barreEtat: '[[lien|https://partage-docs.cloud-securise.app/d/8f3k2x]]'
       },
       indices: {
+        expediteur: { type: 'suspect', etiquette: 'Adresse d\'expédition sur {{DOMAINE_PIEGE}} : ce n\'est pas {{DOMAINE_MAIL}}' },
         lien:    { type: 'suspect', etiquette: 'Au survol, le lien pointe vers un domaine sans rapport avec Microsoft ni {{DOMAINE_MAIL}}' },
         urgence: { type: 'suspect', etiquette: 'Document « urgent à consulter avant 17 h »' }
       },
@@ -128,6 +129,7 @@ SIMU.enregistrerParcours({
     },
 
     e4: {
+      situation: 'Un quart d\'heure plus tard, dans votre messagerie.',
       coulisses: 'L\'attaquant crée une règle de transfert discrète, nommée « . » pour passer inaperçue dans la liste : il continue de lire les mails, même si l\'agent change de mot de passe. Puis il renvoie le piège depuis le vrai compte, car les contacts font confiance à un expéditeur connu. Il faut changer le mot de passe, fermer les sessions et supprimer la règle.',
       etape: 'É4',
       composant: 'mail',
@@ -144,7 +146,7 @@ SIMU.enregistrerParcours({
         ],
         message: {
           objet: 'Règle créée sur votre boîte, en silence',
-          deNom: 'Paramètres › Règles de la boîte de réception',
+          deNom: 'Règles de la boîte de réception (Paramètres)',
           deAdresse: '{{FORMAT_ADRESSE}}@{{DOMAINE_MAIL}}',
           a: '—',
           date: '16:00',
@@ -154,6 +156,12 @@ SIMU.enregistrerParcours({
       motsCles: ['REBOND', 'VOTRE NOM'],
       suivant: 'debrief'
     }
+  },
+
+  situation: {
+    ou: 'Au bureau, à votre poste',
+    quand: 'Un après-midi, 15 h 47',
+    texte: 'La journée touche à sa fin, il vous reste quelques mails à traiter. Des documents partagés, vous en recevez toutes les semaines. En voici un nouveau.'
   },
 
   coulisses: {

@@ -386,7 +386,7 @@ svg .indice.revele.indice-rassurant { filter: drop-shadow(0 0 5px var(--rassuran
 .site-btn { display: inline-block; color: #fff; font-weight: 700; padding: 14px 34px; border-radius: 6px; font-size: 25px; margin-top: 6px; }
 .site-btn.bleu { background: #000091; }
 .site-btn.neutre { background: #2b6cb0; }
-.site-note { font-size: 21px; color: #666; }
+.site-note { font-size: 22px; color: #666; }
 .theme-fisc .site-entete { background: #000091; }
 .theme-fisc .site-bandeau { height: 8px; background: linear-gradient(90deg, #000091 33%, #fff 33% 66%, #e1000f 66%); }
 .theme-fisc { background: #f5f5fe; height: 100%; }
@@ -670,3 +670,35 @@ svg .indice.revele.indice-rassurant { filter: drop-shadow(0 0 5px var(--rassuran
 /* Barre d'état : masquée tant que la souris n'est pas passée sur un lien (survol naturel) */
 .barre-etat { opacity: 0; pointer-events: none; transition: opacity .12s; }
 .barre-etat.vue { opacity: 1; pointer-events: auto; }
+
+/* =====================================================================
+   VOLET « MISE EN SITUATION » (à gauche, lu à la salle, touche S)
+   ===================================================================== */
+#situation { position: absolute; top: 52px; bottom: 56px; left: 0; z-index: 35; pointer-events: none; }
+#situation.cachee { display: none; }
+.st-poignee { pointer-events: auto; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  background: rgba(27,36,48,.55); color: #fff; border: 0; border-radius: 0 12px 12px 0; padding: 12px 6px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: .45; transition: opacity .2s, background .2s; }
+.st-poignee:hover { opacity: 1; background: #0e5a5a; }
+.st-poignee span { font-size: 22px; }
+.st-poignee b { writing-mode: vertical-rl; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; }
+#situation.ouverte .st-poignee { display: none; }
+/* l'écran courant apporte un élément de contexte nouveau : l'onglet le signale */
+#situation.nouveau .st-poignee { opacity: 1; background: #0e7a7a; animation: battement 1.6s ease-in-out infinite; }
+@keyframes battement { 0%, 100% { box-shadow: 0 0 0 0 rgba(14,122,122,.6); } 50% { box-shadow: 0 0 0 12px rgba(14,122,122,0); } }
+.st-panneau { pointer-events: auto; position: absolute; top: 14px; left: 14px; bottom: 14px; width: 720px;
+  background: #fffaf0; color: #20262d; border-radius: 22px; box-shadow: 10px 10px 40px rgba(0,0,0,.45); border: 5px solid #0e7a7a;
+  display: flex; flex-direction: column; overflow: hidden; transform: translateX(-110%); transition: transform .35s cubic-bezier(.2,.9,.3,1.1); }
+#situation.ouverte .st-panneau { transform: none; }
+.st-entete { display: flex; justify-content: space-between; align-items: center; padding: 16px 22px; background: #0e7a7a; }
+.st-titre { color: #fff; font-weight: 900; font-size: 30px; letter-spacing: .5px; }
+.st-fermer { background: rgba(255,255,255,.2); color: #fff; border: 0; border-radius: 50%; width: 46px; height: 46px; font-size: 24px; cursor: pointer; }
+.st-corps { flex: 1; padding: 26px 30px; display: flex; flex-direction: column; overflow: hidden; }
+.st-fiches { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 24px; }
+.st-fiche { background: #e2f3f1; color: #0b4f4f; border-radius: 999px; padding: 8px 20px; font-size: 26px; font-weight: 700; }
+.st-texte { font-size: 34px; line-height: 1.45; margin: 0; }
+.st-maintenant { background: #0e7a7a; color: #fff; border-radius: 18px; padding: 18px 24px; margin-bottom: 20px; }
+.st-maintenant span { font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #ffe08a; }
+.st-maintenant p { font-size: 32px; line-height: 1.4; margin: 6px 0 0; }
+.st-depart { font-size: 24px; line-height: 1.4; color: #55606b; margin: 0; }
+.st-accroche { margin-top: auto; background: #ffe08a; color: #3a2a00; border-radius: 16px; padding: 14px 22px; font-size: 28px; font-weight: 800; }

@@ -48,6 +48,7 @@ SIMU.enregistrerParcours({
     },
 
     e2: {
+      situation: 'Il est 14 h. Vous rejoignez la réunion : le maire et le DGS sont déjà connectés.',
       coulisses: 'L\'imitation est fragile en direct : elle supporte mal les gestes imprévus et les questions inattendues. D\'où un maire qui parle peu, une demande écrite dans la conversation et une coupure réseau invoquée au bon moment. Les « conseillers » meublent l\'écran pour rendre la réunion crédible.',
       etape: 'É2',
       composant: 'visio',
@@ -112,6 +113,13 @@ SIMU.enregistrerParcours({
     }
   },
 
+  situation: {
+    ou: 'Au bureau, {{SERVICE_FINANCES}}',
+    quand: 'Un matin, 11 h',
+    qui: 'Vous préparez les paiements de la collectivité',
+    texte: 'Un dossier d\'acquisition foncière est en cours : la collectivité doit bientôt payer le notaire. Une invitation arrive dans votre messagerie.'
+  },
+
   coulisses: {
     scenario: 'Un agent des finances est invité à une visio « confidentielle » avec le maire et le DGS. On lui demande de changer en urgence le RIB du notaire d\'une acquisition, juste avant le paiement. Les visages et les voix sont imités.',
     modeOperatoire: 'L\'attaquant utilise des outils d\'IA qui imitent un visage et une voix à partir de vidéos publiques (conseil municipal diffusé en ligne, interviews). Il peut s\'agir de séquences préparées à l\'avance ou d\'imitations en direct, encore imparfaites : d\'où les excuses de « mauvais réseau ». C\'est le scénario du cas Arup à Hong Kong en 2024, où les autres participants de la visio étaient des imitations.'
@@ -119,7 +127,8 @@ SIMU.enregistrerParcours({
 
   debrief: {
     attaquant: 'Quelques minutes de vidéo publique (conseil municipal en ligne) suffisent pour imiter un visage et une voix.',
+    impact: 'Si le RIB est modifié, les 480 000 € sont payés sur le compte de l\'escroc. Le vrai maire n\'a jamais organisé cette réunion.',
     message: 'En 2024 à Hong Kong, un employé du groupe Arup a fait 15 virements, environ 200 millions de dollars de Hong Kong (près de 25 millions de dollars américains), après une visio où le directeur financier et des collègues étaient des imitations générées par IA. Arup l\'a confirmé en mai 2024.',
-    reflexe: 'Rappeler par un autre canal, double validation pour tout virement inhabituel, mot de passe convenu en interne pour les demandes sensibles.'
+    reflexe: 'Rappeler par un autre canal, double validation pour tout changement de RIB ou paiement inhabituel, mot de code convenu en interne pour les demandes sensibles.'
   }
 });

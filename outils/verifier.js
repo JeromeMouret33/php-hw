@@ -82,6 +82,8 @@ function controleStructure(p) {
     if (!ok) signaler(ou, `impasse : le débrief n'est pas atteignable depuis « ${id} »`);
   }
   if (!p.debrief || !p.debrief.reflexe) signaler(ou, 'débrief sans réflexe');
+  // mise en situation (volet de gauche) : où, quand, texte
+  if (!p.situation || !p.situation.ou || !p.situation.quand || !p.situation.texte) signaler(ou, 'mise en situation incomplète (ou, quand, texte)');
   // commentaires « Coulisses » : scénario, mode opératoire, et un commentaire par écran d'interface ou de vote
   if (!p.coulisses || !p.coulisses.scenario || !p.coulisses.modeOperatoire) signaler(ou, 'coulisses : scénario ou mode opératoire manquant');
   ids.filter(id => (p.ecrans[id].composant || p.ecrans[id].type === 'vote') && !p.ecrans[id].coulisses)
@@ -224,6 +226,14 @@ async function main() {
         if (await nbEtiquettes() !== indices.length) signaler(ou, `touche I : ${indices.length} étiquettes attendues après réaffichage`);
       }
 
+      // touche S : ouvre puis referme le volet « Mise en situation » ; capture sur le 1er écran et quand le contexte évolue
+      await page.keyboard.press('s');
+      if (!(await page.locator('#situation.ouverte').count())) signaler(ou, 'touche S : le volet de situation ne s\'ouvre pas');
+      else if (e.situation || debuts(p).some(d => d.cible === id)) { await page.waitForTimeout(450); await capture(`${nn}-${id}-situation`); }
+      if (e.situation && !(await page.locator('#situation.nouveau').count())) signaler(ou, 'situation : l\'onglet ne signale pas le nouveau contexte');
+      await page.keyboard.press('s');
+      if (await page.locator('#situation.ouverte').count()) signaler(ou, 'touche S : le volet de situation ne se ferme pas');
+
       // touche C : ouvre puis referme le panneau « Coulisses » ; capture panneau ouvert
       await page.keyboard.press('c');
       if (!(await page.locator('#coulisses.ouverte').count())) signaler(ou, 'touche C : le panneau Coulisses ne s\'ouvre pas');
@@ -313,6 +323,14 @@ async function main() {
         if (apres !== attendu) signaler(ou, `flèche → : attendu « ${attendu} », obtenu « ${apres} »`);
       }
     }
+
+    // --- Lancement depuis le menu : la mise en situation s'ouvre d'elle-même, et se referme dès qu'on avance
+    await page.evaluate(o => { CONFIG_COLLECTIVITE.options = Object.assign({}, o); SIMU.menu(); }, optionsInitiales);
+    await page.locator(`.carte-parcours[data-parcours="${p.numero}"]`).click();
+    const ouvertAuDepart = await page.locator('#situation.ouverte').count();
+    if (!!ouvertAuDepart !== (optionsInitiales.situationAuDemarrage !== false)) signaler(`parcours ${p.numero}`, `mise en situation au lancement : ${ouvertAuDepart ? 'ouverte' : 'fermée'}, contraire à l'option situationAuDemarrage`);
+    await page.keyboard.press('ArrowRight');
+    if (await page.locator('#situation.ouverte').count()) signaler(`parcours ${p.numero}`, 'mise en situation encore ouverte après avoir avancé');
 
     // --- Tous les chemins complets, joués au clic, du début au débrief
     const chemins = cheminsComplets(p);

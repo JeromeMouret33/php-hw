@@ -6,7 +6,7 @@
  */
 SIMU.enregistrerParcours({
   numero: 7,
-  titre: 'Le mail de maintenance de la DSI',
+  titre: 'Le mail de maintenance du service informatique',
   titreSalle: 'Un mail du service informatique',
   domaine: 'pro',
   nature: 'legitime',
@@ -108,6 +108,12 @@ SIMU.enregistrerParcours({
       },
       suivant: 'debrief'
     }
+  },
+
+  situation: {
+    ou: 'Au bureau, à votre poste',
+    quand: 'Un lundi matin, 10 h 05',
+    texte: 'Début de semaine. Vous parcourez les messages arrivés depuis vendredi. Parmi eux, un mail du service informatique.'
   },
 
   coulisses: {
