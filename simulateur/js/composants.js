@@ -81,7 +81,7 @@
             ${pjs ? `<div class="mail-pjs">${pjs}</div>` : ''}
             ${m.invitation ? `<div class="mail-invitation"><div class="inv-date">${texte(m.invitation.jour)}</div>
               <div class="inv-texte"><b>${texte(m.invitation.titre)}</b><span>${texte(m.invitation.quand)}</span><span>${texte(m.invitation.organisateur)}</span></div>
-              <span class="inv-btn">${texte(m.invitation.bouton || 'Rejoindre la réunion')}</span></div>` : ''}
+              <span class="inv-btn geste" data-geste="suite">${texte(m.invitation.bouton || 'Rejoindre la réunion')}</span></div>` : ''}
             <div class="mail-texte">${texte(m.corps)}</div>
             ${d.barreEtat ? `<div class="barre-etat">${texte(d.barreEtat)}</div>` : ''}
           </article>` : ''}
@@ -109,7 +109,7 @@
         <div class="tel-nom">${texte(d.appelant)}</div>
         <div class="tel-numero">${texte(d.numero)}</div>
         <div class="tel-duree">${entrant ? '' : texte(d.duree || '00:00')}</div>
-        ${entrant ? `<div class="tel-boutons-entrant"><span class="tel-btn rouge">✕</span><span class="tel-btn vert">✆</span></div>` : `
+        ${entrant ? `<div class="tel-boutons-entrant"><span class="tel-btn rouge">✕</span><span class="tel-btn vert geste" data-geste="suite" title="Décrocher">✆</span></div>` : `
         <div class="tel-grille">
           <span class="tel-btn-gris">🔇<small>Muet</small></span><span class="tel-btn-gris">⌨<small>Clavier</small></span><span class="tel-btn-gris">🔊<small>HP</small></span>
         </div>

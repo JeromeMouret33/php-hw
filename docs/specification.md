@@ -18,6 +18,14 @@ Nov 4, 2026 · @Jerome
 
 **Règle d'or : on va toujours au bout.** Le simulateur ne bloque jamais un parcours sur une bonne réponse. Chaque point de vote propose deux sorties : le chemin choisi par la salle et « Voir la suite quand même ». L'animateur peut ainsi dire « Bon réflexe, et voici ce qui se serait passé si on avait cliqué », jusqu'à l'impact final. Pour les parcours légitimes (7, 11, 12), le bouton montre à l'inverse ce que l'agent aurait perdu en supprimant le message. Raccourcis clavier : flèche droite pour avancer sur le chemin malveillant, R pour revenir au dernier vote, flèche gauche pour reculer, I pour afficher ou masquer tous les indices, K pour les mots-clés, C pour les coulisses, F pour le plein écran, M pour le menu.
 
+**Gestes naturels** : quand la salle dit « on clique », l'animateur fait le geste à l'écran. Les boutons et les liens des fausses interfaces sont cliquables :
+- un bouton ou un lien simple fait avancer, comme « Suite ▸ » (« Ouvrir le document », « Rejoindre la réunion », « Vérifier », le bouton vert pour décrocher) ;
+- quand l'écran est suivi d'un vote, le geste joue directement le choix correspondant et montre la conséquence (« Se connecter », « Recevoir mon remboursement », le lien d'un SMS) ; le choix est enregistré comme un vote, et R y revient ;
+- quand l'élément est aussi un indice (lien raccourci du faux SMS, autocollant du QR code, clé USB), le premier clic révèle l'indice et le second fait le geste.
+**Survol naturel** : l'adresse vers laquelle mène un lien n'est pas affichée d'office. Elle apparaît en bas à gauche quand la souris passe sur le lien ou le bouton, comme dans une vraie messagerie, puis reste visible pour que l'animateur puisse la désigner comme indice (parcours 4, 5 et 12).
+
+« Suite ▸ » et la flèche droite restent disponibles partout, et mènent à l'écran de vote à main levée. Les scènes sans rien à cliquer (appels, conversations) avancent avec « Suite ▸ ».
+
 **Coulisses, à volonté** : un onglet discret à droite de l'écran (ou la touche C) ouvre un panneau qui reste ouvert d'un écran à l'autre, avec trois onglets : « Cet écran » (ce qui se passe réellement), « Le scénario » (cible, durée, source) et « Le mode opératoire ». Si la salle n'a rien vu, on continue ; si elle a vu, on ouvre le panneau pour expliquer. Sur les votes, il ne donne que la question de relance, jamais la réponse, et le verdict « attaque » ou « légitime » n'apparaît qu'après le premier vote.
 
 **Débrief et conclusion ludiques** : score des indices trouvés (étoiles) et des votes ; un choix prudent (par exemple signaler un message légitime) compte comme un bon réflexe. Les conséquences se jouent en cartes de bande dessinée, les réflexes finaux en cartes à collectionner.
@@ -399,6 +407,7 @@ Le contenu de ce document est validé : il sert de spécification figée, rien n
   - Parcours 6, 8, 9 : chiffres et consignes sourcés.
   - Écrans ajoutés : bonnes réponses (P1, P3, P7, P10) et « Et si on l'avait supprimé ? » (P7, P11, P12).
   - Mots-clés masqués par défaut, affichés par l'animateur.
+  - Gestes naturels (22 novembre 2026) : boutons et liens des fausses interfaces cliquables pour avancer.
   - Option `doubleAuthentification` (21 novembre 2026) : quand les agents n'ont pas de double authentification, le parcours 1 remplace le code SMS par la demande du mot de passe de session, et le parcours 5 remplace l'écran du code par le vol du seul mot de passe ; les coulisses et les débriefs suivent.
   - Configuration d'un client hors dépôt (`?config=<client>`), avec de nouvelles variables de localisation : dossiers du serveur de fichiers, numéros des escrocs, procédure RIB (16 novembre 2026).
   - Parcours 1 sur l'outil de prise en main habituel ({{OUTIL\_PRISE\_EN\_MAIN}}) : identifiant et mot de passe donnés (vote 1), puis code SMS pour garder le compte (vote 2).

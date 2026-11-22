@@ -659,3 +659,14 @@ svg .indice.revele.indice-rassurant { filter: drop-shadow(0 0 5px var(--rassuran
 .debrief-droite:has(.db-carte:nth-child(4)) .db-carte { padding: 10px 24px; }
 .debrief-droite:has(.db-carte:nth-child(4)) .db-carte p { font-size: 24px; line-height: 1.32; }
 .debrief-droite:has(.db-carte:nth-child(4)) .db-icone { font-size: 40px; }
+
+/* Gestes naturels : boutons et liens des fausses interfaces sur lesquels on peut cliquer pour avancer */
+.geste, .indice-geste { cursor: pointer; }
+.geste { transition: filter .15s, transform .15s; }
+.geste:hover { filter: brightness(1.12); }
+.geste:active { transform: scale(.97); }
+.tel-btn.geste:hover { transform: scale(1.08); }
+
+/* Barre d'état : masquée tant que la souris n'est pas passée sur un lien (survol naturel) */
+.barre-etat { opacity: 0; pointer-events: none; transition: opacity .12s; }
+.barre-etat.vue { opacity: 1; pointer-events: auto; }

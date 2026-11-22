@@ -27,7 +27,7 @@ SIMU.enregistrerParcours({
         contact: '06 39 98 07 12',
         heure: '12:05',
         messages: [
-          { de: 'eux', texte: 'Votre colis n\'a pas pu être livré. [[frais|Frais de réexpédition : 1,99 €]] : <span class="lien">https://suivi-relivraison-colis.com/p/48K</span>', heure: '12:04' }
+          { de: 'eux', texte: 'Votre colis n\'a pas pu être livré. [[frais|Frais de réexpédition : 1,99 €]] : ((choix:0|<span class="lien">https://suivi-relivraison-colis.com/p/48K</span>))', heure: '12:04' }
         ]
       },
       indices: {
@@ -57,7 +57,7 @@ SIMU.enregistrerParcours({
         contact: '06 39 98 64 30',
         heure: '17:20',
         messages: [
-          { de: 'eux', texte: 'Avis de contravention impayé. [[majoration|Majoration sous 48 h]] : réglez 35 € sur <span class="lien">https://amendes-reglement-en-ligne.fr</span>', heure: '17:19' }
+          { de: 'eux', texte: 'Avis de contravention impayé. [[majoration|Majoration sous 48 h]] : réglez 35 € sur ((choix:0|<span class="lien">https://amendes-reglement-en-ligne.fr</span>))', heure: '17:19' }
         ]
       },
       indices: {
@@ -90,7 +90,7 @@ SIMU.enregistrerParcours({
         contexte: '<p>Le QR code ouvre cette page :</p><div class="carte-claire">[[site|🔒 paiement-stationnement-express.com]]</div>'
       },
       indices: {
-        autocollant: { type: 'suspect', etiquette: 'Autocollant superposé, bords visibles' },
+        autocollant: { type: 'suspect', etiquette: 'Autocollant superposé, bords visibles', geste: 'choix:0' },
         site:        { type: 'suspect', etiquette: 'Le site ouvert n\'est pas celui de l\'application de stationnement de {{COLLECTIVITE_COURT}}' }
       },
       suivant: 'voteC'

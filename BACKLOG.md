@@ -75,6 +75,14 @@ Critères d'acceptation communs, vérifiés le 2026-11-04 par `outils/verifier.j
 - [x] Ordres de passage suggérés (court, standard, complet) sélectionnables depuis le menu ; « Parcours suivant » suit l'ordre choisi *(ordre « complet » proposé, à valider : voir SUIVI)*
 - [x] Style plus ludique pour l'écran de conséquence (cartes de bande dessinée animées), le débrief (score en étoiles, votes, cartes illustrées, médaille du réflexe) et les réflexes de conclusion (cartes à collectionner, tampon final)
 
+### Gestes naturels (demande de l'animateur, 2026-11-22)
+- [x] Moteur : marqueur `((geste|contenu))` (`suite` ou `choix:N`), indices à geste (1er clic : indice, 2e clic : geste), « Suite ▸ » et → inchangés
+- [x] Gestes posés dans les parcours 1, 3, 4, 5, 6, 8 et 9 (12 gestes)
+- [x] Vérificateur : chaque geste mène au bon écran, un choix joué par geste est enregistré comme un vote (R y revient) ; passé avec les deux configurations (121 chemins, 12 gestes, 3 survols)
+- [x] Survol naturel : l'adresse d'un lien n'apparaît qu'au passage de la souris, puis reste visible (parcours 4, 5 et 12) ; contrôlé par le vérificateur, captures relues
+- [x] Nouveau dossier complet remis à l'animateur, ouverture testée depuis l'archive
+- [ ] Validation par l'animateur à l'essai (voir SUIVI, décisions à valider)
+
 ### Configuration du premier client (2026-11-16)
 - [x] Mécanisme de configuration client hors dépôt : `index.html?config=<client>`, fichier `collectivite-<client>.js` et dossier `images/<client>/` ignorés par git, raccourci `seance-<client>.html`, option `--config` du vérificateur, modèle `collectivite-exemple-client.txt`
 - [x] Nouvelles variables de localisation, avec valeurs fictives par défaut : DOSSIER_SERVICE, DOSSIER_COMMUN, DOSSIER_REFUSE_1 et 2 (parcours 1), NUMERO_FAUX_SUPPORT, NUMERO_FAUX_DGS (parcours 1 et 3), PROCEDURE_RIB (débrief du parcours 2)
